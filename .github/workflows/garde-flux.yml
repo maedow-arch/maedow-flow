@@ -1,0 +1,35 @@
+# Maedow Flow · MF-003 : main ne reçoit que develop.
+#
+# Sans ce garde, un correctif pourrait rejoindre la production sans être passé
+# par l'intégration, et le flux ne tiendrait que par la vigilance de celui qui
+# ouvre la pull request.
+
+name: Garde du flux
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  origine:
+    name: origine
+    runs-on: ubuntu-latest
+    steps:
+      - name: La branche source doit être develop, dans ce dépôt
+        env:
+          SOURCE: ${{ github.head_ref }}
+          DEPOT_SOURCE: ${{ github.event.pull_request.head.repo.full_name }}
+          DEPOT: ${{ github.repository }}
+        run: |
+          if [ "$DEPOT_SOURCE" != "$DEPOT" ]; then
+            echo "::error::Cette pull request vise main depuis le fork $DEPOT_SOURCE. Les contributions entrent par develop."
+            exit 1
+          fi
+          if [ "$SOURCE" != "develop" ]; then
+            echo "::error::Cette pull request vise main depuis $SOURCE. Seule develop alimente main : vise develop."
+            exit 1
+          fi
+          echo "Origine conforme : develop vers main."
