@@ -17,7 +17,7 @@ const ONGLETS = [
   { title: "Claude Code", url: "/docs/claude-code", description: "Où vit chaque consigne, le moteur de skills" },
   { title: "Plateformes", url: "/docs/plateformes", description: "Web, mobile, desktop" },
   { title: "Sécurité", url: "/docs/securite", description: "Le socle minimal avant chaque livraison" },
-  { title: "Échelle", url: "/docs/echelle", description: "Monter en charge sur mesure" },
+  { title: "Tenir la charge", url: "/docs/echelle", description: "Ne pas tomber quand les requêtes affluent" },
   { title: "Prompts", url: "/docs/prompts", description: "Les formulations éprouvées" },
 ];
 
