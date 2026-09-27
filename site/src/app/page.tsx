@@ -75,7 +75,7 @@ export default function Accueil() {
         <section className="mt-20 grid gap-6 sm:grid-cols-2">
           <div className="rounded-xl border bg-fd-card p-6">
             <h2 className="font-semibold">Avec Claude Code</h2>
-            <BlocTexte className="mt-4" texte={`/plugin marketplace add maedow-arch/maedow-flow
+            <BlocTexte className="mt-4" texte={`/plugin marketplace add maedow-arch/maedow-flow#main
 /plugin install maedow-flow@maedow-flow
 npx skills add JavaScript-Mastery-Pro/skills`} />
             <p className="mt-4 text-sm text-fd-muted-foreground">

@@ -20,7 +20,7 @@ Un agent IA livré à lui-même invente les décisions qu'on ne lui a pas donné
 **Avec Claude Code**, une fois par machine :
 
 ```text
-/plugin marketplace add maedow-arch/maedow-flow
+/plugin marketplace add maedow-arch/maedow-flow#main
 /plugin install maedow-flow@maedow-flow
 npx skills add JavaScript-Mastery-Pro/skills
 ```

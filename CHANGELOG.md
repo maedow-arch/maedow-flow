@@ -2,6 +2,10 @@
 
 Chaque entrée dit ce qui change pour celui qui applique Maedow Flow.
 
+## Non publié
+
+- Le plugin s'installe depuis `maedow-arch/maedow-flow#main`, la version publiée, et non depuis la branche par défaut `develop`.
+
 ## 0.1.0 · 2026-09-27
 
 Première version.
