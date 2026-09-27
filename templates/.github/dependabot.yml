@@ -1,0 +1,21 @@
+# Maedow Flow : les mises à jour arrivent en pull request vers develop, la CI
+# les juge, un humain les fusionne. Les versions mineures et correctives sont
+# regroupées pour ne pas noyer la liste des pull requests.
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      mineures:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
