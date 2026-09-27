@@ -27,8 +27,11 @@ Dans tous les cas, les versions installées sont les versions courantes, vérifi
 **Services, installés au moment où une feature en a besoin, pas avant** : Resend (e-mails), PostHog (analytique, erreurs, flags), Upstash (limitation de débit, cache), Inngest (tâches de fond), Stripe (paiement).
 
 **Ce qui revient souvent** :
+
 - `TypeScript strict` veut dire `strict`, `noUncheckedIndexedAccess` et `exactOptionalPropertyTypes`, dès le premier jour. Les activer plus tard coûte des centaines d'erreurs d'un coup.
 - En serverless, la connexion à Postgres passe par l'URL du pooler dès le premier jour ([Échelle](echelle.md)).
+- Un projet Vercel neuf protège ses déploiements derrière une connexion Vercel. Un agent qui vérifie un aperçu (`/check verify`, `curl`) reçoit alors une page de connexion, pas l'application. Site public : désactiver la protection. Application privée : utiliser le secret de contournement pour l'automatisation, rangé avec les autres secrets (MF-006).
+- Lier le projet Vercel **sans** déploiement initial : le premier déploiement d'un projet neuf part en production, même depuis une branche de feature.
 - Un module qui manipule un secret porte `import "server-only"` (MA-008) : l'importer côté client casse le build au lieu de fuiter.
 - La qualité d'interface a ses propres skills (`impeccable`, `better-interface`) : ils s'invoquent pendant `/develop` sur le volet interface, pas à la place de lui.
 
@@ -43,6 +46,7 @@ Dans tous les cas, les versions installées sont les versions courantes, vérifi
 | Build et distribution | EAS Build, EAS Submit, EAS Update pour les correctifs JavaScript | aucune raison courante |
 
 **Ce qui revient souvent** :
+
 - **Tout ce qui est embarqué dans l'application est public.** Une clé dans le bundle est une clé publiée ([MF-006](regles.md#mf-006--les-secrets-restent-hors-de-portée)). Les appels qui exigent un secret passent par le serveur.
 - Une mise à jour à distance (EAS Update) ne change que le JavaScript. Tout changement natif (module, permission, configuration) exige un nouveau build et une nouvelle soumission : la `runtimeVersion` doit suivre, sinon l'application reçoit un code qu'elle ne sait pas exécuter.
 - La validation des stores prend des jours. Une date de sortie se planifie avec cette marge.
@@ -60,6 +64,7 @@ Dans tous les cas, les versions installées sont les versions courantes, vérifi
 | Build | GitHub Actions avec `tauri-action`, une cible par système | aucune raison courante |
 
 **Ce qui revient souvent** :
+
 - **La signature de code est un poste de coût et de délai** : certificat pour Windows, compte développeur et notarisation pour macOS. Sans elle, le système avertit l'utilisateur à l'installation. À prévoir dès le scope, pas la veille de la sortie.
 - Avec Electron : `contextIsolation` activé, `nodeIntegration` désactivé, un script de préchargement minimal qui n'expose que des fonctions précises. Jamais le module `fs` entier.
 - L'interface d'une application desktop reste du web : les règles [MF-007](regles.md#mf-007--ce-qui-entre-est-unknown) et [MF-008](regles.md#mf-008--lautorisation-se-vérifie-côté-serveur) valent entre l'interface et le cœur système, qui joue le rôle du serveur.

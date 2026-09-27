@@ -53,6 +53,7 @@ Chaque règle dit ce qui la fait respecter, et la distinction compte :
 **Pourquoi.** `develop` est l'intégration, `main` la production. Un raccourci sur l'une ou l'autre fait entrer du code qu'aucune CI n'a jugé et qu'aucun humain n'a relu.
 
 **Tenue par.** Trois couches, parce qu'aucune ne suffit seule :
+
 - le hook Claude Code `.claude/hooks/garde.mjs` refuse le commit sur ces branches et le push vers elles ;
 - le hook git `.githooks/pre-push` refuse la mise à jour directe de `main` et `develop`, pour tous les outils et tous les humains ;
 - le workflow CI `garde-flux.yml` refuse une pull request vers `main` qui ne vient pas de `develop`.

@@ -7,7 +7,7 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 ## Key files
 
 | File | Owns |
-|---|---|
+| --- | --- |
 | `scripts/sync.mjs` | la liste et l'ordre des pages (`PAGES`), la conversion en MDX, tous les fichiers de `public/` dérivés |
 | `src/lib/site.ts` | les adresses publiques et le prompt d'amorçage de la page d'accueil |
 | `src/lib/source.ts` | le loader Fumadocs |
@@ -24,4 +24,6 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 
 - L'adresse de production figure deux fois : `SITE` dans `scripts/flow.mjs` (fichiers pour agents) et `src/lib/site.ts` (métadonnées). Changer l'une impose de changer l'autre.
 - Sur Vercel, le répertoire racine du projet est `site/`, et l'option « inclure les fichiers hors du répertoire racine » doit rester active : le build lit `../corpus`, `../templates` et `../scripts`.
+- La protection des déploiements Vercel reste désactivée sur ce projet. Un site que les agents ne peuvent pas lire sans se connecter n'a plus d'objet ; un projet Vercel neuf l'active par défaut.
+- Le premier déploiement d'un projet Vercel neuf part en production, même demandé depuis une branche de feature. Le projet a donc été lié sans déploiement, et la production n'est venue que de `main`.
 - Le MDX interprète `{`, `}` et `<` : `sync.mjs` les échappe hors du code. Un composant JSX ne peut donc pas être écrit dans le corpus, et c'est voulu : le corpus reste du Markdown lisible partout.
