@@ -9,6 +9,10 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 | File | Owns |
 | --- | --- |
 | `scripts/sync.mjs` | la liste et l'ordre des pages (`PAGES`), la conversion en MDX, tous les fichiers de `public/` dérivés |
+| `src/app/theme-flow.css` | la palette verte, ses dérivées claires et la mesure de contraste de chaque valeur |
+| `src/app/globals.css` | l'habillage repris de Maedow Arch : fontes, trame, panneau de contenu, code |
+| `src/lib/animation.ts` | le vocabulaire d'animation : courbes, durées, décalages, seuil, repris de Maedow Arch |
+| `src/components/Scene.tsx`, `SceneHero.tsx` | les animations de l'accueil, par rôle (`data-anime`, `data-hero`) |
 | `src/lib/site.ts` | les adresses publiques et le prompt d'amorçage de la page d'accueil |
 | `src/lib/source.ts` | le loader Fumadocs |
 | `src/app/page.tsx` | la page d'accueil |
@@ -16,6 +20,9 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 ## Conventions
 
 - Ne jamais écrire dans `content/docs/` ni dans les fichiers dérivés de `public/` : ils sont régénérés à chaque build et ne sont pas versionnés.
+- Le design system est celui de Maedow Arch, transposé en verts. Une couleur de texte ajoutée porte sa mesure de contraste en regard, et passe le seuil AA sur la surface la plus défavorable où elle s'affiche, pas seulement sur le fond.
+- Une animation se déclare par un rôle (`data-anime="carte"`…), jamais par des valeurs locales : durées et courbes vivent dans `src/lib/animation.ts`. Tout est en `from` et en `once`, sous `prefers-reduced-motion: no-preference` ; sans JavaScript, la page est entière. Un élément proche du bas du document se déclenche à son entrée dans l'écran (`top bottom`) : au seuil commun, il n'atteindrait jamais la ligne et resterait invisible.
+- Les chiffres de l'accueil viennent de `src/lib/chiffres.json`, dénombré dans le dépôt par `scripts/sync.mjs` et non versionné.
 - Une page ajoutée au corpus s'inscrit dans `PAGES` ; le script refuse de tourner s'il trouve une page du corpus qui n'y figure pas.
 - Les versions de `fumadocs-core`, `fumadocs-mdx`, `fumadocs-ui` et `next` restent épinglées exactement, et se mettent à jour ensemble.
 - `mdast-util-to-markdown` est forcé en 2.1.2 par `overrides`. La 2.1.3 (publiée le 2026-09-27) sérialise le gras en se ré-appelant et s'appuie sur une propriété `attention` portée par la fonction ; le sérialiseur de Fumadocs enveloppe chaque handler sans recopier cette propriété, et tout texte en gras provoque une récursion infinie au build. Retirer l'override seulement quand un build avec la version courante passe.

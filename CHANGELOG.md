@@ -4,6 +4,7 @@ Chaque entrée dit ce qui change pour celui qui applique Maedow Flow.
 
 ## Non publié
 
+- La page Échelle devient « Tenir la charge », à la même adresse. Elle ajoute les précautions du premier jour (requêtes bornées, délais d'expiration, cache HTTP, limitation de débit, plafonds de dépense) et la préparation d'un pic annoncé (test de charge, limites des abonnements, défense, retour arrière).
 - La page Échelle cite sa source, retrouve ses exemples concrets (Nginx, Redis pour les sessions, clé de partition) et distingue le serverless des serveurs à soi : ce qui est déjà fait pour toi, et ce qu'il faut exploiter soi-même dès la première mise en production.
 - Le plugin s'installe depuis `maedow-arch/maedow-flow#main`, la version publiée, et non depuis la branche par défaut `develop`.
 

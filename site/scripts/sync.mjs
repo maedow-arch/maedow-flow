@@ -74,8 +74,8 @@ const PAGES = [
   {
     fichier: "echelle.md",
     slug: "echelle",
-    titre: "Échelle",
-    description: "Monter en charge étape par étape, et seulement quand la mesure l'exige.",
+    titre: "Tenir la charge",
+    description: "Ne pas tomber quand les requêtes affluent : précautions du premier jour, pic annoncé, montée en charge sur mesure.",
   },
   {
     fichier: "prompts.md",
@@ -202,5 +202,22 @@ for (const fichier of fichiersDe(TEMPLATES)) {
   copyFileSync(fichier, publie);
 }
 copyFileSync(join(DEPOT, "scripts", "flow.mjs"), join(PUBLIC, "flow.mjs"));
+
+/*
+ * Les chiffres de la page d'accueil, dénombrés dans le dépôt. Un chiffre écrit à
+ * la main se périme au premier ajout de règle, et personne ne le voit. Un
+ * chiffre introuvable arrête le build plutôt que d'afficher zéro.
+ */
+const sectionPaliers = (sources.get("cycle.md").split("## Les paliers")[1] ?? "").split("\n## ")[0];
+const chiffres = {
+  regles: (sources.get("regles.md").match(/^## MF-\d{3} /gm) ?? []).length,
+  phases: (sources.get("cycle.md").match(/^## Phase \d/gm) ?? []).length,
+  paliers: (sectionPaliers.match(/^\| `/gm) ?? []).length,
+  fichiers: JSON.parse(readFileSync(join(TEMPLATES, "manifest.json"), "utf8")).fichiers.length,
+};
+for (const [nom, valeur] of Object.entries(chiffres)) {
+  if (!valeur) throw new Error(`Chiffre introuvable dans le dépôt : ${nom}. Vérifier le motif dans site/scripts/sync.mjs.`);
+}
+writeFileSync(join(RACINE_SITE, "src", "lib", "chiffres.json"), `${JSON.stringify(chiffres, null, 2)}\n`);
 
 console.log(`Maedow Flow : ${PAGES.length} pages, llms.txt, llms-full.txt, le kit et flow.mjs dérivés du dépôt.`);

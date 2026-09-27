@@ -150,7 +150,7 @@ Côté serveur, un ruleset GitHub sans contournement (`/flow proteger`) quand le
 
 **Pourquoi.** Chaque brique ajoute de la complexité, de la maintenance et des données potentiellement périmées. L'ajouter avant le besoin, c'est payer le coût sans le bénéfice.
 
-**Tenue par.** La revue. L'ordre des étapes et leurs signaux sont dans [Échelle](echelle.md).
+**Tenue par.** La revue. L'ordre des étapes et leurs signaux sont dans [Tenir la charge](echelle.md).
 
 ## MF-015 · Le contexte durable vit dans `AGENTS.md`
 

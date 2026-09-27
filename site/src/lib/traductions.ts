@@ -18,6 +18,7 @@ export const TRADUCTIONS: Partial<Record<string, string>> = {
   "No Headings(table of contents)": "Aucun titre",
   "Next Page(pagination)": "Page suivante",
   "Previous Page(pagination)": "Page précédente",
+  "Layout Tab(layout tab trigger)": "Section",
 
   "Show Sidebar(sidebar)": "Afficher la barre latérale",
   "Hide Sidebar(sidebar)": "Masquer la barre latérale",
