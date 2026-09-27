@@ -85,7 +85,7 @@ Les étapes 4 à 6 suivent le palier de la feature (tableau ci-dessus). L'étape
 
 - **Observer dès le premier jour.** Erreurs, journaux et analytique sont en place avant la première mise en production, pas après le premier incident.
 - **Incident** : `/debug` sur une branche `fix/`, pull request, puis `/document postmortem`. Le postmortem dit ce qui a manqué au workflow, et le workflow se corrige.
-- **Montée en charge** : on mesure, puis on consulte [Échelle](echelle.md). Jamais l'inverse.
+- **Montée en charge** : on mesure, puis on consulte [Tenir la charge](echelle.md). Jamais l'inverse.
 - **Dépendances** : Dependabot ouvre les pull requests, la CI les juge, tu fusionnes chaque semaine.
 
 ## Les outils arrivent quand le projet les réclame

@@ -47,6 +47,8 @@ Chaque ligne est vérifiable. Une case qu'on ne sait pas vérifier se coche « n
 - [ ] Un plafond de dépense sur chaque service facturé à l'usage.
 - [ ] Si le produit utilise un modèle d'IA : le contenu des utilisateurs est traité comme une donnée, jamais comme une instruction ; les outils accessibles au modèle sont limités au nécessaire.
 
+La limitation de débit protège aussi la disponibilité. Le reste de ce qui empêche l'application de tomber sous un afflux de requêtes est dans [Tenir la charge](echelle.md#dès-le-premier-jour).
+
 ## En-têtes et navigateur (web)
 
 - [ ] `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `frame-ancestors` ou `X-Frame-Options`.

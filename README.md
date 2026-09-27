@@ -44,7 +44,7 @@ curl -fsSL https://maedow-flow.vercel.app/flow.mjs -o flow.mjs && node flow.mjs 
 | [Claude Code](corpus/claude-code.md) | où vit chaque consigne, le moteur de skills, permissions, hooks, contexte |
 | [Plateformes](corpus/plateformes.md) | les stacks par défaut pour le web, le mobile et le desktop |
 | [Sécurité](corpus/securite.md) | le socle minimal, vérifiable ligne à ligne |
-| [Échelle](corpus/echelle.md) | monter en charge étape par étape, sur mesure seulement |
+| [Tenir la charge](corpus/echelle.md) | ne pas tomber quand les requêtes affluent : précautions du premier jour, pic annoncé, montée en charge sur mesure |
 | [Prompts](corpus/prompts.md) | les formulations éprouvées pour chaque moment du cycle |
 
 L'architecture du code relève d'un standard voisin, [Maedow Arch](https://maedow-arch-docs.vercel.app).
