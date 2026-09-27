@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",
-    "fumadocs-core": "16.15.4",
-    "fumadocs-mdx": "15.4.0",
-    "fumadocs-ui": "16.15.4",
-    "next": "16.3.3",
+    "fumadocs-core": "16.15.14",
+    "fumadocs-mdx": "15.4.4",
+    "fumadocs-ui": "16.15.14",
+    "next": "16.3.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -25,11 +25,11 @@
   },
   "devDependencies": {
     "@types/mdx": "^2.0.13",
-    "@types/node": "^22.10.0",
+    "@types/node": "^26.6.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.7.2"
+    "typescript": "^7.0.2"
   }
 }
