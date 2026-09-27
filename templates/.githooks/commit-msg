@@ -1,0 +1,35 @@
+#!/bin/sh
+# Maedow Flow · MF-017 : l'historique est signé par son auteur, pas par ses outils.
+#
+# Refuse trois choses dans un message de commit :
+#   - un trailer Co-Authored-By qui nomme un outil d'IA (un coauteur humain reste permis) ;
+#   - une mention de génération par un outil ;
+#   - le tiret cadratin, et le demi-cadratin employé comme lui.
+#
+# Activation après un clone : git config core.hooksPath .githooks
+
+message=$(sed '/^# -\{24\} >8 -\{24\}$/,$d' "$1" | grep -v '^#')
+
+refuser() {
+  echo "Maedow Flow (MF-017) : $1" >&2
+  echo "  Message à corriger, puis relance le commit." >&2
+  exit 1
+}
+
+if printf '%s\n' "$message" | grep -qiE '^co-authored-by:.*(claude|anthropic|copilot|cursor|chatgpt|openai|codex|gemini|devin|noreply@anthropic)'; then
+  refuser "trailer Co-Authored-By d'un outil d'IA. Le commit porte ton seul nom."
+fi
+
+if printf '%s\n' "$message" | grep -qiE 'generated (with|by) .*(claude|copilot|cursor|chatgpt|codex|gemini|ai)'; then
+  refuser "mention de génération par un outil."
+fi
+
+if printf '%s\n' "$message" | grep -qF '—'; then
+  refuser "tiret cadratin. Construis la phrase : deux-points, virgule, parenthèses, ou deux phrases."
+fi
+
+if printf '%s\n' "$message" | grep -qF ' – '; then
+  refuser "demi-cadratin employé comme tiret d'incise. Construis la phrase autrement."
+fi
+
+exit 0

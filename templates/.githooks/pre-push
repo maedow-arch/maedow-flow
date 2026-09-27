@@ -1,0 +1,42 @@
+#!/bin/sh
+# Maedow Flow · MF-003 : main et develop ne reçoivent rien en direct.
+#
+# Git fournit sur l'entrée standard une ligne par référence poussée :
+#   <ref locale> <sha local> <ref distante> <sha distant>
+#
+# La création de main ou de develop sur le distant reste permise : c'est la
+# naissance du dépôt. La mise à jour et la suppression, elles, passent par une
+# pull request.
+#
+# Activation après un clone : git config core.hooksPath .githooks
+# (le script « prepare » du package.json le fait à chaque installation).
+
+statut=0
+
+while read -r ref_locale sha_local ref_distante sha_distant; do
+  case "$ref_distante" in
+    refs/heads/main | refs/heads/develop) ;;
+    *) continue ;;
+  esac
+  branche=${ref_distante#refs/heads/}
+
+  case "$sha_local" in
+    *[!0]*) ;;
+    *)
+      echo "Maedow Flow (MF-003) : la suppression de $branche est refusée." >&2
+      statut=1
+      continue
+      ;;
+  esac
+
+  case "$sha_distant" in
+    *[!0]*)
+      echo "Maedow Flow (MF-003) : push direct vers $branche refusé." >&2
+      echo "  Pousse une branche dédiée et ouvre une pull request." >&2
+      statut=1
+      ;;
+    *) ;;
+  esac
+done
+
+exit $statut

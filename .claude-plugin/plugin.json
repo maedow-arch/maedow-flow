@@ -1,0 +1,13 @@
+{
+  "name": "maedow-flow",
+  "displayName": "Maedow Flow",
+  "version": "0.1.0",
+  "description": "Le skill /flow et le kit de projet de Maedow Flow : AGENTS.md, garde-fous Claude Code, hooks git et CI GitHub, pour construire des applications solides avec des agents IA.",
+  "author": {
+    "name": "Jean-Marc"
+  },
+  "homepage": "https://maedow-flow.vercel.app",
+  "repository": "https://github.com/maedow-arch/maedow-flow",
+  "license": "MIT",
+  "keywords": ["workflow", "agents", "git", "ci", "securite"]
+}

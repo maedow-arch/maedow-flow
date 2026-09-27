@@ -1,0 +1,21 @@
+# Maedow Flow : fins de ligne LF partout, quel que soit le système de celui qui
+# commite. Un hook git écrit avec des fins de ligne Windows ne s'exécute plus
+# sous Linux ni sous macOS, et la CI tourne sous Linux.
+* text=auto eol=lf
+
+.githooks/* text eol=lf
+*.sh text eol=lf
+
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

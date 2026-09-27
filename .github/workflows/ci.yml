@@ -1,0 +1,56 @@
+# CI de Maedow Flow lui-même.
+#
+# Les noms de jobs `verify` et `secrets` sont ceux qu'exige le ruleset du kit :
+# ce dépôt se protège avec les mêmes règles qu'il installe ailleurs.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      # Les garde-fous du kit, exécutés sous Linux : c'est là que tournent les
+      # CI des projets, et que des fins de ligne Windows casseraient les hooks.
+      - name: Tests des garde-fous
+        run: npm test
+
+      - name: Typographie et liens du corpus
+        run: npm run corpus
+
+      # prebuild dérive les pages et les fichiers pour agents depuis corpus/ :
+      # ce job vérifie donc aussi que le corpus reste convertible.
+      - name: Build du site
+        run: |
+          npm ci --prefix site
+          npm run site:build
+
+  secrets:
+    name: secrets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@v3.97.9
+        with:
+          extra_args: --results=verified,unknown
