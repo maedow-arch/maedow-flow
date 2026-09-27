@@ -1,0 +1,14 @@
+{
+  "name": "maedow-flow",
+  "description": "Maedow Flow, workflow de développement avec agents IA",
+  "owner": {
+    "name": "Jean-Marc"
+  },
+  "plugins": [
+    {
+      "name": "maedow-flow",
+      "source": "./",
+      "description": "Le skill /flow et le kit de projet : AGENTS.md, garde-fous Claude Code, hooks git, CI GitHub."
+    }
+  ]
+}
