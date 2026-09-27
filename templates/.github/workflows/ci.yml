@@ -1,0 +1,80 @@
+# Maedow Flow · MF-004 : rien ne fusionne sans ces deux jobs au vert.
+#
+# Le job `verify` exécute les scripts que le projet déclare (lint, typecheck,
+# test, build), et saute ceux qui n'existent pas encore : le même fichier sert
+# du projet vide au projet mûr. Le job `secrets` cherche des secrets dans les
+# commits de la pull request (MF-006).
+#
+# Les noms `verify` et `secrets` sont ceux qu'exige le ruleset de /flow proteger.
+# Les renommer ici impose de les renommer là-bas.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Gestionnaire de paquets
+        id: pm
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            echo "nom=pnpm" >> "$GITHUB_OUTPUT"
+            # Sans champ packageManager, pnpm/action-setup exige une version explicite.
+            if grep -q '"packageManager"' package.json; then echo "version=" >> "$GITHUB_OUTPUT"; else echo "version=10" >> "$GITHUB_OUTPUT"; fi
+          else
+            echo "nom=npm" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.pm.outputs.nom == 'pnpm'
+        uses: pnpm/action-setup@v6
+        with:
+          version: ${{ steps.pm.outputs.version }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: ${{ steps.pm.outputs.nom }}
+
+      - name: Installation
+        run: |
+          if [ "${{ steps.pm.outputs.nom }}" = "pnpm" ]; then pnpm install --frozen-lockfile; else npm ci; fi
+
+      - name: Lint
+        run: ${{ steps.pm.outputs.nom }} run --if-present lint
+
+      - name: Typage
+        run: ${{ steps.pm.outputs.nom }} run --if-present typecheck
+
+      - name: Tests
+        run: ${{ steps.pm.outputs.nom }} run --if-present test
+
+      # Un build qui réclame des variables d'environnement les reçoit ici, depuis
+      # les secrets du dépôt GitHub, jamais en clair dans ce fichier.
+      - name: Build
+        run: ${{ steps.pm.outputs.nom }} run --if-present build
+
+  secrets:
+    name: secrets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@v3.97.9
+        with:
+          extra_args: --results=verified,unknown

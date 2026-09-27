@@ -1,0 +1,20 @@
+{
+  "name": "maedow-flow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Maedow Flow, workflow de développement avec agents IA : corpus, kit de projet, plugin Claude Code et site lisible par les IA",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jean-Marc",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\"",
+    "corpus": "node scripts/controle-corpus.mjs",
+    "site:dev": "npm --prefix site run dev",
+    "site:build": "npm --prefix site run build",
+    "verify": "npm run test && npm run corpus && npm run site:build",
+    "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .githooks',{stdio:'ignore'})}catch{}\""
+  }
+}

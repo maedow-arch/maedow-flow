@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "description": "Le kit Maedow Flow : chaque fichier, son chemin dans templates/ (source) et sa place dans le projet (destination).",
+  "fichiers": [
+    { "source": "AGENTS.md", "destination": "AGENTS.md" },
+    { "source": "CLAUDE.pointeur.md", "destination": "CLAUDE.md" },
+    { "source": ".claude/settings.json", "destination": ".claude/settings.json" },
+    { "source": ".claude/hooks/garde.mjs", "destination": ".claude/hooks/garde.mjs" },
+    { "source": ".githooks/pre-push", "destination": ".githooks/pre-push", "executable": true },
+    { "source": ".githooks/commit-msg", "destination": ".githooks/commit-msg", "executable": true },
+    { "source": ".github/workflows/ci.yml", "destination": ".github/workflows/ci.yml" },
+    { "source": ".github/workflows/garde-flux.yml", "destination": ".github/workflows/garde-flux.yml" },
+    { "source": ".github/pull_request_template.md", "destination": ".github/pull_request_template.md" },
+    { "source": ".github/dependabot.yml", "destination": ".github/dependabot.yml" },
+    { "source": ".gitattributes", "destination": ".gitattributes" }
+  ],
+  "ruleset": "github/ruleset.json"
+}

@@ -1,0 +1,24 @@
+node_modules/
+
+# Site : build et fichiers dérivés du corpus par site/scripts/sync.mjs
+site/.next/
+site/.source/
+site/next-env.d.ts
+site/tsconfig.tsbuildinfo
+site/content/docs/
+site/public/llms.txt
+site/public/llms-full.txt
+site/public/md/
+site/public/templates/
+site/public/flow.mjs
+
+# Secrets (MF-006)
+.env
+.env.local
+.env.*.local
+.env.production
+.claude/settings.local.json
+
+# Documents de travail personnels, hors du workflow publié
+*.pdf
+INFO.txt
