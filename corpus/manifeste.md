@@ -36,7 +36,7 @@ Les deux postures peuvent être tenues par la même session. Ce qui compte, c'es
 | Le moteur | Les skills `/scope`, `/architect`, `/develop`, `/check`, `/test`, `/debug`, `/sync`, `/audit`, `/document` | [Claude Code](claude-code.md) |
 | Le kit | `AGENTS.md`, garde-fous Claude Code, hooks git, CI GitHub, installés par `/flow` | [Démarrer](demarrer.md) |
 | Les profils | Les stacks par défaut pour le web, le mobile et le desktop | [Plateformes](plateformes.md) |
-| Les socles | La sécurité minimale et la montée en charge | [Sécurité](securite.md), [Échelle](echelle.md) |
+| Les socles | La sécurité minimale, et ce qu'il faut pour ne pas tomber sous la charge | [Sécurité](securite.md), [Tenir la charge](echelle.md) |
 | Les prompts | Les formulations éprouvées pour chaque moment du cycle | [Prompts](prompts.md) |
 
 L'architecture du code relève d'un standard séparé, [Maedow Arch](https://maedow-arch-docs.vercel.app/llms.txt), pour les projets TypeScript. Maedow Flow dit comment on travaille ; Maedow Arch dit comment le code est rangé.

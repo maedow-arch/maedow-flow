@@ -1,8 +1,35 @@
-# Échelle
+# Tenir la charge
 
-La montée en charge se fait par étapes, et chaque étape répond à un goulot d'étranglement précis. On ne franchit une étape que lorsque la mesure l'exige ([MF-014](regles.md#mf-014--pas-de-brique-sans-goulot-mesuré)) : chaque ajout a un coût en complexité, en maintenance et en risque de données périmées.
+Ce qu'il faut faire côté serveur pour que l'application ne tombe pas quand les requêtes affluent. La page distingue deux choses qu'on confond souvent :
 
-Source : la feuille de route de la vidéo [*How Senior Engineers Actually Think About System Design & Architecture*](https://www.youtube.com/watch?v=EaXHfuHRWwg) (JavaScript Mastery). La vidéo range les étapes par thème (serveurs, base de données, cache, asynchrone, données). Cette page les range **par coût** : on commence par ce qui ne coûte presque rien (un index), et l'on garde pour plus tard ce qui coûte une machine et une refonte (un second serveur, un partitionnement).
+- **les précautions du premier jour**, qui ne coûtent presque rien et valent pour tout projet, avant même le premier utilisateur ;
+- **les étapes de montée en charge**, qui ajoutent chacune une brique d'infrastructure, et qu'on ne franchit que lorsque la mesure l'exige ([MF-014](regles.md#mf-014--pas-de-brique-sans-goulot-mesuré)) : chaque brique a un coût en complexité, en maintenance et en risque de données périmées.
+
+Source des étapes : la feuille de route de la vidéo [*How Senior Engineers Actually Think About System Design & Architecture*](https://www.youtube.com/watch?v=EaXHfuHRWwg) (JavaScript Mastery). La vidéo range les étapes par thème (serveurs, base de données, cache, asynchrone, données). Cette page les range **par coût** : on commence par ce qui ne coûte presque rien (un index), et l'on garde pour plus tard ce qui coûte une machine et une refonte (un second serveur, un partitionnement).
+
+## Dès le premier jour
+
+Ces précautions ne sont pas des briques d'infrastructure. Elles ne coûtent presque rien, et ce sont elles qui évitent la panne le jour où le trafic arrive : MF-014 ne les concerne pas.
+
+| Précaution | Ce qu'elle évite |
+| :--- | :--- |
+| Toute liste est paginée, toute requête est bornée (`LIMIT`) | une page qui marche avec 100 lignes et écroule la base à 100 000 |
+| Chaque appel sortant (API tierce, IA, e-mail) a un délai d'expiration | un service tiers lent qui immobilise tous les serveurs pendant qu'ils attendent sa réponse |
+| Limitation de débit sur la connexion, les formulaires publics et les appels coûteux | un robot, ou un seul client mal écrit, qui monopolise les ressources de tous ([Sécurité](securite.md#abus)) |
+| Ce qui ne dépend pas de l'utilisateur part en cache HTTP (en-têtes `Cache-Control`, pages statiques) | une foule qui atteint le serveur alors que le CDN pouvait lui répondre |
+| La base se joint par un pool de connexions (en serverless, l'URL du pooler) | l'épuisement des connexions au premier pic, voir l'étape 2 plus bas |
+| L'application est sans état | une refonte le jour où il faut un second serveur, voir [Serverless ou serveurs à soi](#serverless-ou-serveurs-à-soi) |
+| La panne d'un service tiers dégrade une section, pas la page entière | une page blanche causée par un encart secondaire |
+| Un plafond de dépense sur chaque service facturé à l'usage | un pic de trafic transformé en pic de facture |
+
+## Avant un pic annoncé
+
+Un lancement, une campagne, un passage dans les médias : une charge qui arrive d'un coup se prépare.
+
+1. **Tester la charge sur un aperçu, jamais sur la production.** Un outil comme k6, sur les trois ou quatre parcours critiques, à deux ou trois fois le trafic attendu. Relever le p95, le taux d'erreurs et les connexions à la base.
+2. **Vérifier les limites des abonnements** : concurrence des fonctions chez l'hébergeur, connexions maximales de la base, quotas des API tierces (e-mail, IA, paiement). La première limite atteinte est souvent un quota, pas un serveur.
+3. **Préparer la défense** : le pare-feu applicatif de l'hébergeur et ses règles de limitation de débit. Sur Vercel, le mode de défi contre les attaques s'active en un geste si des robots affluent.
+4. **Savoir reculer** : le retour arrière d'un déploiement en un clic, et un interrupteur (feature flag) pour couper une fonctionnalité coûteuse sans redéployer.
 
 ## Ce qu'on mesure avant de décider
 
@@ -14,7 +41,7 @@ Source : la feuille de route de la vidéo [*How Senior Engineers Actually Think 
 
 Sans ces chiffres, aucune des étapes suivantes n'a de justification. Les outils de l'hébergeur (Vercel, Supabase) et PostHog les fournissent sans rien installer de plus.
 
-## Les étapes, dans l'ordre
+## Les étapes de montée en charge, dans l'ordre
 
 | # | Étape | Le signal qui la déclenche | Ce qu'elle coûte |
 | :--- | :--- | :--- | :--- |
@@ -52,4 +79,4 @@ Deux conséquences valent dès le premier jour, même avec un seul serveur :
 
 ## Dans le cycle
 
-Une étape d'échelle est une feature comme une autre : elle entre dans le scope, elle a sa spec `/architect` qui cite la mesure, et elle suit la boucle. La mesure qui l'a justifiée devient son critère d'acceptation (« le p95 de la liste des commandes passe sous 300 ms »).
+Une étape de montée en charge est une feature comme une autre : elle entre dans le scope, elle a sa spec `/architect` qui cite la mesure, et elle suit la boucle. La mesure qui l'a justifiée devient son critère d'acceptation (« le p95 de la liste des commandes passe sous 300 ms »).

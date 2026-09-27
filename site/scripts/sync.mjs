@@ -74,8 +74,8 @@ const PAGES = [
   {
     fichier: "echelle.md",
     slug: "echelle",
-    titre: "Échelle",
-    description: "Monter en charge étape par étape, et seulement quand la mesure l'exige.",
+    titre: "Tenir la charge",
+    description: "Ne pas tomber quand les requêtes affluent : précautions du premier jour, pic annoncé, montée en charge sur mesure.",
   },
   {
     fichier: "prompts.md",

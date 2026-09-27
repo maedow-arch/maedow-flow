@@ -29,7 +29,7 @@ Dans tous les cas, les versions installées sont les versions courantes, vérifi
 **Ce qui revient souvent** :
 
 - `TypeScript strict` veut dire `strict`, `noUncheckedIndexedAccess` et `exactOptionalPropertyTypes`, dès le premier jour. Les activer plus tard coûte des centaines d'erreurs d'un coup.
-- En serverless, la connexion à Postgres passe par l'URL du pooler dès le premier jour ([Échelle](echelle.md)).
+- En serverless, la connexion à Postgres passe par l'URL du pooler dès le premier jour ([Tenir la charge](echelle.md)).
 - Un projet Vercel neuf protège ses déploiements derrière une connexion Vercel. Un agent qui vérifie un aperçu (`/check verify`, `curl`) reçoit alors une page de connexion, pas l'application. Site public : désactiver la protection. Application privée : utiliser le secret de contournement pour l'automatisation, rangé avec les autres secrets (MF-006).
 - Lier le projet Vercel **sans** déploiement initial : le premier déploiement d'un projet neuf part en production, même depuis une branche de feature.
 - Un module qui manipule un secret porte `import "server-only"` (MA-008) : l'importer côté client casse le build au lieu de fuiter.
