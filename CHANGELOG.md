@@ -2,6 +2,10 @@
 
 Chaque entrée dit ce qui change pour celui qui applique Maedow Flow.
 
+## Non publié
+
+- La page Échelle cite sa source, retrouve ses exemples concrets (Nginx, Redis pour les sessions, clé de partition) et distingue le serverless des serveurs à soi : ce qui est déjà fait pour toi, et ce qu'il faut exploiter soi-même dès la première mise en production.
+
 ## 0.1.0 · 2026-09-27
 
 Première version.
