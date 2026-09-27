@@ -11,6 +11,7 @@ site/public/llms-full.txt
 site/public/md/
 site/public/templates/
 site/public/flow.mjs
+site/src/lib/chiffres.json
 
 # Secrets (MF-006)
 .env

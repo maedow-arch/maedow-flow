@@ -163,6 +163,17 @@ figure.shiki pre code {
   background: transparent;
 }
 
+/*
+ * La barre de l'accueil posée sur le haut de page : tant que rien n'est passé
+ * dessous (`data-pose="true"`, posé par NavbarCondensee), elle laisse voir la
+ * trame de l'ouverture. Sans script, l'attribut est absent et la barre garde
+ * son fond.
+ */
+[data-navbar][data-pose="true"] {
+  background-color: transparent;
+  backdrop-filter: none;
+}
+
 /* Défilement doux pour les sauts d'ancre seulement ; la molette reste celle du lecteur. */
 html {
   scroll-behavior: smooth;
