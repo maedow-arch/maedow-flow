@@ -9,6 +9,7 @@ import { Logo, LogoMark } from "@/components/Logo";
 import { NavbarCondensee } from "@/components/NavbarCondensee";
 import { Scene } from "@/components/Scene";
 import { SceneHero } from "@/components/SceneHero";
+import { Seance } from "@/components/Seance";
 import { SectionBadge } from "@/components/SectionBadge";
 import chiffres from "@/lib/chiffres.json";
 import { ARCH_URL, PROMPT_AMORCAGE, REPO_URL, SKILLS_URL } from "@/lib/site";
@@ -101,7 +102,7 @@ export default function Accueil() {
       */}
       <header
         data-navbar
-        className="sticky top-0 z-40 border-b border-fd-border bg-fd-background/80 backdrop-blur transition-[background-color,backdrop-filter] duration-300"
+        className="sticky top-0 z-40 border-b border-fd-border bg-fd-background/80 backdrop-blur transition-[background-color,border-color,backdrop-filter] duration-300"
       >
         <nav className="mx-auto flex h-16 max-w-5xl items-center gap-3 px-4">
           <span data-navbar-marque className="inline-flex">
@@ -146,42 +147,40 @@ export default function Accueil() {
           <section className="relative -mt-16 overflow-hidden border-b pt-16">
             <div data-hero="fond" aria-hidden="true" className="flow-dots flow-dots-fade pointer-events-none absolute inset-0" />
             <div aria-hidden="true" className="flow-glow pointer-events-none absolute inset-0" />
-            <div className="relative mx-auto max-w-5xl px-4 pt-20 pb-16 sm:pt-28">
-              <p
-                data-hero="badge"
-                className="inline-flex items-center gap-2 rounded-full border bg-fd-card px-3 py-1 text-xs font-medium text-fd-muted-foreground"
+            {/*
+              Le titre sert de légende à la séance. Sa seconde ligne se décale
+              jusqu'au bord de la séance : l'œil lit le constat, glisse sur la
+              réponse, et tombe sur la preuve.
+            */}
+            <div className="relative mx-auto max-w-5xl px-4 pt-16 pb-16 sm:pt-24">
+              <h1
+                data-hero="titre"
+                className="font-heading text-[clamp(2.4rem,6vw,4.6rem)] leading-[0.98] font-bold tracking-[-0.035em] text-balance"
               >
-                <LogoMark className="size-3.5 text-fd-primary" />
-                Workflow de développement avec agents IA
-              </p>
-              <h1 data-hero="titre" className="mt-6 max-w-4xl text-4xl font-bold text-balance sm:text-6xl">
-                Un agent code vite. <span className="text-fd-primary">Maedow Flow décide de l&apos;ordre des choses.</span>
+                <span className="block">Un agent code vite.</span>
+                <span className="block lg:pl-[38%]">Maedow Flow décide de l&apos;ordre des choses.</span>
               </h1>
-              <p data-hero="promesse" className="mt-6 max-w-2xl text-lg text-pretty text-fd-muted-foreground">
-                Ce qui se décide avant de coder, ce qui se prouve avant de fusionner, et ce qui ne se fait jamais. Pour
-                des applications web, mobiles ou desktop qui tiennent en production, pas seulement en démonstration.
-              </p>
-              <div data-hero="actions" className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/docs/demarrer"
-                  className="rounded-lg bg-fd-primary px-4 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  Démarrer un projet
-                </Link>
-                <Link
-                  href="/docs"
-                  className="rounded-lg border bg-fd-card px-4 py-2.5 text-sm font-medium transition-colors hover:bg-fd-accent"
-                >
-                  Lire le manifeste
-                </Link>
-              </div>
 
-              <div data-hero="commande" className="flow-terminal mt-14 max-w-3xl">
-                <BlocTexte titre="Prompt d'amorçage" texte={PROMPT_AMORCAGE} />
-                <p className="mt-3 text-sm text-fd-muted-foreground">
-                  Le premier message à ton agent, dans un dossier vide ou un projet existant : Claude Code, Cursor, Codex
-                  ou tout agent qui dispose d&apos;un terminal.
-                </p>
+              <div className="mt-12 grid gap-10 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.64fr)] lg:gap-14">
+                <div className="flex flex-col gap-8 lg:pt-2">
+                  <p data-hero="promesse" className="max-w-md text-lg text-pretty text-fd-muted-foreground">
+                    Ce qui se décide avant de coder, ce qui se prouve avant de fusionner, et ce qui ne se fait jamais.
+                    Pour des applications web, mobiles ou desktop qui tiennent en production, pas seulement en
+                    démonstration.
+                  </p>
+                  <div data-hero="actions" className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                    <Link
+                      href="/docs/demarrer"
+                      className="rounded-lg bg-fd-primary px-4 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
+                    >
+                      Démarrer un projet
+                    </Link>
+                    <Link href="/docs" className="text-sm font-medium underline-offset-4 hover:underline">
+                      Lire le manifeste
+                    </Link>
+                  </div>
+                </div>
+                <Seance />
               </div>
             </div>
           </section>
@@ -325,7 +324,7 @@ export default function Accueil() {
 
           <section className="mx-auto max-w-5xl px-4">
             <div className="mt-24 grid gap-6 sm:grid-cols-2">
-              <div data-anime="carte" className="rounded-xl border bg-fd-card p-6">
+              <div data-anime="carte" className="min-w-0 rounded-xl border bg-fd-card p-6">
                 <h2 className="text-lg font-bold">Avec Claude Code</h2>
                 <BlocTexte
                   className="mt-4"
@@ -339,7 +338,7 @@ npx skills add JavaScript-Mastery-Pro/skills`}
                   respecte encore.
                 </p>
               </div>
-              <div data-anime="carte" className="rounded-xl border bg-fd-card p-6">
+              <div data-anime="carte" className="min-w-0 rounded-xl border bg-fd-card p-6">
                 <h2 className="text-lg font-bold">Avec un autre agent</h2>
                 <BlocTexte
                   className="mt-4"
@@ -402,8 +401,12 @@ rm flow.mjs`}
                 Prêt à cadrer ton prochain projet ?
               </h2>
               <p data-anime="intro" className="mx-auto mt-4 max-w-xl text-fd-muted-foreground">
-                Le premier message à donner à ton agent, dans un dossier vide ou un projet existant.
+                Le premier message à donner à ton agent, dans un dossier vide ou un projet existant : Claude Code,
+                Cursor, Codex ou tout agent qui dispose d&apos;un terminal.
               </p>
+              <div data-anime="carte" className="flow-terminal mx-auto mt-8 max-w-3xl text-left">
+                <BlocTexte titre="Prompt d'amorçage" texte={PROMPT_AMORCAGE} />
+              </div>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link
                   href="/docs/demarrer"

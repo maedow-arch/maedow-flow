@@ -27,8 +27,8 @@
   /* Les huit couleurs de Maedow Flow. */
   --color-flow-vert: #00f58a; /* Vert électrique, 13,02:1 sur espace */
   --color-flow-foret: #0b5d3b; /* Forêt profonde, 7,40:1 sur givre */
-  --color-flow-espace: #060908; /* Noir vert, 18,0:1 sur givre */
-  --color-flow-ardoise: #0b1110; /* Carte sombre, 16,3:1 sur givre */
+  --color-flow-espace: #060908; /* Noir vert, 18,62:1 sous le givre */
+  --color-flow-ardoise: #0b1110; /* Carte sombre, 17,75:1 sous le givre */
   --color-flow-ambre: #ffd700; /* Ambre électrique, 13,51:1 sur espace */
   --color-flow-cyan: #00ffff; /* Cyan néon, 15,11:1 sur espace */
   --color-flow-givre: #f3f8f5; /* Givre, 17,64:1 sur espace */
@@ -94,7 +94,7 @@
  */
 .dark {
   --color-fd-background: var(--color-flow-espace);
-  --color-fd-foreground: var(--color-flow-givre); /* 18,0:1 */
+  --color-fd-foreground: var(--color-flow-givre); /* 18,62:1 */
 
   --color-fd-card: var(--color-flow-ardoise);
   --color-fd-card-foreground: var(--color-flow-givre);

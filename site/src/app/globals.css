@@ -201,11 +201,13 @@ figure.shiki pre code {
 /*
  * La barre de l'accueil posée sur le haut de page : tant que rien n'est passé
  * dessous (`data-pose="true"`, posé par NavbarCondensee), elle laisse voir la
- * trame de l'ouverture. Sans script, l'attribut est absent et la barre garde
- * son fond.
+ * trame de l'ouverture, sans fond ni trait ; les deux reviennent ensemble dès
+ * que le contenu passe dessous. Sans script, l'attribut est absent et la barre
+ * garde son fond et son trait.
  */
 [data-navbar][data-pose="true"] {
   background-color: transparent;
+  border-bottom-color: transparent;
   backdrop-filter: none;
 }
 
@@ -218,4 +220,26 @@ html {
   html {
     scroll-behavior: auto;
   }
+}
+
+/*
+ * La séance de l'ouverture. Le refus et l'accord se lisent d'abord dans le texte
+ * (le code de règle, la sortie de git) ; la couleur le double, elle ne le porte
+ * pas seule. Mesures sur la carte : refus 5,93:1 en sombre, 5,94:1 en clair ;
+ * accord 13,09:1 en sombre, 5,36:1 en clair.
+ */
+.flow-seance [data-ton] > span:last-child {
+  color: var(--color-fd-foreground);
+}
+
+.flow-seance [data-ton="refus"] > span:last-child {
+  color: var(--color-flow-alerte-encre);
+}
+
+.dark .flow-seance [data-ton="refus"] > span:last-child {
+  color: var(--color-flow-alerte);
+}
+
+.flow-seance [data-ton="accord"] > span:last-child {
+  color: var(--color-fd-primary);
 }

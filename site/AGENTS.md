@@ -13,6 +13,8 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 | `src/app/globals.css` | l'habillage repris de Maedow Arch : fontes, trame, panneau de contenu, code |
 | `src/lib/animation.ts` | le vocabulaire d'animation : courbes, durées, décalages, seuil, repris de Maedow Arch |
 | `src/components/Scene.tsx`, `SceneHero.tsx` | les animations de l'accueil, par rôle (`data-anime`, `data-hero`) |
+| `src/components/Seance.tsx` | la séance de l'ouverture : ses répliques reprennent les vrais messages du garde et la vraie sortie de git |
+| `src/app/icon.svg` | le favicon, tiré de la marque du logo (les trois chevrons) |
 | `src/lib/site.ts` | les adresses publiques et le prompt d'amorçage de la page d'accueil |
 | `src/lib/source.ts` | le loader Fumadocs |
 | `src/app/page.tsx` | la page d'accueil |
