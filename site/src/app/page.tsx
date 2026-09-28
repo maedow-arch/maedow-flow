@@ -94,6 +94,7 @@ export default function Accueil() {
         <SceneHero>
           <section className="relative -mt-16 overflow-hidden border-b pt-16">
             <div data-hero="fond" aria-hidden="true" className="flow-dots flow-dots-fade pointer-events-none absolute inset-0" />
+            <div aria-hidden="true" className="flow-glow pointer-events-none absolute inset-0" />
             <div className="relative mx-auto max-w-5xl px-4 pt-20 pb-16 sm:pt-28">
               <p
                 data-hero="badge"

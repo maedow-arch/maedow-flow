@@ -69,6 +69,41 @@ h4,
 }
 
 /*
+ * Lueur verte de l'ouverture, dans l'esprit studio : un halo radial qui
+ * souligne le titre sans le disputer. Sur fond near-black, le vert néon
+ * rayonne ; sur fond clair, il reste discret.
+ */
+.flow-glow {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    color-mix(in srgb, var(--color-fd-primary) 6%, transparent),
+    transparent 70%
+  );
+}
+
+.dark .flow-glow {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    color-mix(in srgb, var(--color-flow-vert) 14%, transparent),
+    transparent 70%
+  );
+}
+
+/*
+ * Le terminal de l'accueil porte un liseré vert, comme un écran allumé dans la
+ * pénombre : la marque se devine avant qu'on lise le contenu.
+ */
+.dark .flow-terminal {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-flow-vert) 22%, transparent);
+}
+
+/* Survol des cartes en sombre : le liseré vert se renforce, effet studio. */
+.dark [data-anime="carte"]:hover {
+  border-color: color-mix(in srgb, var(--color-flow-vert) 35%, var(--color-fd-border));
+  box-shadow: 0 0 24px -8px color-mix(in srgb, var(--color-flow-vert) 25%, transparent);
+}
+
+/*
  * Le panneau de contenu : le contenu et son sommaire sur une carte détachée du
  * fond, la barre latérale restant à l'extérieur. À partir de `md` seulement ;
  * en dessous, la barre latérale se replie et un cadre n'aurait rien à séparer.

@@ -64,7 +64,12 @@ export default function Layout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col">
-        <RootProvider i18n={{ locale: "fr", translations: TRADUCTIONS }}>{children}</RootProvider>
+        <RootProvider
+          i18n={{ locale: "fr", translations: TRADUCTIONS }}
+          theme={{ defaultTheme: "dark", enableSystem: false }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );
