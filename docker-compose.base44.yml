@@ -1,0 +1,22 @@
+services:
+  site:
+    image: node:22-slim
+    working_dir: /app/site
+    volumes:
+      - ./:/app
+      - site_node_modules:/app/site/node_modules
+    environment:
+      - BASE44_PUBLIC_HOST_SUFFIX
+    command: sh -c "npm install && npm run dev -- -H 0.0.0.0 -p 3000"
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+    restart: on-failure
+
+volumes:
+  site_node_modules:
