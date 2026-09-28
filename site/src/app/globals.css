@@ -34,11 +34,17 @@ h4,
 
 /* Lueur d'ouverture : un halo vert qui se dissout dans le fond. */
 .hero-glow {
-  background: radial-gradient(
-    ellipse 80% 60% at 50% 0%,
-    color-mix(in srgb, var(--color-fd-primary) 7%, transparent),
-    transparent
-  );
+  background:
+    radial-gradient(
+      ellipse 70% 50% at 35% 0%,
+      color-mix(in srgb, var(--color-fd-primary) 11%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 80% 10%,
+      color-mix(in srgb, var(--color-fd-primary) 6%, transparent),
+      transparent 60%
+    );
 }
 
 /* Panneau de contenu de la documentation. */

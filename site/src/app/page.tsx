@@ -7,6 +7,7 @@ import { Logo } from "@/components/Logo";
 import { NavbarCondensee } from "@/components/NavbarCondensee";
 import { Scene } from "@/components/Scene";
 import { SceneHero } from "@/components/SceneHero";
+import { CodeCard } from "@/components/CodeCard";
 import { TerminalWindow } from "@/components/TerminalWindow";
 import chiffres from "@/lib/chiffres.json";
 import { ARCH_URL, PROMPT_AMORCAGE, REPO_URL, SKILLS_URL } from "@/lib/site";
@@ -78,7 +79,7 @@ export default function Accueil() {
             <span data-navbar-action className="inline-flex">
               <Link
                 href="/docs"
-                className="rounded-lg bg-fd-primary px-3 py-2 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90 sm:px-4"
+                className="rounded-lg bg-fd-foreground px-3 py-2 text-sm font-semibold text-fd-background transition-opacity hover:opacity-90 sm:px-4"
               >
                 <span className="sm:hidden">Docs</span>
                 <span className="max-sm:hidden">Documentation</span>
@@ -93,40 +94,42 @@ export default function Accueil() {
           <section className="relative -mt-14 overflow-hidden border-b border-fd-border pt-14">
             <div data-hero="fond" aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0" />
             <div className="relative mx-auto max-w-5xl px-4 pt-24 pb-20 sm:pt-32">
-              <p data-hero="badge" className="font-mono text-xs text-fd-muted-foreground">
-                <span className="text-fd-primary">{"//"}</span> workflow de développement avec agents IA
-              </p>
-              <h1 data-hero="titre" className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-6xl">
-                Un agent code vite.{" "}
-                <span className="text-fd-primary">Maedow Flow décide de l&apos;ordre des choses.</span>
-              </h1>
-              <p data-hero="promesse" className="mt-6 max-w-2xl text-lg text-pretty text-fd-muted-foreground">
-                Ce qui se décide avant de coder, ce qui se prouve avant de fusionner, et ce qui ne se fait jamais. Pour
-                des applications web, mobiles ou desktop qui tiennent en production, pas seulement en démonstration.
-              </p>
-
-              <div data-hero="commande" className="mt-10 max-w-3xl">
-                <TerminalWindow title="prompt.sh" code={PROMPT_AMORCAGE} />
-                <p className="mt-3 text-sm text-fd-muted-foreground">
-                  Le premier message à ton agent, dans un dossier vide ou un projet existant : Claude Code, Cursor, Codex
-                  ou tout agent qui dispose d&apos;un terminal.
-                </p>
-              </div>
-
-              <div data-hero="actions" className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-                <Link
-                  href="/docs/demarrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-fd-foreground transition-colors hover:text-fd-primary"
-                >
-                  Démarrer un projet
-                  <span aria-hidden="true">→</span>
-                </Link>
-                <Link
-                  href="/docs"
-                  className="text-sm font-medium text-fd-muted-foreground transition-colors hover:text-fd-foreground"
-                >
-                  Lire le manifeste
-                </Link>
+              <div className="grid items-center gap-12 md:grid-cols-2">
+                <div>
+                  <p data-hero="badge" className="font-mono text-xs text-fd-muted-foreground">
+                    <span className="text-fd-primary">{"//"}</span> workflow de développement avec agents IA
+                  </p>
+                  <h1 data-hero="titre" className="mt-6 text-4xl font-bold tracking-tight text-balance sm:text-5xl">
+                    Un agent code vite.{" "}
+                    <span className="text-fd-primary">Maedow Flow décide de l&apos;ordre des choses.</span>
+                  </h1>
+                  <p data-hero="promesse" className="mt-6 text-lg text-pretty text-fd-muted-foreground">
+                    Ce qui se décide avant de coder, ce qui se prouve avant de fusionner, et ce qui ne se fait jamais.
+                    Pour des applications qui tiennent en production, pas seulement en démonstration.
+                  </p>
+                  <div data-hero="actions" className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+                    <Link
+                      href="/docs/demarrer"
+                      className="inline-flex items-center gap-2 rounded-lg bg-fd-foreground px-5 py-2.5 text-sm font-semibold text-fd-background transition-opacity hover:opacity-90"
+                    >
+                      Démarrer un projet
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                    <Link
+                      href="/docs"
+                      className="text-sm font-medium text-fd-muted-foreground transition-colors hover:text-fd-foreground"
+                    >
+                      Lire le manifeste
+                    </Link>
+                  </div>
+                </div>
+                <div data-hero="commande">
+                  <CodeCard title="prompt.sh" code={PROMPT_AMORCAGE} />
+                  <p className="mt-3 text-sm text-fd-muted-foreground">
+                    Le premier message à ton agent, dans un dossier vide ou un projet existant : Claude Code, Cursor,
+                    Codex ou tout agent qui dispose d&apos;un terminal.
+                  </p>
+                </div>
               </div>
             </div>
           </section>
