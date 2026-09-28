@@ -1,0 +1,23 @@
+services:
+  web:
+    image: node:22-bookworm-slim
+    working_dir: /app/site
+    volumes:
+      - .:/app
+      - site_node_modules:/app/site/node_modules
+    environment:
+      BASE44_PUBLIC_HOST_SUFFIX: ${BASE44_PUBLIC_HOST_SUFFIX}
+      WATCHPACK_POLLING: "true"
+    command: sh -c 'npm ci --no-audit --no-fund && npm run dev -- --hostname 0.0.0.0'
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(async r => { if (!r.ok || !(await r.text()).includes('Maedow Flow')) process.exit(1) }).catch(() => process.exit(1))"]
+      interval: 15s
+      timeout: 10s
+      start_period: 120s
+      retries: 3
+    restart: on-failure
+
+volumes:
+  site_node_modules:

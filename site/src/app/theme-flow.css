@@ -27,8 +27,8 @@
   /* Les huit couleurs de Maedow Flow. */
   --color-flow-vert: #00f58a; /* Vert électrique, 13,02:1 sur espace */
   --color-flow-foret: #0b5d3b; /* Forêt profonde, 7,40:1 sur givre */
-  --color-flow-espace: #07130e; /* Sous-bois nocturne */
-  --color-flow-ardoise: #10221a; /* Ardoise verte */
+  --color-flow-espace: #060908; /* Noir vert, 18,62:1 sous le givre */
+  --color-flow-ardoise: #0b1110; /* Carte sombre, 17,75:1 sous le givre */
   --color-flow-ambre: #ffd700; /* Ambre électrique, 13,51:1 sur espace */
   --color-flow-cyan: #00ffff; /* Cyan néon, 15,11:1 sur espace */
   --color-flow-givre: #f3f8f5; /* Givre, 17,64:1 sur espace */
@@ -41,8 +41,8 @@
   --color-flow-cyan-encre: #007d7d; /* 4,62:1 sur givre */
 
   /* Surfaces et traits, les intervalles que la palette ne couvrait pas. */
-  --color-flow-trait: #1f3b2e; /* bordure sombre */
-  --color-flow-voile: #15291f; /* survol et surface intermédiaire sombre */
+  --color-flow-trait: #1a2620; /* bordure sombre, subtile sur noir */
+  --color-flow-voile: #101815; /* survol et surface intermédiaire sombre */
   --color-flow-nacre: #e5efe9; /* surface claire discrète */
   --color-flow-lisere: #d5e3da; /* bordure claire */
 
@@ -94,7 +94,7 @@
  */
 .dark {
   --color-fd-background: var(--color-flow-espace);
-  --color-fd-foreground: var(--color-flow-givre); /* 17,64:1 */
+  --color-fd-foreground: var(--color-flow-givre); /* 18,62:1 */
 
   --color-fd-card: var(--color-flow-ardoise);
   --color-fd-card-foreground: var(--color-flow-givre);
