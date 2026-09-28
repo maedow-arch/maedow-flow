@@ -222,24 +222,123 @@ html {
   }
 }
 
+/* ------------------------------------------------------------------------ */
+/* La page d'accueil, dans l'esprit des références d'AgentFlow et de Mazima  */
+/* ------------------------------------------------------------------------ */
+
 /*
- * La séance de l'ouverture. Le refus et l'accord se lisent d'abord dans le texte
- * (le code de règle, la sortie de git) ; la couleur le double, elle ne le porte
- * pas seule. Mesures sur la carte : refus 5,93:1 en sombre, 5,94:1 en clair ;
- * accord 13,09:1 en sombre, 5,36:1 en clair.
+ * Les bandes. L'accueil alterne des bandes sombres et claires, fixes quel que
+ * soit le thème : c'est ce qui donne son rythme à la page. Chaque bande
+ * redéfinit les jetons de Fumadocs pour son sous-arbre, si bien que toutes les
+ * classes `fd-` s'y adaptent sans être réécrites. Les valeurs viennent de
+ * theme-flow.css, contrastes compris.
  */
-.flow-seance [data-ton] > span:last-child {
+.flow-sombre {
+  --color-fd-background: var(--color-flow-espace);
+  --color-fd-foreground: var(--color-flow-givre);
+  --color-fd-card: var(--color-flow-ardoise);
+  --color-fd-card-foreground: var(--color-flow-givre);
+  --color-fd-muted: var(--color-flow-ardoise);
+  --color-fd-muted-foreground: var(--color-flow-brume);
+  --color-fd-secondary: var(--color-flow-voile);
+  --color-fd-accent: var(--color-flow-voile);
+  --color-fd-accent-foreground: var(--color-flow-givre);
+  --color-fd-border: var(--color-flow-trait);
+  --color-fd-primary: var(--color-flow-vert);
+  --color-fd-primary-foreground: var(--color-flow-espace);
+  --flow-dots-color: var(--color-flow-foret);
+  --flow-refus: var(--color-flow-alerte);
+  background-color: var(--color-fd-background);
   color: var(--color-fd-foreground);
 }
 
-.flow-seance [data-ton="refus"] > span:last-child {
-  color: var(--color-flow-alerte-encre);
+.flow-clair {
+  --color-fd-background: var(--color-flow-givre);
+  --color-fd-foreground: var(--color-flow-espace);
+  --color-fd-card: #ffffff;
+  --color-fd-card-foreground: var(--color-flow-espace);
+  --color-fd-muted: var(--color-flow-nacre);
+  --color-fd-muted-foreground: var(--color-flow-brume-encre);
+  --color-fd-secondary: var(--color-flow-nacre);
+  --color-fd-accent: #e8f3ec;
+  --color-fd-accent-foreground: var(--color-flow-foret);
+  --color-fd-border: var(--color-flow-lisere);
+  --color-fd-primary: var(--color-flow-vert-encre);
+  --color-fd-primary-foreground: var(--color-flow-givre);
+  --flow-dots-color: color-mix(in srgb, var(--color-flow-foret) 22%, transparent);
+  --flow-refus: var(--color-flow-alerte-encre);
+  background-color: var(--color-fd-background);
+  color: var(--color-fd-foreground);
 }
 
-.dark .flow-seance [data-ton="refus"] > span:last-child {
-  color: var(--color-flow-alerte);
+/*
+ * Les coins marqués : quatre carrés pleins aux angles d'un cadre, la signature
+ * des références. Un seul pseudo-élément et quatre fonds, sans balise ajoutée.
+ */
+.flow-coins {
+  position: relative;
 }
 
-.flow-seance [data-ton="accord"] > span:last-child {
-  color: var(--color-fd-primary);
+.flow-coins::after {
+  --flow-coin: var(--color-fd-foreground);
+  content: "";
+  position: absolute;
+  inset: -3px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--flow-coin) 0 0) top left / 5px 5px no-repeat,
+    linear-gradient(var(--flow-coin) 0 0) top right / 5px 5px no-repeat,
+    linear-gradient(var(--flow-coin) 0 0) bottom left / 5px 5px no-repeat,
+    linear-gradient(var(--flow-coin) 0 0) bottom right / 5px 5px no-repeat;
+}
+
+/* La couleur du refus, adaptée à la bande : 5,93:1 sur carte sombre, 5,94:1 sur carte claire. */
+.flow-refus {
+  color: var(--flow-refus);
+}
+
+/*
+ * Les dalles de verre de l'ouverture. Chaque dalle est une tranche de verre
+ * teinté : un liseré clair sur l'arête, un cœur vert qui s'assombrit vers le
+ * bas, une lueur autour. Les colonnes sont inclinées en perspective et
+ * s'estompent vers le bas, pour que le titre reste le premier plan.
+ */
+.flow-dalle {
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, #c9ffe3 45%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, #d9ffec 85%, transparent) 0%,
+    color-mix(in srgb, var(--color-flow-vert) 80%, transparent) 14%,
+    color-mix(in srgb, var(--color-flow-foret) 85%, transparent) 55%,
+    color-mix(in srgb, #03140c 95%, transparent) 100%
+  );
+  box-shadow:
+    0 0 22px -4px color-mix(in srgb, var(--color-flow-vert) 45%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 70%, transparent);
+}
+
+.flow-verre {
+  mask-image: linear-gradient(to bottom, black 55%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent);
+}
+
+.flow-verre-gauche {
+  transform: perspective(1100px) rotateY(34deg);
+  transform-origin: left center;
+}
+
+.flow-verre-droite {
+  transform: perspective(1100px) rotateY(-34deg);
+  transform-origin: right center;
+}
+
+/*
+ * Le nom en très grand, en contour, qui clôt la page. Le trait est à peine
+ * visible : c'est une signature, pas un titre.
+ */
+.flow-signature {
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-flow-vert) 28%, transparent);
 }

@@ -5,9 +5,9 @@
  */
 export function Faq({ items }: { items: { question: string; reponse: string }[] }) {
   return (
-    <div data-anime="carte" className="divide-y overflow-hidden rounded-xl border bg-fd-card">
+    <div data-anime="carte" className="divide-y border-y">
       {items.map((item) => (
-        <details key={item.question} className="group p-5 open:pb-5">
+        <details key={item.question} className="group py-5">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium marker:content-none">
             {item.question}
             <span

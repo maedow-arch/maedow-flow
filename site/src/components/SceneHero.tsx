@@ -56,6 +56,8 @@ export function SceneHero({ children }: { children: ReactNode }) {
          */
         gsap
           .timeline({ defaults: { ease: COURBE.sortie } })
+          /* Les dalles de verre montent d'abord, dans le désordre : un décor qui se pose avant qu'on parle. */
+          .from('[data-hero="dalle"]', { y: 32, autoAlpha: 0, duration: 0.6, stagger: { each: 0.02, from: "random" } }, 0)
           .from('[data-hero="promesse"]', { y: 16, autoAlpha: 0, duration: DUREE.bloc }, titre ? 0.5 : 0.15)
           .from('[data-hero="actions"]', { y: 12, autoAlpha: 0, duration: DUREE.fragment }, "-=0.45")
           .from('[data-hero="seance"]', { y: 18, autoAlpha: 0, duration: DUREE.bloc }, "-=0.4")

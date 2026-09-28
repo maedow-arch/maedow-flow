@@ -13,7 +13,7 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 | `src/app/globals.css` | l'habillage repris de Maedow Arch : fontes, trame, panneau de contenu, code |
 | `src/lib/animation.ts` | le vocabulaire d'animation : courbes, durées, décalages, seuil, repris de Maedow Arch |
 | `src/components/Scene.tsx`, `SceneHero.tsx` | les animations de l'accueil, par rôle (`data-anime`, `data-hero`) |
-| `src/components/Seance.tsx` | la séance de l'ouverture : ses répliques reprennent les vrais messages du garde et la vraie sortie de git |
+| `src/components/accueil/` | les pièces de l'accueil : conversation de l'ouverture, dalles de verre, phases et leurs aperçus, briques, dérives, pixels |
 | `src/app/icon.svg` | le favicon, tiré de la marque du logo (les trois chevrons) |
 | `src/lib/site.ts` | les adresses publiques et le prompt d'amorçage de la page d'accueil |
 | `src/lib/source.ts` | le loader Fumadocs |
@@ -22,6 +22,7 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 ## Conventions
 
 - Ne jamais écrire dans `content/docs/` ni dans les fichiers dérivés de `public/` : ils sont régénérés à chaque build et ne sont pas versionnés.
+- L'accueil alterne des bandes `flow-sombre` et `flow-clair`, fixes quel que soit le thème : chacune redéfinit les jetons `fd-` pour son sous-arbre. Le bouton de thème vit dans la documentation.
 - Le design system est celui de Maedow Arch, transposé en verts. Une couleur de texte ajoutée porte sa mesure de contraste en regard, et passe le seuil AA sur la surface la plus défavorable où elle s'affiche, pas seulement sur le fond.
 - Une animation se déclare par un rôle (`data-anime="carte"`…), jamais par des valeurs locales : durées et courbes vivent dans `src/lib/animation.ts`. Tout est en `from` et en `once`, sous `prefers-reduced-motion: no-preference` ; sans JavaScript, la page est entière. Un élément proche du bas du document se déclenche à son entrée dans l'écran (`top bottom`) : au seuil commun, il n'atteindrait jamais la ligne et resterait invisible.
 - Les chiffres de l'accueil viennent de `src/lib/chiffres.json`, dénombré dans le dépôt par `scripts/sync.mjs` et non versionné.
