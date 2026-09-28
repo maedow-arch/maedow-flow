@@ -3,20 +3,9 @@
 @import "fumadocs-ui/css/preset.css";
 
 /*
- * Le système de Maedow Arch, repris règle pour règle. Ce qui n'y figure pas
- * (profils de lecture, bandeau des technologies) est propre à ce site-là.
- *
  * Quatre fontes, quatre rôles.
- * Space Grotesk pour les titres : son dessin géométrique et ses détails
- * mécaniques donnent le ton technique du propos.
- * Google Sans Flex pour le texte courant, où seule compte la lisibilité sur de
- * longs paragraphes.
- * Google Sans Code pour le code. Fumadocs habille ses blocs avec `font-mono` :
- * redéfinir le jeton `--font-mono` suffit à la propager à toute la coloration.
- * Geist Mono pour le seul bloc terminal de la page d'accueil, via `font-snippet`.
- *
- * Les variables sont injectées par `next/font/google` dans `layout.tsx`, qui
- * auto-héberge les fichiers.
+ * Space Grotesk pour les titres, Google Sans Flex pour le texte courant,
+ * Google Sans Code pour le code, Geist Mono pour le terminal de l'accueil.
  */
 @theme inline {
   --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -34,7 +23,6 @@ body {
     sans-serif;
 }
 
-/* `letter-spacing` resserré : Space Grotesk respire beaucoup aux grandes tailles. */
 h1,
 h2,
 h3,
@@ -44,35 +32,16 @@ h4,
   letter-spacing: -0.02em;
 }
 
-/*
- * Trame de points. Elle a sa propre couleur plutôt que celle des bordures :
- * une bordure doit rester à peine visible, une trame doit se voir. Sur fond
- * sombre c'est la forêt qui la porte, seul emploi que ses 2,38:1 autorisent.
- */
-:root {
-  --flow-dots-color: color-mix(in srgb, var(--color-flow-foret) 22%, transparent);
+/* Lueur d'ouverture : un halo vert qui se dissout dans le fond. */
+.hero-glow {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    color-mix(in srgb, var(--color-fd-primary) 7%, transparent),
+    transparent
+  );
 }
 
-.dark {
-  --flow-dots-color: var(--color-flow-foret);
-}
-
-.flow-dots {
-  background-image: radial-gradient(circle at center, var(--flow-dots-color) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-
-/* Le contenu prime : la trame s'estompe vers le bas. */
-.flow-dots-fade {
-  mask-image: linear-gradient(to bottom, black, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, black, transparent);
-}
-
-/*
- * Le panneau de contenu : le contenu et son sommaire sur une carte détachée du
- * fond, la barre latérale restant à l'extérieur. À partir de `md` seulement ;
- * en dessous, la barre latérale se replie et un cadre n'aurait rien à séparer.
- */
+/* Panneau de contenu de la documentation. */
 @media (min-width: 768px) {
   #nd-notebook-layout main[data-layout-main] {
     margin: 0.75rem 0.75rem 0.75rem 0;
@@ -82,7 +51,7 @@ h4,
   }
 }
 
-/* L'entrée active de la barre latérale porte un trait vertical. */
+/* Entrée active de la barre latérale. */
 #nd-sidebar a[data-active="true"]::before {
   content: "";
   position: absolute;
@@ -93,21 +62,18 @@ h4,
   background-color: var(--color-fd-primary);
 }
 
-/* L'en-tête des tableaux est teinté : sans lui, la première ligne se lit comme une donnée. */
+/* En-tête des tableaux. */
 #nd-page table thead {
   background-color: var(--color-fd-muted);
 }
 
-/* Les liens du texte : le soulignement, discret, prend la couleur de la marque. */
+/* Liens du texte. */
 #nd-page .prose a:not([data-card]) {
   text-decoration-color: color-mix(in srgb, var(--color-fd-primary) 45%, transparent);
   text-underline-offset: 3px;
 }
 
-/*
- * Tout ce qui est code passe par Google Sans Code. Sans ligatures : `!=`, `=>`
- * et `->` doivent se lire comme les caractères que le lecteur va taper.
- */
+/* Code. */
 code,
 kbd,
 samp,
@@ -117,23 +83,19 @@ pre {
   font-variant-ligatures: none;
 }
 
-/*
- * Le bloc terminal de la page d'accueil garde Geist Mono, comme sur Maedow
- * Arch : c'est le seul endroit qui montre l'outil plutôt que la documentation,
- * et il doit se lire comme un terminal.
- */
+/* Terminal de l'accueil : Geist Mono. */
 .flow-terminal pre,
 .flow-terminal code {
   font-family: var(--font-snippet);
   font-variation-settings: normal;
 }
 
-/* Un bloc de commandes se compte d'un coup d'œil quand ses lignes respirent. */
+/* Blocs de code dans la documentation. */
 figure.shiki pre code {
   line-height: 1.9;
 }
 
-/* Barres de défilement fines et teintées : elles indiquent sans disputer la lecture. */
+/* Barres de défilement fines et teintées. */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-fd-border) transparent;
@@ -163,18 +125,14 @@ figure.shiki pre code {
   background: transparent;
 }
 
-/*
- * La barre de l'accueil posée sur le haut de page : tant que rien n'est passé
- * dessous (`data-pose="true"`, posé par NavbarCondensee), elle laisse voir la
- * trame de l'ouverture. Sans script, l'attribut est absent et la barre garde
- * son fond.
- */
+/* Barre de navigation : transparente en haut de page, fond et bordure au défilement. */
 [data-navbar][data-pose="true"] {
   background-color: transparent;
   backdrop-filter: none;
+  border-color: transparent;
 }
 
-/* Défilement doux pour les sauts d'ancre seulement ; la molette reste celle du lecteur. */
+/* Défilement doux pour les sauts d'ancre seulement. */
 html {
   scroll-behavior: smooth;
 }

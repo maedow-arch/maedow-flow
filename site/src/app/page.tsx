@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { FullSearchTrigger, SearchTrigger } from "fumadocs-ui/layouts/shared/slots/search-trigger";
 import { ThemeSwitch } from "fumadocs-ui/layouts/shared/slots/theme-switch";
-import { BlocTexte } from "@/components/BlocTexte";
 import { DefilementDoux } from "@/components/DefilementDoux";
 import { GithubIcon } from "@/components/GithubIcon";
-import { Logo, LogoMark } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 import { NavbarCondensee } from "@/components/NavbarCondensee";
 import { Scene } from "@/components/Scene";
 import { SceneHero } from "@/components/SceneHero";
+import { TerminalWindow } from "@/components/TerminalWindow";
 import chiffres from "@/lib/chiffres.json";
 import { ARCH_URL, PROMPT_AMORCAGE, REPO_URL, SKILLS_URL } from "@/lib/site";
 
@@ -42,17 +42,15 @@ export default function Accueil() {
       <NavbarCondensee />
 
       {/*
-        Une barre propre à l'accueil, comme chez Maedow Arch : elle s'anime à
-        l'entrée et laisse voir la trame tant que rien ne passe dessous. Les
-        rôles d'animation sont portés par des enveloppes neutres, jamais par les
-        liens eux-mêmes : leurs transitions CSS de survol intercepteraient les
-        valeurs que GSAP écrit, et l'élément sauterait à l'arrivée.
+        La barre de l'accueil : transparente en haut de page, fond et bordure
+        au défilement. Les rôles d'animation sont portés par des enveloppes
+        neutres, jamais par les liens eux-mêmes.
       */}
       <header
         data-navbar
-        className="sticky top-0 z-40 border-b border-fd-border bg-fd-background/80 backdrop-blur transition-[background-color,backdrop-filter] duration-300"
+        className="sticky top-0 z-40 border-b border-fd-border bg-fd-background/80 backdrop-blur transition-[background-color,backdrop-filter,border-color] duration-300"
       >
-        <nav className="mx-auto flex h-16 max-w-5xl items-center gap-3 px-4">
+        <nav className="mx-auto flex h-14 max-w-5xl items-center gap-3 px-4">
           <span data-navbar-marque className="inline-flex">
             <Link href="/" aria-label="Maedow Flow, accueil" className="text-fd-foreground">
               <Logo />
@@ -92,147 +90,167 @@ export default function Accueil() {
 
       <main className="w-full flex-1">
         <SceneHero>
-          <section className="relative -mt-16 overflow-hidden border-b pt-16">
-            <div data-hero="fond" aria-hidden="true" className="flow-dots flow-dots-fade pointer-events-none absolute inset-0" />
-            <div className="relative mx-auto max-w-5xl px-4 pt-20 pb-16 sm:pt-28">
-              <p
-                data-hero="badge"
-                className="inline-flex items-center gap-2 rounded-full border bg-fd-card px-3 py-1 text-xs font-medium text-fd-muted-foreground"
-              >
-                <LogoMark className="size-3.5 text-fd-primary" />
-                Workflow de développement avec agents IA
+          <section className="relative -mt-14 overflow-hidden border-b border-fd-border pt-14">
+            <div data-hero="fond" aria-hidden="true" className="hero-glow pointer-events-none absolute inset-0" />
+            <div className="relative mx-auto max-w-5xl px-4 pt-24 pb-20 sm:pt-32">
+              <p data-hero="badge" className="font-mono text-xs text-fd-muted-foreground">
+                <span className="text-fd-primary">{"//"}</span> workflow de développement avec agents IA
               </p>
-              <h1 data-hero="titre" className="mt-6 max-w-4xl text-4xl font-bold text-balance sm:text-6xl">
-                Un agent code vite. <span className="text-fd-primary">Maedow Flow décide de l&apos;ordre des choses.</span>
+              <h1 data-hero="titre" className="mt-6 max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-6xl">
+                Un agent code vite.{" "}
+                <span className="text-fd-primary">Maedow Flow décide de l&apos;ordre des choses.</span>
               </h1>
               <p data-hero="promesse" className="mt-6 max-w-2xl text-lg text-pretty text-fd-muted-foreground">
                 Ce qui se décide avant de coder, ce qui se prouve avant de fusionner, et ce qui ne se fait jamais. Pour
                 des applications web, mobiles ou desktop qui tiennent en production, pas seulement en démonstration.
               </p>
-              <div data-hero="actions" className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/docs/demarrer"
-                  className="rounded-lg bg-fd-primary px-4 py-2.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  Démarrer un projet
-                </Link>
-                <Link
-                  href="/docs"
-                  className="rounded-lg border bg-fd-card px-4 py-2.5 text-sm font-medium transition-colors hover:bg-fd-accent"
-                >
-                  Lire le manifeste
-                </Link>
-              </div>
 
-              <div data-hero="commande" className="flow-terminal mt-14 max-w-3xl">
-                <BlocTexte titre="Prompt d'amorçage" texte={PROMPT_AMORCAGE} />
+              <div data-hero="commande" className="mt-10 max-w-3xl">
+                <TerminalWindow title="prompt.sh" code={PROMPT_AMORCAGE} />
                 <p className="mt-3 text-sm text-fd-muted-foreground">
                   Le premier message à ton agent, dans un dossier vide ou un projet existant : Claude Code, Cursor, Codex
                   ou tout agent qui dispose d&apos;un terminal.
                 </p>
+              </div>
+
+              <div data-hero="actions" className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+                <Link
+                  href="/docs/demarrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-fd-foreground transition-colors hover:text-fd-primary"
+                >
+                  Démarrer un projet
+                  <span aria-hidden="true">→</span>
+                </Link>
+                <Link
+                  href="/docs"
+                  className="text-sm font-medium text-fd-muted-foreground transition-colors hover:text-fd-foreground"
+                >
+                  Lire le manifeste
+                </Link>
               </div>
             </div>
           </section>
         </SceneHero>
 
         <Scene className="mx-auto max-w-5xl px-4">
-          <section className="mt-16 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {/* Chiffres */}
+          <section className="mt-16 grid grid-cols-2 divide-x divide-y divide-fd-border overflow-hidden rounded-xl border border-fd-border sm:grid-cols-4 sm:divide-y-0">
             {CHIFFRES.map((c) => (
-              <div key={c.libelle} data-anime="carte" className="rounded-xl border bg-fd-card p-4">
-                <p className="font-heading text-4xl font-bold text-fd-primary">
+              <div key={c.libelle} data-anime="carte" className="p-5">
+                <p className="font-heading text-4xl font-bold text-fd-primary sm:text-5xl">
                   <span data-anime="compte" data-valeur={c.valeur}>
                     {c.valeur}
                   </span>
                 </p>
-                <p className="mt-1 font-medium">{c.libelle}</p>
-                <p className="mt-1 text-sm text-fd-muted-foreground">{c.detail}</p>
+                <p className="mt-2 text-sm font-medium text-fd-foreground">{c.libelle}</p>
+                <p className="mt-1 text-xs text-fd-muted-foreground">{c.detail}</p>
               </div>
             ))}
           </section>
 
+          {/* Cycle */}
           <section className="mt-20">
-            <p className="text-sm font-semibold text-fd-primary">Le cycle</p>
-            <h2 data-anime="titre" className="mt-2 text-3xl font-bold">
+            <p className="font-mono text-xs text-fd-muted-foreground">
+              <span className="text-fd-primary">{"//"}</span> le cycle
+            </p>
+            <h2 data-anime="titre" className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
               Cinq phases, cinq portes
             </h2>
-            <ol data-anime="cycle" className="mt-8 grid gap-3 sm:grid-cols-5">
+            <div
+              data-anime="cycle"
+              className="mt-8 grid grid-cols-1 divide-y divide-fd-border overflow-hidden rounded-xl border border-fd-border sm:grid-cols-5 sm:divide-x sm:divide-y-0"
+            >
               {PHASES.map((phase, i) => (
-                <li
-                  key={phase.nom}
-                  data-anime="phase"
-                  className="rounded-xl border bg-fd-card p-4 transition-colors hover:border-fd-primary"
-                >
+                <div key={phase.nom} data-anime="phase" className="p-5">
                   <span
                     data-anime="numero"
-                    className="inline-flex size-6 items-center justify-center rounded-md bg-fd-primary font-mono text-xs font-semibold text-fd-primary-foreground"
+                    className="inline-flex size-7 items-center justify-center rounded-md border border-fd-border font-mono text-xs font-semibold text-fd-primary"
                   >
                     {i}
                   </span>
-                  <p className="font-heading mt-3 font-semibold">{phase.nom}</p>
+                  <p className="font-heading mt-3 font-semibold text-fd-foreground">{phase.nom}</p>
                   <p className="mt-2 text-sm text-fd-muted-foreground">{phase.porte}</p>
-                </li>
+                </div>
               ))}
-            </ol>
+            </div>
             <p data-anime="intro" className="mt-6 text-fd-muted-foreground">
-              Dix-sept règles codées <code>MF-001</code> à <code>MF-017</code>, chacune avec ce qui la fait respecter :
-              un hook, la CI, un skill, ou la seule revue.{" "}
+              Dix-sept règles codées <code>MF-001</code> à <code>MF-017</code>, chacune avec ce qui la fait respecter : un
+              hook, la CI, un skill, ou la seule revue.{" "}
               <Link href="/docs/regles" className="font-medium text-fd-primary underline-offset-4 hover:underline">
-                Lire les règles
+                Lire les règles →
               </Link>
             </p>
           </section>
 
+          {/* Installation */}
           <section className="mt-20 grid gap-6 sm:grid-cols-2">
-            <div data-anime="carte" className="rounded-xl border bg-fd-card p-6">
-              <h2 className="text-lg font-bold">Avec Claude Code</h2>
-              <BlocTexte
-                className="mt-4"
-                titre="Une fois par machine"
-                texte={`/plugin marketplace add maedow-arch/maedow-flow#main
+            <div data-anime="carte" className="flex flex-col gap-4">
+              <div>
+                <p className="font-mono text-xs text-fd-muted-foreground">
+                  <span className="text-fd-primary">{"//"}</span> avec Claude Code
+                </p>
+                <h3 className="mt-1 text-lg font-bold text-fd-foreground">Une fois par machine</h3>
+              </div>
+              <TerminalWindow
+                title="terminal"
+                code={`/plugin marketplace add maedow-arch/maedow-flow#main
 /plugin install maedow-flow@maedow-flow
 npx skills add JavaScript-Mastery-Pro/skills`}
               />
-              <p className="mt-4 text-sm text-fd-muted-foreground">
+              <p className="text-sm text-fd-muted-foreground">
                 Le skill <code>/flow</code> installe le kit, <code>/flow controler</code> vérifie qu&apos;un projet le
                 respecte encore.
               </p>
             </div>
-            <div data-anime="carte" className="rounded-xl border bg-fd-card p-6">
-              <h2 className="text-lg font-bold">Avec un autre agent</h2>
-              <BlocTexte
-                className="mt-4"
-                titre="Dans le dossier du projet"
-                texte={`curl -fsSL https://maedow-flow.vercel.app/flow.mjs -o flow.mjs
+            <div data-anime="carte" className="flex flex-col gap-4">
+              <div>
+                <p className="font-mono text-xs text-fd-muted-foreground">
+                  <span className="text-fd-primary">{"//"}</span> avec un autre agent
+                </p>
+                <h3 className="mt-1 text-lg font-bold text-fd-foreground">Dans le dossier du projet</h3>
+              </div>
+              <TerminalWindow
+                title="terminal"
+                code={`curl -fsSL https://maedow-flow.vercel.app/flow.mjs -o flow.mjs
 node flow.mjs installer
 rm flow.mjs`}
               />
-              <p className="mt-4 text-sm text-fd-muted-foreground">
+              <p className="text-sm text-fd-muted-foreground">
                 Le même kit, sans plugin. Rien n&apos;est écrasé : ce qui existe reste en place.
               </p>
             </div>
           </section>
 
+          {/* Agents */}
           <section className="mt-20">
-            <p className="text-sm font-semibold text-fd-primary">Pour les agents</p>
-            <h2 data-anime="titre" className="mt-2 text-3xl font-bold">
+            <p className="font-mono text-xs text-fd-muted-foreground">
+              <span className="text-fd-primary">{"//"}</span> pour les agents
+            </p>
+            <h2 data-anime="titre" className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
               Tout le site, en texte brut
             </h2>
             <p data-anime="intro" className="mt-3 text-fd-muted-foreground">
               Dérivé du même corpus à chaque publication.
             </p>
-            <ul className="mt-6 divide-y overflow-hidden rounded-xl border bg-fd-card">
-              {AGENTS.map((a) => (
-                <li key={a.url} data-anime="carte" className="flex flex-col gap-1 p-4 sm:flex-row sm:items-baseline sm:gap-4">
-                  <a href={a.url} className="font-mono text-sm font-medium text-fd-primary underline-offset-4 hover:underline">
-                    {a.url}
-                  </a>
+            <div className="mt-6 overflow-hidden rounded-xl border border-fd-border">
+              {AGENTS.map((a, i) => (
+                <a
+                  key={a.url}
+                  href={a.url}
+                  data-anime="carte"
+                  className={`flex flex-col gap-1 p-4 transition-colors hover:bg-fd-accent sm:flex-row sm:items-baseline sm:gap-4 ${
+                    i < AGENTS.length - 1 ? "border-b border-fd-border" : ""
+                  }`}
+                >
+                  <span className="font-mono text-sm font-medium text-fd-primary">{a.url}</span>
                   <span className="text-sm text-fd-muted-foreground">{a.role}</span>
-                </li>
+                </a>
               ))}
-            </ul>
+            </div>
           </section>
 
-          <footer className="mt-24 mb-10 flex flex-col gap-3 border-t pt-6 text-sm text-fd-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          {/* Pied de page */}
+          <footer className="mt-24 mb-10 flex flex-col gap-3 border-t border-fd-border pt-6 text-sm text-fd-muted-foreground sm:flex-row sm:items-center sm:justify-between">
             <span data-anime="colonne" className="inline-flex">
               <Logo className="text-fd-foreground" />
             </span>

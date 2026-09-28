@@ -1,115 +1,84 @@
 /*
- * Thème Maedow Flow.
+ * Thème Maedow Flow — identité reconstruite.
  *
- * Le système est celui de Maedow Arch, transposé en verts : huit couleurs
- * dessinées pour une interface sombre, des dérivées pour le thème clair, et le
- * même principe qui structure le fichier. Le porteur de la marque change avec
- * le fond.
- *
- *   sombre  le vert électrique porte le texte accentué ; la forêt s'efface en
- *           surface, car elle ne fait que 2,38:1 sur le fond et serait illisible
- *   clair   le vert encre porte le texte et les boutons ; le vert électrique se
- *           réserve aux aplats, car il ne fait que 1,36:1 sur fond pâle
- *
- * Les secondaires ne sont pas verts, et c'est voulu : un avertissement, une
- * erreur ou une information doivent se distinguer de la marque d'un coup d'œil.
- * L'ambre et le cyan viennent de Maedow Arch sans retouche.
- *
- * Chaque valeur porte sa mesure en regard. Elles ont été calculées, pas
- * estimées. Les dérivées claires sont la nuance la plus claire de leur teinte
- * qui franchit le seuil AA sur la surface la plus défavorable où elles
- * s'affichent, et pas seulement sur le fond.
+ * Un fond presque noir, légèrement vert. Un seul accent : le vert électrique,
+ * réservé aux états actifs, aux chiffres-clés et aux liens. Le reste est en
+ * niveaux de gris. Les secondaires ne sont pas vertes : un avertissement
+ * doit se distinguer de la marque.
  */
 
 @import "fumadocs-ui/css/lib/default-colors.css";
 
 @theme static {
-  /* Les huit couleurs de Maedow Flow. */
-  --color-flow-vert: #00f58a; /* Vert électrique, 13,02:1 sur espace */
-  --color-flow-foret: #0b5d3b; /* Forêt profonde, 7,40:1 sur givre */
-  --color-flow-espace: #07130e; /* Sous-bois nocturne */
-  --color-flow-ardoise: #10221a; /* Ardoise verte */
-  --color-flow-ambre: #ffd700; /* Ambre électrique, 13,51:1 sur espace */
-  --color-flow-cyan: #00ffff; /* Cyan néon, 15,11:1 sur espace */
-  --color-flow-givre: #f3f8f5; /* Givre, 17,64:1 sur espace */
-  --color-flow-brume: #9db5a9; /* Brume verte, 8,67:1 sur espace, 7,60:1 sur ardoise */
-
-  /* Dérivées pour le thème clair, teinte conservée. */
-  --color-flow-vert-encre: #007b45; /* 4,99:1 sur givre, 4,56:1 sur nacre */
-  --color-flow-brume-encre: #557163; /* 4,98:1 sur givre, 4,54:1 sur nacre */
-  --color-flow-ambre-encre: #836e00; /* 4,66:1 sur givre */
-  --color-flow-cyan-encre: #007d7d; /* 4,62:1 sur givre */
-
-  /* Surfaces et traits, les intervalles que la palette ne couvrait pas. */
-  --color-flow-trait: #1f3b2e; /* bordure sombre */
-  --color-flow-voile: #15291f; /* survol et surface intermédiaire sombre */
-  --color-flow-nacre: #e5efe9; /* surface claire discrète */
-  --color-flow-lisere: #d5e3da; /* bordure claire */
-
-  /* L'erreur, seule famille absente de la palette, reprise de Maedow Arch. */
-  --color-flow-alerte: #ff4d6d; /* 5,89:1 sur espace */
-  --color-flow-alerte-encre: #ca0024; /* 5,53:1 sur givre */
+  /* Les couleurs de marque. */
+  --color-flow-vert: #00f58a; /* Vert électrique, l'accent */
+  --color-flow-vert-encre: #007b45; /* Vert encre, pour le thème clair */
+  --color-flow-espace: #080d0a; /* Fond presque noir, teinté vert */
+  --color-flow-surface: #0d130e; /* Surface légèrement plus claire */
+  --color-flow-ardoise: #111815; /* Surface intermédiaire */
+  --color-flow-trait: #1a2520; /* Bordure sombre */
+  --color-flow-givre: #f5f7f5; /* Fond clair */
+  --color-flow-nacre: #ffffff; /* Surface claire */
+  --color-flow-lisere: #d5ded8; /* Bordure claire */
+  --color-flow-brume: #6b8076; /* Texte secondaire sombre */
+  --color-flow-brume-encre: #5a6e64; /* Texte secondaire clair */
+  --color-flow-ambre: #ffd700;
+  --color-flow-cyan: #00ffff;
+  --color-flow-alerte: #ff4d6d;
+  --color-flow-ambre-encre: #836e00;
+  --color-flow-cyan-encre: #007d7d;
+  --color-flow-alerte-encre: #ca0024;
 }
 
-/*
- * Thème clair.
- * Le fond est le givre, et non un blanc pur : les cartes s'en détachent en
- * blanc, comme sur Maedow Arch.
- */
+/* Thème clair */
 @theme {
   --color-fd-background: var(--color-flow-givre);
-  --color-fd-foreground: var(--color-flow-espace);
+  --color-fd-foreground: #0a1410;
 
-  --color-fd-card: #ffffff;
-  --color-fd-card-foreground: var(--color-flow-espace);
-  --color-fd-popover: #ffffff;
-  --color-fd-popover-foreground: var(--color-flow-espace);
+  --color-fd-card: var(--color-flow-nacre);
+  --color-fd-card-foreground: #0a1410;
+  --color-fd-popover: var(--color-flow-nacre);
+  --color-fd-popover-foreground: #0a1410;
 
-  /* Le vert encre tient les deux emplois : texte de lien et aplat de bouton. */
   --color-fd-primary: var(--color-flow-vert-encre);
-  --color-fd-primary-foreground: var(--color-flow-givre); /* 4,99:1 */
+  --color-fd-primary-foreground: var(--color-flow-givre);
 
-  --color-fd-secondary: var(--color-flow-nacre);
-  --color-fd-secondary-foreground: var(--color-flow-espace);
-  --color-fd-muted: var(--color-flow-nacre);
+  --color-fd-secondary: #eef2ef;
+  --color-fd-secondary-foreground: #0a1410;
+  --color-fd-muted: #eef2ef;
   --color-fd-muted-foreground: var(--color-flow-brume-encre);
-  --color-fd-accent: #e8f3ec;
-  --color-fd-accent-foreground: var(--color-flow-foret);
+  --color-fd-accent: #e8f0ec;
+  --color-fd-accent-foreground: #0a1410;
 
   --color-fd-border: var(--color-flow-lisere);
   --color-fd-ring: var(--color-flow-vert-encre);
 
-  /* Encarts : chaque famille descendue jusqu'au seuil AA sur fond pâle. */
   --color-fd-info: var(--color-flow-cyan-encre);
   --color-fd-warning: var(--color-flow-ambre-encre);
   --color-fd-success: var(--color-flow-vert-encre);
   --color-fd-error: var(--color-flow-alerte-encre);
-  --color-fd-idea: var(--color-flow-foret);
+  --color-fd-idea: #0b5d3b;
 }
 
-/*
- * Thème sombre.
- * La palette s'y applique telle quelle : c'est le terrain pour lequel elle a
- * été dessinée, et toutes ses valeurs de texte y passent AA ou mieux.
- */
+/* Thème sombre */
 .dark {
   --color-fd-background: var(--color-flow-espace);
-  --color-fd-foreground: var(--color-flow-givre); /* 17,64:1 */
+  --color-fd-foreground: #e8f0ec;
 
-  --color-fd-card: var(--color-flow-ardoise);
-  --color-fd-card-foreground: var(--color-flow-givre);
-  --color-fd-popover: var(--color-flow-ardoise);
-  --color-fd-popover-foreground: var(--color-flow-givre);
+  --color-fd-card: var(--color-flow-surface);
+  --color-fd-card-foreground: #e8f0ec;
+  --color-fd-popover: var(--color-flow-surface);
+  --color-fd-popover-foreground: #e8f0ec;
 
-  --color-fd-primary: var(--color-flow-vert); /* 13,02:1 */
-  --color-fd-primary-foreground: var(--color-flow-espace); /* 13,02:1 */
+  --color-fd-primary: var(--color-flow-vert);
+  --color-fd-primary-foreground: var(--color-flow-espace);
 
-  --color-fd-secondary: var(--color-flow-voile);
-  --color-fd-secondary-foreground: var(--color-flow-givre);
-  --color-fd-muted: var(--color-flow-ardoise);
-  --color-fd-muted-foreground: var(--color-flow-brume); /* 8,67:1 */
-  --color-fd-accent: var(--color-flow-voile);
-  --color-fd-accent-foreground: var(--color-flow-givre);
+  --color-fd-secondary: var(--color-flow-ardoise);
+  --color-fd-secondary-foreground: #e8f0ec;
+  --color-fd-muted: var(--color-flow-surface);
+  --color-fd-muted-foreground: var(--color-flow-brume);
+  --color-fd-accent: var(--color-flow-ardoise);
+  --color-fd-accent-foreground: #e8f0ec;
 
   --color-fd-border: var(--color-flow-trait);
   --color-fd-ring: var(--color-flow-vert);
