@@ -147,17 +147,19 @@ La `description` est ce qui décide quand l'agent déclenche le skill : elle dit
 
 ## MCP
 
-Un serveur MCP s'ajoute quand tu te surprends à recopier régulièrement des informations d'un service dans la conversation.
+Aucun serveur MCP n'est imposé. La liste dépend de la stack que `/architect` a décidée pour le projet, pas de ce workflow. Un serveur se branche quand le projet s'en sert, et le signal est simple : tu te surprends à recopier régulièrement des informations d'un service dans la conversation.
 
-| Serveur | Quand |
+| Besoin | Exemples, selon la stack du projet |
 | :--- | :--- |
-| Context7 | toujours ([MF-013](regles.md#mf-013--la-documentation-se-consulte-elle-ne-se-suppose-pas)) |
-| GitHub | pull requests, issues, revues |
-| Supabase | schéma, migrations, journaux, avis de sécurité (`get_advisors`) |
-| Vercel | déploiements, journaux d'exécution |
-| PostHog | erreurs, analytique, flags |
-| Figma | implémenter une maquette |
-| Expo | builds et soumissions mobiles |
+| La documentation à jour des bibliothèques ([MF-013](regles.md#mf-013--la-documentation-se-consulte-elle-ne-se-suppose-pas)) | Context7, ou la documentation officielle consultée directement |
+| Le dépôt, les pull requests, les revues | le serveur de ton hébergeur de code (GitHub, GitLab…) |
+| La base de données | celui de ta base ou de ton BaaS (Supabase, Neon…) |
+| Les déploiements et leurs journaux | celui de ton hébergeur (Vercel, Netlify…) |
+| Les erreurs et l'analytique | celui de ton outil d'observabilité (PostHog, Sentry…) |
+| Les maquettes | celui de ton outil de design (Figma…) |
+| Les builds mobiles | celui de ta chaîne mobile (Expo…) |
+
+Un serveur branché élargit ce que l'agent peut faire. N'en branche pas un « au cas où », et donne-lui les droits les plus étroits qui suffisent au besoin.
 
 ## Au quotidien
 
