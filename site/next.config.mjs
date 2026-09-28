@@ -5,6 +5,9 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  allowedDevOrigins: process.env.BASE44_PUBLIC_HOST_SUFFIX
+    ? [`3000-${process.env.BASE44_PUBLIC_HOST_SUFFIX}`]
+    : [],
   // Le site vit dans un sous-dossier du dépôt : sans cette racine, Next remonte
   // chercher un lockfile ailleurs et se trompe de répertoire de travail.
   outputFileTracingRoot: import.meta.dirname,
