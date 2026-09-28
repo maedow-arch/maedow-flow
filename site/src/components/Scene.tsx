@@ -21,6 +21,7 @@ export function Scene({ children, className }: { children: ReactNode; className?
   useGSAP(
     () => {
       const media = gsap.matchMedia();
+      const splits: SplitText[] = [];
 
       media.add("(prefers-reduced-motion: no-preference)", () => {
         const scope = racine.current;
@@ -33,7 +34,7 @@ export function Scene({ children, className }: { children: ReactNode; className?
          * mauvaise police.
          */
         for (const titre of scope.querySelectorAll<HTMLElement>('[data-anime="titre"]')) {
-          SplitText.create(titre, {
+          const split = SplitText.create(titre, {
             type: "lines",
             mask: "lines",
             autoSplit: true,
@@ -47,6 +48,7 @@ export function Scene({ children, className }: { children: ReactNode; className?
               });
             },
           });
+          splits.push(split);
         }
 
         /* Les textes d'accompagnement suivent leur titre, sans le devancer. */
@@ -147,7 +149,10 @@ export function Scene({ children, className }: { children: ReactNode; className?
         }
       });
 
-      return () => media.revert();
+      return () => {
+      splits.forEach((s) => s.revert());
+      media.revert();
+    };
     },
     { scope: racine },
   );

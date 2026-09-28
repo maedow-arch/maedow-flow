@@ -27,6 +27,7 @@ export function SceneHero({ children }: { children: ReactNode }) {
   useGSAP(
     () => {
       const media = gsap.matchMedia();
+      const splits: SplitText[] = [];
 
       media.add("(prefers-reduced-motion: no-preference)", () => {
         const scope = racine.current;
@@ -34,7 +35,7 @@ export function SceneHero({ children }: { children: ReactNode }) {
 
         const titre = scope.querySelector<HTMLElement>('[data-hero="titre"]');
         if (titre) {
-          SplitText.create(titre, {
+          const split = SplitText.create(titre, {
             type: "words, lines",
             mask: "lines",
             autoSplit: true,
@@ -47,6 +48,7 @@ export function SceneHero({ children }: { children: ReactNode }) {
               });
             },
           });
+          splits.push(split);
         }
 
         /* Des décalages négatifs : une cascade où chacun attend la fin du précédent paraît laborieuse. */
@@ -68,7 +70,10 @@ export function SceneHero({ children }: { children: ReactNode }) {
         }
       });
 
-      return () => media.revert();
+      return () => {
+      splits.forEach((s) => s.revert());
+      media.revert();
+    };
     },
     { scope: racine },
   );
