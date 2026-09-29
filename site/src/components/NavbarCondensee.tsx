@@ -18,6 +18,11 @@ enregistrerAnimation();
  * lecteur situe d'abord où il est, ensuite ce qu'on lui dit. Elle seule dépend
  * de la préférence de mouvement.
  *
+ * **Le logo.** Celui de la barre comme celui du pied de page (`data-remonter`)
+ * ramènent en haut de l'accueil : un lien vers la page où l'on est déjà ne
+ * ferait rien. La remontée est douce, sauf sous mouvement réduit ;
+ * un clic avec modificateur (nouvel onglet) garde son comportement de lien.
+ *
  * Le composant ne rend aucune balise : la barre est `sticky`, et l'envelopper la
  * rendrait collante à l'intérieur de son conteneur, c'est-à-dire nulle part.
  */
@@ -35,6 +40,15 @@ export function NavbarCondensee() {
         barre.dataset.pose = self.isActive ? "false" : "true";
       },
     });
+
+    const logos = document.querySelectorAll<HTMLAnchorElement>("a[data-remonter]");
+    const remonter = (evenement: MouseEvent) => {
+      if (evenement.button !== 0 || evenement.metaKey || evenement.ctrlKey || evenement.shiftKey || evenement.altKey) return;
+      evenement.preventDefault();
+      const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduit ? "auto" : "smooth" });
+    };
+    for (const logo of logos) logo.addEventListener("click", remonter);
 
     const media = gsap.matchMedia();
     media.add("(prefers-reduced-motion: no-preference)", () => {
@@ -59,6 +73,7 @@ export function NavbarCondensee() {
 
     return () => {
       bascule.kill();
+      for (const logo of logos) logo.removeEventListener("click", remonter);
       media.revert();
       // Sans script, la barre garde son fond et son trait : on la rend telle qu'on l'a trouvée.
       delete barre.dataset.pose;

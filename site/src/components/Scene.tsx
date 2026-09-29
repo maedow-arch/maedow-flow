@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { COURBE, DECALAGE, DUREE, SEUIL, ScrollTrigger, SplitText, enregistrerAnimation, gsap, useGSAP } from "@/lib/animation";
+import { COURBE, DECALAGE, DUREE, SEUIL, ScrollTrigger, SplitText, enregistrerAnimation, gsap, tracer, useGSAP } from "@/lib/animation";
 
 enregistrerAnimation();
 
@@ -49,6 +49,32 @@ export function Scene({ children, className }: { children: ReactNode; className?
           });
         }
 
+        /*
+         * Le badge annonce sa section, juste avant le titre : il s'ouvre de
+         * gauche à droite, son carré s'allume, et le mot se décode comme une
+         * étiquette de terminal. Sa largeur est tenue pendant le décodage : des
+         * lettres tirées au hasard n'ont pas la chasse du mot, et le badge
+         * tremblerait.
+         */
+        for (const badge of scope.querySelectorAll<HTMLElement>('[data-anime="badge"]')) {
+          const point = badge.querySelector('[data-badge="point"]');
+          const texte = badge.querySelector('[data-badge="texte"]');
+          gsap
+            .timeline({
+              defaults: { ease: COURBE.sortie },
+              scrollTrigger: { trigger: badge, start: SEUIL, once: true },
+              onStart: () => void gsap.set(badge, { width: badge.getBoundingClientRect().width }),
+              onComplete: () => void gsap.set(badge, { clearProps: "width" }),
+            })
+            .fromTo(
+              badge,
+              { clipPath: "inset(0% 100% 0% 0% round 6px)" },
+              { clipPath: "inset(0% 0% 0% 0% round 6px)", duration: DUREE.fragment, clearProps: "clipPath" },
+            )
+            .from(point, { scale: 0, duration: 0.3, ease: COURBE.franc }, 0.15)
+            .to(texte, { duration: 0.6, scrambleText: { text: "{original}", chars: "upperCase", speed: 0.6 } }, 0.1);
+        }
+
         /* Les textes d'accompagnement suivent leur titre, sans le devancer. */
         for (const intro of scope.querySelectorAll<HTMLElement>('[data-anime="intro"]')) {
           gsap.from(intro, {
@@ -88,11 +114,21 @@ export function Scene({ children, className }: { children: ReactNode; className?
             );
         }
 
-        /* Les chiffres se comptent : ils sont dénombrés dans le corpus au build, pas écrits à la main. */
+        /*
+         * Les chiffres se comptent : ils sont dénombrés dans le corpus au build,
+         * pas écrits à la main. Ils partent de zéro dès que le script prend la
+         * main : affichés à leur valeur jusqu'au seuil, ils retomberaient à zéro
+         * sous les yeux du lecteur avant de compter. Sans script, la valeur est là.
+         */
+        const restaurations: (() => void)[] = [];
         for (const compteur of scope.querySelectorAll<HTMLElement>('[data-anime="compte"]')) {
           const arrivee = Number(compteur.dataset.valeur ?? compteur.textContent ?? 0);
           if (!Number.isFinite(arrivee) || arrivee === 0) continue;
           const etat = { valeur: 0 };
+          compteur.textContent = "0";
+          restaurations.push(() => {
+            compteur.textContent = String(arrivee);
+          });
           gsap.to(etat, {
             valeur: arrivee,
             duration: DUREE.compte,
@@ -101,6 +137,44 @@ export function Scene({ children, className }: { children: ReactNode; className?
             onUpdate: () => {
               compteur.textContent = String(Math.round(etat.valeur));
             },
+          });
+        }
+
+        /*
+         * Les libellés des chiffres se lèvent derrière leur masque pendant que
+         * le nombre compte : les cartes ne bougent pas, seul ce qu'elles disent
+         * arrive. Une carte après l'autre, dans le sens de la lecture.
+         */
+        scope.querySelectorAll<HTMLElement>('[data-anime="libelle"]').forEach((libelle, i) => {
+          SplitText.create(libelle, {
+            type: "lines",
+            mask: "lines",
+            autoSplit: true,
+            onSplit(decoupe) {
+              return gsap.from(decoupe.lines, {
+                yPercent: 110,
+                duration: DUREE.bloc,
+                ease: COURBE.sortie,
+                stagger: DECALAGE.ligne,
+                delay: 0.25 + (i % 4) * DECALAGE.carte,
+                scrollTrigger: { trigger: libelle, start: SEUIL, once: true },
+              });
+            },
+          });
+        });
+
+        /*
+         * Les dessins se construisent comme ils se lisent (voir `tracer`), une
+         * fois leur carte posée : un dessin qui s'anime pendant que sa carte
+         * glisse encore, on ne le voit pas.
+         */
+        for (const dessin of scope.querySelectorAll<SVGElement>('[data-anime="dessin"]')) {
+          const trace = tracer(dessin);
+          ScrollTrigger.create({
+            trigger: dessin,
+            start: SEUIL,
+            once: true,
+            onEnter: () => void gsap.delayedCall(0.35, () => void trace.play()),
           });
         }
 
@@ -176,6 +250,9 @@ export function Scene({ children, className }: { children: ReactNode; className?
             scrollTrigger: { trigger: colonnes[0]!, start: "top bottom", once: true },
           });
         }
+
+        /* Les textes réécrits à la main (compteurs) retrouvent leur valeur quand l'animation est retirée. */
+        return () => restaurations.forEach((restaure) => restaure());
       });
 
       return () => media.revert();
