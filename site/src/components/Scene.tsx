@@ -114,11 +114,21 @@ export function Scene({ children, className }: { children: ReactNode; className?
             );
         }
 
-        /* Les chiffres se comptent : ils sont dénombrés dans le corpus au build, pas écrits à la main. */
+        /*
+         * Les chiffres se comptent : ils sont dénombrés dans le corpus au build,
+         * pas écrits à la main. Ils partent de zéro dès que le script prend la
+         * main : affichés à leur valeur jusqu'au seuil, ils retomberaient à zéro
+         * sous les yeux du lecteur avant de compter. Sans script, la valeur est là.
+         */
+        const restaurations: (() => void)[] = [];
         for (const compteur of scope.querySelectorAll<HTMLElement>('[data-anime="compte"]')) {
           const arrivee = Number(compteur.dataset.valeur ?? compteur.textContent ?? 0);
           if (!Number.isFinite(arrivee) || arrivee === 0) continue;
           const etat = { valeur: 0 };
+          compteur.textContent = "0";
+          restaurations.push(() => {
+            compteur.textContent = String(arrivee);
+          });
           gsap.to(etat, {
             valeur: arrivee,
             duration: DUREE.compte,
@@ -240,6 +250,9 @@ export function Scene({ children, className }: { children: ReactNode; className?
             scrollTrigger: { trigger: colonnes[0]!, start: "top bottom", once: true },
           });
         }
+
+        /* Les textes réécrits à la main (compteurs) retrouvent leur valeur quand l'animation est retirée. */
+        return () => restaurations.forEach((restaure) => restaure());
       });
 
       return () => media.revert();
