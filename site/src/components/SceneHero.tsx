@@ -10,9 +10,8 @@ enregistrerAnimation();
  *
  * Elle est déjà visible quand la page s'affiche : rien ne s'y déclenche au
  * défilement, tout s'enchaîne dans l'ordre de lecture, et cet ordre est
- * l'argument. Le constat, puis la réponse, puis la promesse, et le prompt en
- * dernier, parce qu'il ne veut rien dire tant que les trois premiers n'ont pas
- * été lus.
+ * l'argument. Le constat, la réponse, la promesse, puis la séance qui les
+ * prouve : un agent arrêté par une porte, qui se corrige et prouve.
  *
  * Le titre se découpe en mots et non en caractères. Chez Maedow Arch, deux mots
  * très grands portent le nom et méritent la lettre à lettre ; ici c'est une
@@ -49,13 +48,20 @@ export function SceneHero({ children }: { children: ReactNode }) {
           });
         }
 
-        /* Des décalages négatifs : une cascade où chacun attend la fin du précédent paraît laborieuse. */
+        /*
+         * Des décalages négatifs : une cascade où chacun attend la fin du
+         * précédent paraît laborieuse. Puis la séance se joue ligne à ligne :
+         * c'est le seul moment orchestré de l'ouverture, et il porte l'argument
+         * (l'agent est arrêté, se corrige, prouve).
+         */
         gsap
           .timeline({ defaults: { ease: COURBE.sortie } })
-          .from('[data-hero="badge"]', { y: -8, autoAlpha: 0, duration: DUREE.fragment }, 0.1)
-          .from('[data-hero="promesse"]', { y: 16, autoAlpha: 0, duration: DUREE.bloc }, titre ? 0.55 : 0.2)
+          /* Les dalles de verre montent d'abord, dans le désordre : un décor qui se pose avant qu'on parle. */
+          .from('[data-hero="dalle"]', { y: 32, autoAlpha: 0, duration: 0.6, stagger: { each: 0.02, from: "random" } }, 0)
+          .from('[data-hero="promesse"]', { y: 16, autoAlpha: 0, duration: DUREE.bloc }, titre ? 0.5 : 0.15)
           .from('[data-hero="actions"]', { y: 12, autoAlpha: 0, duration: DUREE.fragment }, "-=0.45")
-          .from('[data-hero="commande"]', { y: 18, autoAlpha: 0, scale: 0.985, duration: DUREE.bloc }, "-=0.35");
+          .from('[data-hero="seance"]', { y: 18, autoAlpha: 0, duration: DUREE.bloc }, "-=0.4")
+          .from('[data-hero="ligne"]', { y: 6, autoAlpha: 0, duration: 0.35, stagger: DECALAGE.echange }, "-=0.25");
 
         /* `scrub` attache la dérive au défilement : le mouvement appartient au lecteur. */
         const fond = scope.querySelector<HTMLElement>('[data-hero="fond"]');

@@ -9,13 +9,13 @@ Trois situations : préparer une machine (une fois), lancer un projet neuf, ou f
 | Claude Code | voir la documentation officielle | l'agent principal |
 | Les skills moteur | `npx skills add JavaScript-Mastery-Pro/skills` | `/scope`, `/architect`, `/develop`, `/check`, `/test`, `/debug`, `/sync`, `/audit`, `/document` |
 | Le plugin Maedow Flow | `/plugin marketplace add maedow-arch/maedow-flow#main` puis `/plugin install maedow-flow@maedow-flow` | le skill `/flow` et le kit de templates |
-| Context7 | `claude mcp add --transport http context7 https://mcp.context7.com/mcp` | la documentation à jour des bibliothèques ([MF-013](regles.md#mf-013--la-documentation-se-consulte-elle-ne-se-suppose-pas)) |
+| Context7, recommandé | `claude mcp add --transport http context7 https://mcp.context7.com/mcp` | la documentation à jour des bibliothèques sans quitter la session ; la documentation officielle fait aussi l'affaire ([MF-013](regles.md#mf-013--la-documentation-se-consulte-elle-ne-se-suppose-pas)) |
 | GitHub CLI | `gh auth login` | dépôts, pull requests, protections de branche |
 | Tes règles personnelles | copier `global/CLAUDE.md` du dépôt vers `~/.claude/CLAUDE.md` | elles s'appliquent alors à toutes tes sessions, dans tous tes projets |
 
 Le `#main` de la commande du plugin compte : sans lui, l'installation suit la branche par défaut du dépôt, `develop`, qui porte l'intégration en cours et non la version publiée.
 
-Les autres serveurs MCP (Supabase, Vercel, PostHog, Figma, Expo) s'ajoutent quand un projet s'en sert, pas avant.
+Aucun autre serveur MCP n'est à installer d'avance : chacun se branche quand un projet s'en sert, selon sa stack (voir [Claude Code](claude-code.md#mcp)).
 
 ## Le prompt d'amorçage
 

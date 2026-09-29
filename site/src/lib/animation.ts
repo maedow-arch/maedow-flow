@@ -53,6 +53,8 @@ export const DECALAGE = {
   ligne: 0.09,
   carte: 0.1,
   phase: 0.13,
+  /* Une ligne de séance doit pouvoir se lire avant que la suivante n'arrive. */
+  echange: 0.42,
 } as const;
 
 /** Le mouvement a commencé quand le lecteur arrive, sans se déclencher hors de vue. */
