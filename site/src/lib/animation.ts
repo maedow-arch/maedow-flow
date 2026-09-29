@@ -1,4 +1,6 @@
 import { gsap } from "gsap";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
@@ -29,7 +31,7 @@ let plugins = false;
 /** Enregistre les plugins une seule fois, quel que soit le nombre de scènes. */
 export function enregistrerAnimation() {
   if (plugins) return;
-  gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
+  gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, DrawSVGPlugin, ScrambleTextPlugin);
   plugins = true;
 }
 
@@ -55,9 +57,65 @@ export const DECALAGE = {
   phase: 0.13,
   /* Une ligne de séance doit pouvoir se lire avant que la suivante n'arrive. */
   echange: 0.42,
+  /* La frappe d'un humain, puis le flux d'un modèle : l'un tape des lettres, l'autre produit des mots. */
+  lettre: 0.032,
+  flux: 0.022,
 } as const;
 
 /** Le mouvement a commencé quand le lecteur arrive, sans se déclencher hors de vue. */
 export const SEUIL = "top 85%";
+
+/**
+ * Les gestes d'un dessin, et comment chacun s'exécute.
+ *
+ * Un schéma ne s'anime pas en bloc : il se construit dans l'ordre où on le
+ * lirait. Un arbre pousse depuis sa racine, un périmètre s'élargit depuis son
+ * centre, des coches se cochent une à une. Chaque élément déclare son geste
+ * (`data-trace="trait"`, `"point"`…) et `tracer` les enchaîne dans l'ordre du
+ * document ; les éléments consécutifs de même geste forment une série.
+ */
+const GESTES = {
+  /* Un trait se dessine du début à la fin de son chemin. */
+  trait: { vars: { drawSVG: 0, duration: 0.7, ease: COURBE.franc }, decalage: 0.12 },
+  /* Un point, un nœud, un bouton : ils éclosent depuis leur centre. */
+  point: { vars: { scale: 0, autoAlpha: 0, transformOrigin: "50% 50%", duration: 0.4 }, decalage: 0.08 },
+  /* Un cadre se déploie depuis son centre. */
+  cadre: { vars: { scale: 0.6, autoAlpha: 0, transformOrigin: "50% 50%", duration: 0.6 }, decalage: 0.18 },
+  /* Une barre horizontale, ou un trait pointillé que `trait` priverait de ses pointillés. */
+  barre: { vars: { scaleX: 0, transformOrigin: "0% 50%", duration: 0.5 }, decalage: 0.1 },
+  /* Une ligne écrite à pleine lumière, qui pâlit ensuite jusqu'à son opacité propre. */
+  efface: { vars: { scaleX: 0, opacity: 1, transformOrigin: "0% 50%", duration: 0.9 }, decalage: 0.14 },
+  /* Une colonne de graphique monte depuis sa base. */
+  montee: { vars: { scaleY: 0, transformOrigin: "50% 100%", duration: 0.5 }, decalage: 0.035 },
+  /* Une coche se pose, franchement, une à la fois. */
+  coche: { vars: { scale: 0.3, autoAlpha: 0, duration: 0.3, ease: COURBE.franc }, decalage: 0.22 },
+  /* Une ligne de texte glisse à sa place. */
+  entree: { vars: { y: 6, autoAlpha: 0, duration: 0.45 }, decalage: 0.08 },
+} as const;
+
+export type Geste = keyof typeof GESTES;
+
+/**
+ * Construit, en pause, la timeline qui dessine les éléments `[data-trace]` de
+ * `racine`. L'appelant décide quand la jouer : au défilement, ou quand la carte
+ * qui porte le dessin arrive en haut de la pile.
+ */
+export function tracer(racine: Element) {
+  const timeline = gsap.timeline({ paused: true, defaults: { ease: COURBE.sortie } });
+  const series: { geste: Geste; elements: Element[] }[] = [];
+  for (const element of racine.querySelectorAll<HTMLElement | SVGElement>("[data-trace]")) {
+    const geste = element.dataset.trace as Geste;
+    if (!(geste in GESTES)) continue;
+    const derniere = series.at(-1);
+    if (derniere?.geste === geste) derniere.elements.push(element);
+    else series.push({ geste, elements: [element] });
+  }
+  series.forEach(({ geste, elements }, i) => {
+    const { vars, decalage } = GESTES[geste];
+    /* Chaque série commence avant la fin de la précédente : un dessin qui attend chaque trait paraît laborieux. */
+    timeline.from(elements, { ...vars, stagger: decalage }, i === 0 ? 0 : "-=0.3");
+  });
+  return timeline;
+}
 
 export { gsap, ScrollTrigger, SplitText, useGSAP };

@@ -8,12 +8,17 @@ import type { ReactNode } from "react";
  *
  * Les valeurs sont celles d'un projet d'exemple (une boutique et son panier),
  * cohérentes avec la séance de l'ouverture.
+ *
+ * Chaque aperçu se construit quand sa carte arrive en haut de la pile (gestes
+ * en `data-trace`, joués par `Phases`) : les coches se posent une à une, les
+ * colonnes de la mesure montent. L'aperçu raconte ce que la phase a vérifié.
  */
 
 function Coche({ ok = true }: { ok?: boolean }) {
   return (
     <span
       aria-hidden="true"
+      data-trace="coche"
       className={`inline-flex size-4 shrink-0 items-center justify-center rounded-[3px] text-[10px] font-bold ${
         ok ? "bg-fd-primary text-fd-primary-foreground" : "border"
       }`}
@@ -50,7 +55,7 @@ export function ApercuCadrer() {
     <Cadre titre="docs/scope/scope.md">
       <ul className="flex flex-col divide-y text-sm">
         {lignes.map((l) => (
-          <li key={l.n} className="flex items-center justify-between gap-3 py-2 first:pt-0 last:pb-0">
+          <li key={l.n} data-trace="entree" className="flex items-center justify-between gap-3 py-2 first:pt-0 last:pb-0">
             <span>
               <span className="mr-3 font-snippet text-xs text-fd-muted-foreground">{l.n}</span>
               {l.f}
@@ -82,7 +87,7 @@ export function ApercuFonder() {
           </li>
         ))}
       </ul>
-      <p className="mt-4 flex flex-wrap gap-2 text-xs">
+      <p data-trace="entree" className="mt-4 flex flex-wrap gap-2 text-xs">
         <span className="rounded border px-2 py-1">main protégée</span>
         <span className="rounded border px-2 py-1">develop protégée</span>
       </p>
@@ -102,7 +107,7 @@ export function ApercuConstruire() {
           </li>
         ))}
       </ul>
-      <p className="mt-4 font-snippet text-xs text-fd-primary">3 critères sur 3 constatés sur l&apos;application</p>
+      <p data-trace="entree" className="mt-4 font-snippet text-xs text-fd-primary">3 critères sur 3 constatés sur l&apos;application</p>
     </Cadre>
   );
 }
@@ -120,7 +125,7 @@ export function ApercuLivrer() {
           </li>
         ))}
       </ul>
-      <span className="mt-4 inline-flex rounded-[3px] bg-fd-primary px-3 py-1.5 text-xs font-semibold text-fd-primary-foreground">
+      <span data-trace="point" className="mt-4 inline-flex rounded-[3px] bg-fd-primary px-3 py-1.5 text-xs font-semibold text-fd-primary-foreground">
         Fusionner
       </span>
     </Cadre>
@@ -141,12 +146,13 @@ export function ApercuExploiter() {
         {BARRES.map((h, i) => (
           <span
             key={i}
+            data-trace="montee"
             className="flex-1 rounded-t-[2px] bg-gradient-to-t from-transparent to-fd-primary"
             style={{ height: `${h}%` }}
           />
         ))}
       </div>
-      <p className="mt-3 text-xs text-fd-muted-foreground">Sous le seuil : aucune brique à ajouter (MF-014).</p>
+      <p data-trace="entree" className="mt-3 text-xs text-fd-muted-foreground">Sous le seuil : aucune brique à ajouter (MF-014).</p>
     </Cadre>
   );
 }

@@ -354,7 +354,8 @@ export default function Accueil() {
           </section>
 
           {/* La réponse, en bande sombre : les cinq phases, puis ce qui a été dénombré. */}
-          <section className="relative overflow-hidden py-24 sm:py-28">
+          {/* `overflow-clip` et non `hidden` : un conteneur `hidden` défile en interne, et les cartes et l'index `sticky` qu'il contient ne colleraient plus. */}
+          <section className="relative overflow-clip py-24 sm:py-28">
             {/* Le halo naît en fondu : sans ce masque, il dessinerait une arête au bord de la section. */}
             <div
               aria-hidden="true"
@@ -381,12 +382,9 @@ export default function Accueil() {
               </div>
 
               <dl className="mt-20 grid grid-cols-2 gap-px overflow-hidden border bg-fd-border md:grid-cols-4">
+                {/* Les cellules restent en place : seuls le nombre et son libellé s'animent. */}
                 {CHIFFRES.map((c) => (
-                  <div
-                    key={c.libelle}
-                    data-anime="carte"
-                    className="bg-fd-background p-6"
-                  >
+                  <div key={c.libelle} className="bg-fd-background p-6">
                     <dt className="sr-only">{c.libelle}</dt>
                     <dd>
                       <span
@@ -396,7 +394,10 @@ export default function Accueil() {
                       >
                         {c.valeur}
                       </span>
-                      <span className="mt-3 block text-sm text-fd-muted-foreground">
+                      <span
+                        data-anime="libelle"
+                        className="mt-3 block text-sm text-fd-muted-foreground"
+                      >
                         {c.libelle}
                       </span>
                     </dd>

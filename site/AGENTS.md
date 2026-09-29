@@ -11,8 +11,8 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 | `scripts/sync.mjs` | la liste et l'ordre des pages (`PAGES`), la conversion en MDX, tous les fichiers de `public/` dérivés |
 | `src/app/theme-flow.css` | la palette verte, ses dérivées claires et la mesure de contraste de chaque valeur |
 | `src/app/globals.css` | l'habillage repris de Maedow Arch : fontes, trame, panneau de contenu, code |
-| `src/lib/animation.ts` | le vocabulaire d'animation : courbes, durées, décalages, seuil, repris de Maedow Arch |
-| `src/components/Scene.tsx`, `SceneHero.tsx` | les animations de l'accueil, par rôle (`data-anime`, `data-hero`) |
+| `src/lib/animation.ts` | le vocabulaire d'animation : courbes, durées, décalages, seuil, repris de Maedow Arch ; `tracer`, qui construit un dessin geste par geste (`data-trace`) |
+| `src/components/Scene.tsx`, `SceneHero.tsx` | les animations de l'accueil, par rôle (`data-anime`, `data-hero`) ; la séance de l'ouverture se joue dans `SceneHero` (`data-seance`) |
 | `src/components/accueil/` | les pièces de l'accueil : conversation de l'ouverture, dalles de verre, phases et leurs aperçus, briques, dérives, pixels |
 | `src/app/icon.svg` | le favicon, tiré de la marque du logo (les trois chevrons) |
 | `src/lib/site.ts` | les adresses publiques et le prompt d'amorçage de la page d'accueil |
@@ -22,7 +22,7 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 ## Conventions
 
 - Ne jamais écrire dans `content/docs/` ni dans les fichiers dérivés de `public/` : ils sont régénérés à chaque build et ne sont pas versionnés.
-- L'accueil alterne des bandes `flow-sombre` et `flow-clair`, fixes quel que soit le thème : chacune redéfinit les jetons `fd-` pour son sous-arbre. Le bouton de thème vit dans la documentation.
+- L'accueil est sombre de bout en bout, quel que soit le thème : `flow-sombre` enveloppe la page, et les bandes `flow-releve` en relèvent le ton ; chacune redéfinit les jetons `fd-` pour son sous-arbre. Le bouton de thème vit dans la documentation.
 - Le design system est celui de Maedow Arch, transposé en verts. Une couleur de texte ajoutée porte sa mesure de contraste en regard, et passe le seuil AA sur la surface la plus défavorable où elle s'affiche, pas seulement sur le fond.
 - Une animation se déclare par un rôle (`data-anime="carte"`…), jamais par des valeurs locales : durées et courbes vivent dans `src/lib/animation.ts`. Tout est en `from` et en `once`, sous `prefers-reduced-motion: no-preference` ; sans JavaScript, la page est entière. Un élément proche du bas du document se déclenche à son entrée dans l'écran (`top bottom`) : au seuil commun, il n'atteindrait jamais la ligne et resterait invisible.
 - Les chiffres de l'accueil viennent de `src/lib/chiffres.json`, dénombré dans le dépôt par `scripts/sync.mjs` et non versionné.
@@ -36,4 +36,6 @@ Le site publie le corpus pour les humains (pages Fumadocs) et pour les agents (`
 - Sur Vercel, le répertoire racine du projet est `site/`, et l'option « inclure les fichiers hors du répertoire racine » doit rester active : le build lit `../corpus`, `../templates` et `../scripts`.
 - La protection des déploiements Vercel reste désactivée sur ce projet. Un site que les agents ne peuvent pas lire sans se connecter n'a plus d'objet ; un projet Vercel neuf l'active par défaut.
 - Le premier déploiement d'un projet Vercel neuf part en production, même demandé depuis une branche de feature. Le projet a donc été lié sans déploiement, et la production n'est venue que de `main`.
+- Un élément `sticky` ne colle plus dès qu'un ancêtre est en `overflow: hidden`, qui en fait un conteneur de défilement : une section qui en contient un s'habille en `overflow-clip`. De même, une règle hors couche l'emporte sur les utilitaires Tailwind : `.flow-coins` pose son `position: relative` dans `@layer components`, sans quoi `md:sticky` serait ignoré.
+- ScrollTrigger mesure un élément `sticky` là où il est collé, pas à sa place dans le flux. Les cartes empilées des phases calculent donc leurs positions de collage à partir de leur colonne, qui ne colle pas (`Phases.tsx`).
 - Le MDX interprète `{`, `}` et `<` : `sync.mjs` les échappe hors du code. Un composant JSX ne peut donc pas être écrit dans le corpus, et c'est voulu : le corpus reste du Markdown lisible partout.

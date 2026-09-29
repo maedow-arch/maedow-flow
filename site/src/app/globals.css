@@ -287,8 +287,11 @@ html {
  * Les coins marqués : quatre carrés pleins aux angles d'un cadre, la signature
  * des références. Un seul pseudo-élément et quatre fonds, sans balise ajoutée.
  */
-.flow-coins {
-  position: relative;
+/* Dans la couche `components` : un utilitaire comme `md:sticky` doit pouvoir remplacer ce `relative`. */
+@layer components {
+  .flow-coins {
+    position: relative;
+  }
 }
 
 .flow-coins::after {
@@ -307,6 +310,53 @@ html {
 /* La couleur du refus, adaptée à la bande : 5,93:1 sur carte sombre, 5,94:1 sur carte claire. */
 .flow-refus {
   color: var(--flow-refus);
+}
+
+/*
+ * Les trois points de « en train d'écrire » de la séance. Ils ne paraissent que
+ * lorsque le script joue la séance ; sous mouvement réduit, ils ne sont jamais
+ * montrés, et ne battent pas.
+ */
+.flow-saisie > span {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--color-fd-muted-foreground);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .flow-saisie > span {
+    animation: flow-saisie 1.1s ease-in-out infinite;
+  }
+  .flow-saisie > span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .flow-saisie > span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+}
+/* Le curseur de ta bulle, avant que la séance ne commence. */
+@media (prefers-reduced-motion: no-preference) {
+  .flow-curseur {
+    animation: flow-clignote 1s steps(1) infinite;
+  }
+}
+@keyframes flow-clignote {
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes flow-saisie {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 
 /*
