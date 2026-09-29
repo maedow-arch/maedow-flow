@@ -23,7 +23,7 @@ import { ARCH_URL, PROMPT_AMORCAGE, REPO_URL, SKILLS_URL } from "@/lib/site";
  * un titre centré et léger, une démonstration encadrée en pièce maîtresse, des
  * bandes sombres et claires qui alternent, des cartes aux coins marqués.
  *
- * Les bandes (`flow-sombre`, `flow-clair`) sont fixes quel que soit le thème :
+ * Les bandes (`flow-sombre`, `flow-releve`) sont fixes quel que soit le thème :
  * c'est l'alternance qui donne son rythme à la page. Le bouton de thème vit donc
  * dans la documentation, pas ici, où il ne changerait rien.
  */
@@ -218,7 +218,7 @@ export default function Accueil() {
 
         <Scene className="w-full">
           {/* Les agents avec lesquels le kit s'installe, sans plugin propriétaire. */}
-          <section className="flow-clair border-b">
+          <section className="border-y bg-fd-card/50">
             <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 py-7 text-sm sm:flex-row">
               <span className="shrink-0 text-fd-muted-foreground sm:w-44">Le kit s&apos;installe avec</span>
               <span aria-hidden="true" className="hidden h-6 w-px shrink-0 bg-fd-border sm:inline-flex" />
@@ -233,7 +233,7 @@ export default function Accueil() {
           </section>
 
           {/* Le problème, en bande claire. */}
-          <section className="flow-clair py-24 sm:py-28">
+          <section className="flow-releve py-24 sm:py-28">
             <div className="mx-auto max-w-6xl px-4">
               <SectionBadge>Le problème</SectionBadge>
               <h2 data-anime="titre" className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
@@ -259,7 +259,11 @@ export default function Accueil() {
 
           {/* La réponse, en bande sombre : les cinq phases, puis ce qui a été dénombré. */}
           <section className="relative overflow-hidden py-24 sm:py-28">
-            <div aria-hidden="true" className="flow-glow pointer-events-none absolute inset-0" />
+            {/* Le halo naît en fondu : sans ce masque, il dessinerait une arête au bord de la section. */}
+            <div
+              aria-hidden="true"
+              className="flow-glow pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_160px)]"
+            />
             <div className="relative mx-auto max-w-6xl px-4">
               <SectionBadge>La réponse</SectionBadge>
               <h2 data-anime="titre" className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
@@ -290,7 +294,7 @@ export default function Accueil() {
           </section>
 
           {/* Ce que Maedow Flow réunit, en bande claire. */}
-          <section className="flow-clair py-24 sm:py-28">
+          <section className="flow-releve py-24 sm:py-28">
             <div className="mx-auto max-w-6xl px-4">
               <SectionBadge>Capacités</SectionBadge>
               <h2 data-anime="titre" className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
@@ -377,9 +381,9 @@ rm flow.mjs`}
           </section>
 
           {/* Les questions, en bande claire, sur deux colonnes. */}
-          <section className="flow-clair py-24 sm:py-28">
+          <section className="flow-releve py-24 sm:py-28">
             <div className="mx-auto grid max-w-6xl gap-12 px-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-              <div className="flex flex-col">
+              <div className="flex flex-col items-start">
                 <SectionBadge>FAQ</SectionBadge>
                 <h2 data-anime="titre" className="font-heading mt-5 text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
                   Ce que Maedow Flow n&apos;est pas
@@ -405,16 +409,19 @@ rm flow.mjs`}
           {/* L'appel final, bordé de pixels verts. */}
           <section className="relative overflow-hidden border-b">
             <Pixels />
-            <div className="relative mx-auto flex max-w-3xl flex-col items-center px-4 py-36 text-center">
+            <div className="relative mx-auto flex max-w-5xl flex-col items-center px-4 py-36 text-center">
               <SectionBadge>Commencer</SectionBadge>
-              <h2 data-anime="titre" className="font-heading mt-5 text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
+              <h2
+                data-anime="titre"
+                className="font-heading mt-5 text-[clamp(1.9rem,4.4vw,3.25rem)] font-medium tracking-[-0.03em] sm:whitespace-nowrap"
+              >
                 Prêt à cadrer ton prochain projet&nbsp;?
               </h2>
               <p data-anime="intro" className="mt-5 max-w-xl text-fd-muted-foreground">
                 Le premier message à donner à ton agent, dans un dossier vide ou un projet existant : Claude Code,
                 Cursor, Codex ou tout agent qui dispose d&apos;un terminal.
               </p>
-              <div data-anime="carte" className="flow-terminal mt-10 w-full text-left">
+              <div data-anime="carte" className="flow-terminal mt-10 w-full max-w-3xl text-left">
                 <BlocTexte className="my-0" titre="Prompt d'amorçage" texte={PROMPT_AMORCAGE} />
               </div>
               <div className="mt-10 flex flex-wrap justify-center gap-3">

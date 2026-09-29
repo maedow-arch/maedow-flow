@@ -127,6 +127,37 @@ export function Scene({ children, className }: { children: ReactNode; className?
         }
 
         /*
+         * Les pixels de l'appel final scintillent.
+         *
+         * C'est, avec la dérive de la trame de l'ouverture, le seul mouvement
+         * continu de la page : chaque pixel pulse à son propre rythme et dérive
+         * de quelques pixels, comme une matière vivante autour de l'appel. Le
+         * mouvement ne tourne que lorsque la section est à l'écran : hors de
+         * vue, il ne coûte rien.
+         */
+        const pixels = scope.querySelectorAll<HTMLElement>('[data-anime="pixel"]');
+        const zone = pixels[0]?.closest("section");
+        if (pixels.length > 0 && zone) {
+          const scintillement = gsap.to(pixels, {
+            opacity: () => gsap.utils.random(0.06, 0.4),
+            y: () => gsap.utils.random(-7, 7),
+            duration: () => gsap.utils.random(0.7, 1.9),
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+            repeatRefresh: true,
+            stagger: { each: 0.035, from: "random" },
+            paused: true,
+          });
+          ScrollTrigger.create({
+            trigger: zone,
+            start: "top bottom",
+            end: "bottom top",
+            onToggle: (self) => (self.isActive ? scintillement.play() : scintillement.pause()),
+          });
+        }
+
+        /*
          * Le pied de page, sobrement, de gauche à droite.
          *
          * Il se déclenche à son entrée dans l'écran, pas au seuil commun : il est

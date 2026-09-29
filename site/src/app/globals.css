@@ -252,23 +252,35 @@ html {
   color: var(--color-fd-foreground);
 }
 
-.flow-clair {
-  --color-fd-background: var(--color-flow-givre);
-  --color-fd-foreground: var(--color-flow-espace);
-  --color-fd-card: #ffffff;
-  --color-fd-card-foreground: var(--color-flow-espace);
-  --color-fd-muted: var(--color-flow-nacre);
-  --color-fd-muted-foreground: var(--color-flow-brume-encre);
-  --color-fd-secondary: var(--color-flow-nacre);
-  --color-fd-accent: #e8f3ec;
-  --color-fd-accent-foreground: var(--color-flow-foret);
-  --color-fd-border: var(--color-flow-lisere);
-  --color-fd-primary: var(--color-flow-vert-encre);
-  --color-fd-primary-foreground: var(--color-flow-givre);
-  --flow-dots-color: color-mix(in srgb, var(--color-flow-foret) 22%, transparent);
-  --flow-refus: var(--color-flow-alerte-encre);
-  background-color: var(--color-fd-background);
-  color: var(--color-fd-foreground);
+/*
+ * La bande relevée. Elle remplace une bande claire jugée trop agressive dans un
+ * site sombre : un blanc qui surgit après du noir éblouit, et la coupure nette
+ * en rajoute. Ici, un noir-vert à peine plus clair, qui naît et s'efface en
+ * dégradé sur 140 px, avec un halo vert qui culmine juste après ce dégradé
+ * (et non au bord, où il dessinerait une arête) : l'alternance garde son rythme
+ * sans heurt.
+ *
+ * Mesures sur #0d1712 : givre 17,29:1, brume 8,50:1, vert 12,76:1. Sur les
+ * cartes (#122019) : givre 16,13:1, brume 7,93:1, vert 11,90:1, refus 5,39:1.
+ */
+.flow-releve {
+  --color-fd-card: #122019;
+  --color-fd-muted: #122019;
+  --color-fd-accent: #17271f;
+  --color-fd-border: #22342b;
+  background:
+    radial-gradient(
+      ellipse 50% 260px at 50% 170px,
+      color-mix(in srgb, var(--color-flow-vert) 7%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-flow-espace) 0,
+      #0d1712 140px,
+      #0d1712 calc(100% - 140px),
+      var(--color-flow-espace) 100%
+    );
 }
 
 /*
