@@ -10,8 +10,11 @@ import { LogoMark } from "@/components/Logo";
  * corpus ; une démonstration qui inventerait ses répliques promettrait ce que le
  * kit ne tient pas.
  *
- * Chaque message porte `data-hero="ligne"` : SceneHero les fait arriver un à
- * un. Sans script, ils sont tous là.
+ * La séance se joue quand on arrive dessus (SceneHero) : ta demande se tape,
+ * l'agent et Maedow Flow « écrivent » avant de répondre, et leurs réponses se
+ * génèrent mot à mot. Les éléments déclarent leur rôle en `data-seance`. Sans
+ * script ou sous mouvement réduit, toute la séance est là, et l'indicateur de
+ * saisie reste caché.
  */
 
 type Message =
@@ -32,14 +35,32 @@ const MESSAGES: Message[] = [
 function Avatar({ qui }: { qui: "agent" | "flow" }) {
   if (qui === "flow") {
     return (
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-fd-background text-fd-primary">
+      <span data-seance="avatar" className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-fd-background text-fd-primary">
         <LogoMark className="size-4" />
       </span>
     );
   }
   return (
-    <span className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-fd-background font-snippet text-xs text-fd-muted-foreground">
+    <span
+      data-seance="avatar"
+      className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-fd-background font-snippet text-xs text-fd-muted-foreground"
+    >
       IA
+    </span>
+  );
+}
+
+/* Les trois points de « en train d'écrire », posés là où la réponse va paraître. */
+function Saisie() {
+  return (
+    <span
+      aria-hidden="true"
+      data-seance="saisie"
+      className="flow-saisie invisible absolute top-0 left-11 inline-flex h-10 items-center gap-1 rounded-lg border bg-fd-background px-4 opacity-0"
+    >
+      <span />
+      <span />
+      <span />
     </span>
   );
 }
@@ -50,21 +71,34 @@ export function Conversation() {
       <figcaption className="flex items-center justify-between gap-4 border-b px-5 py-3 text-sm">
         <span className="text-fd-muted-foreground">Une séance avec ton agent</span>
         <span className="inline-flex items-center gap-2 text-xs font-medium">
-          <span aria-hidden="true" className="size-1.5 rounded-full bg-fd-primary" />
+          <span aria-hidden="true" className="relative flex size-1.5">
+            <span data-seance="veille" className="absolute inset-0 rounded-full bg-fd-primary opacity-0" />
+            <span className="size-1.5 rounded-full bg-fd-primary" />
+          </span>
           Maedow Flow actif
         </span>
       </figcaption>
       <ol className="flex flex-col gap-4 px-4 py-6 sm:px-8 sm:py-8">
         {MESSAGES.map((m, i) =>
           m.qui === "toi" ? (
-            <li key={i} data-hero="ligne" className="flex justify-end">
-              <p className="max-w-[26rem] rounded-lg border bg-fd-background px-4 py-2.5 text-sm">{m.texte}</p>
+            <li key={i} data-seance="message" data-qui="toi" className="flex justify-end">
+              <p className="max-w-104 rounded-lg border bg-fd-background px-4 py-2.5 text-sm">
+                <span data-seance="frappe">{m.texte}</span>
+                <span
+                  aria-hidden="true"
+                  data-seance="curseur"
+                  className="flow-curseur ml-px hidden h-[1.1em] w-px translate-y-[0.2em] bg-fd-primary"
+                />
+              </p>
             </li>
           ) : (
-            <li key={i} data-hero="ligne" className="flex items-start gap-3">
+            <li key={i} data-seance="message" data-qui={m.qui} className="relative flex items-start gap-3">
               <Avatar qui={m.qui} />
+              <Saisie />
               <div
-                className={`max-w-[34rem] rounded-lg border px-4 py-2.5 text-sm ${
+                data-seance="bulle"
+                data-issue={m.qui === "flow" ? m.issue : undefined}
+                className={`max-w-136 rounded-lg border px-4 py-2.5 text-sm ${
                   m.qui === "flow" && m.issue === "refus"
                     ? "border-[color-mix(in_srgb,var(--flow-refus)_45%,transparent)] bg-[color-mix(in_srgb,var(--flow-refus)_8%,transparent)]"
                     : m.qui === "flow"
@@ -74,6 +108,7 @@ export function Conversation() {
               >
                 {m.qui === "flow" ? (
                   <span
+                    data-seance="verdict"
                     className={`mb-1 inline-flex items-center gap-1.5 font-snippet text-xs font-medium ${
                       m.issue === "refus" ? "flow-refus" : "text-fd-primary"
                     }`}
@@ -82,11 +117,16 @@ export function Conversation() {
                   </span>
                 ) : null}
                 {m.qui === "agent" && m.code ? (
-                  <code className="mb-1.5 block w-fit rounded bg-fd-card px-2 py-1 font-snippet text-xs text-fd-muted-foreground">
+                  <code
+                    data-seance="code"
+                    className="mb-1.5 block w-fit rounded bg-fd-card px-2 py-1 font-snippet text-xs text-fd-muted-foreground"
+                  >
                     {m.code}
                   </code>
                 ) : null}
-                <p className={m.qui === "flow" ? "text-fd-foreground" : ""}>{m.texte}</p>
+                <p data-seance="texte" className={m.qui === "flow" ? "text-fd-foreground" : ""}>
+                  {m.texte}
+                </p>
               </div>
             </li>
           ),
