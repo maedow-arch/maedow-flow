@@ -1,8 +1,27 @@
 "use client";
 
-import { useRef, useState, type MouseEvent, type ReactNode } from "react";
-import { COURBE, ScrollTrigger, enregistrerAnimation, gsap, tracer, useGSAP } from "@/lib/animation";
-import { ApercuCadrer, ApercuConstruire, ApercuExploiter, ApercuFonder, ApercuLivrer } from "./Apercus";
+import {
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+  type CSSProperties,
+} from "react";
+import {
+  COURBE,
+  ScrollTrigger,
+  enregistrerAnimation,
+  gsap,
+  tracer,
+  useGSAP,
+} from "@/lib/animation";
+import {
+  ApercuCadrer,
+  ApercuConstruire,
+  ApercuExploiter,
+  ApercuFonder,
+  ApercuLivrer,
+} from "./Apercus";
 
 enregistrerAnimation();
 
@@ -34,7 +53,13 @@ enregistrerAnimation();
 const HAUT = 112;
 const CRAN = 16;
 
-const PHASES: { id: string; nom: string; porte: string; texte: string; apercu: ReactNode }[] = [
+const PHASES: {
+  id: string;
+  nom: string;
+  porte: string;
+  texte: string;
+  apercu: ReactNode;
+}[] = [
   {
     id: "cadrer",
     nom: "Cadrer",
@@ -54,7 +79,8 @@ const PHASES: { id: string; nom: string; porte: string; texte: string; apercu: R
   {
     id: "construire",
     nom: "Construire",
-    porte: "Chaque critère d'acceptation est constaté sur l'application qui tourne.",
+    porte:
+      "Chaque critère d'acceptation est constaté sur l'application qui tourne.",
     texte:
       "Une feature à la fois, sur sa branche. Des tests verts ne suffisent pas : /check verify fait tourner l'application et constate chaque critère avant que la pull request parte.",
     apercu: <ApercuConstruire />,
@@ -62,7 +88,8 @@ const PHASES: { id: string; nom: string; porte: string; texte: string; apercu: R
   {
     id: "livrer",
     nom: "Livrer",
-    porte: "Les parcours critiques sont vérifiés, aucun constat critique n'est ouvert.",
+    porte:
+      "Les parcours critiques sont vérifiés, aucun constat critique n'est ouvert.",
     texte:
       "Revue d'ensemble sur un regard neuf, revue de sécurité, parcours complets constatés sur l'aperçu. Puis develop rejoint main, par pull request, et c'est toi qui fusionnes.",
     apercu: <ApercuLivrer />,
@@ -88,7 +115,9 @@ export function Phases() {
     () => {
       const colonne = pile.current;
       if (!colonne) return;
-      const cartes = Array.from(colonne.querySelectorAll<HTMLElement>("[data-phase]"));
+      const cartes = Array.from(
+        colonne.querySelectorAll<HTMLElement>("[data-phase]"),
+      );
       const dernier = cartes.length - 1;
 
       function mesurer() {
@@ -123,9 +152,15 @@ export function Phases() {
 
       const media = gsap.matchMedia();
       media.add(
-        { mouvement: "(prefers-reduced-motion: no-preference)", empile: "(min-width: 768px)" },
+        {
+          mouvement: "(prefers-reduced-motion: no-preference)",
+          empile: "(min-width: 768px)",
+        },
         (contexte) => {
-          const { mouvement, empile } = contexte.conditions as { mouvement: boolean; empile: boolean };
+          const { mouvement, empile } = contexte.conditions as {
+            mouvement: boolean;
+            empile: boolean;
+          };
           if (!mouvement) return;
 
           /* L'aperçu de chaque carte se construit quand elle approche de sa place : on voit la phase produire son artefact. */
@@ -188,19 +223,27 @@ export function Phases() {
     const cible = collages.current[i];
     if (cible === undefined) return;
     evenement.preventDefault();
-    const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduit = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     window.scrollTo({ top: cible, behavior: reduit ? "auto" : "smooth" });
   }
 
   return (
-    <div ref={racine} className="grid gap-10 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-14">
+    <div
+      ref={racine}
+      className="grid gap-10 lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-14"
+    >
       <nav aria-label="Les cinq phases" className="hidden lg:block">
         {/* Le repère vert glisse d'une phase à l'autre : on voit le chemin parcouru, pas seulement l'étape. */}
         <div className="sticky top-28 border-l">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute top-0 -left-px w-0.5 bg-fd-primary transition-transform duration-500 ease-out motion-reduce:transition-none"
-            style={{ height: `${100 / PHASES.length}%`, transform: `translateY(${actif * 100}%)` }}
+            style={{
+              height: `${100 / PHASES.length}%`,
+              transform: `translateY(${actif * 100}%)`,
+            }}
           />
           <ol className="flex flex-col">
             {PHASES.map((p, i) => (
@@ -210,10 +253,14 @@ export function Phases() {
                   onClick={(e) => aller(i, e)}
                   aria-current={actif === i ? "step" : undefined}
                   className={`flex items-center gap-3 border-b py-3 pl-4 text-sm transition-colors duration-300 ${
-                    actif === i ? "text-fd-foreground" : "text-fd-muted-foreground hover:text-fd-foreground"
+                    actif === i
+                      ? "text-fd-foreground"
+                      : "text-fd-muted-foreground hover:text-fd-foreground"
                   }`}
                 >
-                  <span className="font-snippet text-xs text-fd-muted-foreground">{i}</span>
+                  <span className="font-snippet text-xs text-fd-muted-foreground">
+                    {i}
+                  </span>
                   {p.nom}
                 </a>
               </li>
@@ -228,12 +275,21 @@ export function Phases() {
             key={p.id}
             id={`phase-${p.id}`}
             data-phase
-            style={{ top: HAUT + i * CRAN, scrollMarginTop: HAUT + i * CRAN }}
-            className="flow-coins grid gap-8 border bg-fd-card p-6 sm:p-8 md:sticky md:grid-cols-2"
+            style={
+              {
+                "--collage": `${HAUT + i * CRAN}px`,
+                scrollMarginTop: HAUT + i * CRAN,
+              } as CSSProperties
+            }
+            className="flow-coins grid gap-8 border bg-fd-card p-6 sm:p-8 md:sticky md:top-(--collage) md:grid-cols-2"
           >
             <div className="flex flex-col">
-              <p className="font-snippet text-xs text-fd-muted-foreground">Phase {i}</p>
-              <h3 className="font-heading mt-2 text-2xl font-medium tracking-tight sm:text-3xl">{p.nom}</h3>
+              <p className="font-snippet text-xs text-fd-muted-foreground">
+                Phase {i}
+              </p>
+              <h3 className="font-heading mt-2 text-2xl font-medium tracking-tight sm:text-3xl">
+                {p.nom}
+              </h3>
               <p className="mt-3 text-sm text-fd-muted-foreground">{p.texte}</p>
               <p className="mt-auto pt-8 text-sm">
                 <span className="text-fd-primary">Porte : </span>
@@ -244,7 +300,11 @@ export function Phases() {
               {p.apercu}
             </div>
             {/* Le voile d'une carte recouverte : ouvert sans script et sous mouvement réduit. */}
-            <span aria-hidden="true" data-voile className="pointer-events-none absolute inset-0 bg-fd-background opacity-0" />
+            <span
+              aria-hidden="true"
+              data-voile
+              className="pointer-events-none absolute inset-0 bg-fd-background opacity-0"
+            />
           </article>
         ))}
       </div>
