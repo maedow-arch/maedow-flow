@@ -7,7 +7,7 @@ import { BlocTexte } from "@/components/BlocTexte";
 import { DefilementDoux } from "@/components/DefilementDoux";
 import { Faq } from "@/components/Faq";
 import { GithubIcon } from "@/components/GithubIcon";
-import { Logo, LogoMark } from "@/components/Logo";
+import { Logo, LogoContour, LogoMark } from "@/components/Logo";
 import { NavbarCondensee } from "@/components/NavbarCondensee";
 import { Scene } from "@/components/Scene";
 import { SceneHero } from "@/components/SceneHero";
@@ -730,11 +730,12 @@ rm flow.mjs`}
                 </a>
               </div>
             </div>
-            {/* La signature : le nom en contour, à peine visible, qui déborde du bas de la page. */}
+            {/* La signature : le logo en contour, marque et nom, à peine visible, qui déborde du bas de la page. */}
             <p
               aria-hidden="true"
-              className="flow-signature font-heading -mb-[0.22em] text-center text-[13.2vw] leading-none font-medium tracking-[-0.04em] whitespace-nowrap select-none"
+              className="flow-signature font-heading -mb-[0.22em] text-center text-[11.2vw] leading-none font-medium tracking-[-0.04em] whitespace-nowrap select-none"
             >
+              <LogoContour className="mr-[0.26em] inline-block h-[0.73em] w-auto align-baseline" />
               Maedow Flow
             </p>
           </footer>

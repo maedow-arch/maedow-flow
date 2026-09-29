@@ -401,6 +401,13 @@ html {
  * visible : c'est une signature, pas un titre.
  */
 .flow-signature {
+  --flow-signature-trait: color-mix(in srgb, var(--color-flow-vert) 28%, transparent);
   color: transparent;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-flow-vert) 28%, transparent);
+  -webkit-text-stroke: 1px var(--flow-signature-trait);
+}
+/* La marque qui précède le nom, du même liseré que les lettres. */
+.flow-signature svg {
+  fill: none;
+  stroke: var(--flow-signature-trait);
+  stroke-width: 1px;
 }
