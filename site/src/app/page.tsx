@@ -383,7 +383,8 @@ rm flow.mjs`}
           {/* Les questions, en bande claire, sur deux colonnes. */}
           <section className="flow-releve py-24 sm:py-28">
             <div className="mx-auto grid max-w-6xl gap-12 px-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-              <div className="flex flex-col items-start">
+              {/* La colonne de gauche reste en haut : déplier une réponse ne doit rien y déplacer. */}
+              <div className="flex flex-col items-start lg:self-start">
                 <SectionBadge>FAQ</SectionBadge>
                 <h2 data-anime="titre" className="font-heading mt-5 text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
                   Ce que Maedow Flow n&apos;est pas
@@ -391,7 +392,7 @@ rm flow.mjs`}
                 <p data-anime="intro" className="mt-5 text-fd-muted-foreground">
                   Les questions qui reviennent, répondues sans détour.
                 </p>
-                <div className="mt-10 lg:mt-auto">
+                <div className="mt-12">
                   <p className="font-medium">Une autre question ?</p>
                   <p className="mt-1 text-sm text-fd-muted-foreground">Le corpus y répond, page par page.</p>
                   <Link
