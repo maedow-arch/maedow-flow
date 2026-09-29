@@ -102,6 +102,23 @@ function relier(markdown, base = "") {
 }
 
 /**
+ * Fumadocs enveloppe chaque titre dans un lien vers sa propre ancre : un lien
+ * écrit dans un titre du corpus (`## Secrets ([MF-006](regles.md#…))`) donnerait
+ * un `<a>` dans un `<a>`, invalide en HTML, et React refuse de l'hydrater. Sur
+ * le site, le titre garde le texte du lien ; le corpus et les fichiers pour
+ * agents gardent le lien. Les blocs de code, où `#` ouvre un commentaire, ne
+ * sont pas touchés.
+ */
+function titresSansLien(markdown) {
+  return markdown
+    .split(/(```[\s\S]*?```)/)
+    .map((bloc, i) =>
+      i % 2 === 1 ? bloc : bloc.replace(/^#{1,6} .*$/gm, (titre) => titre.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")),
+    )
+    .join("");
+}
+
+/**
  * Le MDX lit `{`, `}` et `<` comme du code. Hors des blocs et du code en ligne,
  * ce sont ici des caractères de texte : on les échappe.
  */
@@ -143,7 +160,7 @@ if (orphelins.length) {
 /* Les pages du site. */
 for (const page of PAGES) {
   const entete = `---\ntitle: ${yaml(page.titre)}\ndescription: ${yaml(page.description)}\n---\n\n`;
-  writeFileSync(join(CONTENU, `${page.slug}.mdx`), entete + versMdx(relier(sansTitre(sources.get(page.fichier)))));
+  writeFileSync(join(CONTENU, `${page.slug}.mdx`), entete + versMdx(titresSansLien(relier(sansTitre(sources.get(page.fichier))))));
 }
 writeFileSync(join(CONTENU, "meta.json"), `${JSON.stringify({ title: "Maedow Flow", pages: PAGES.map((p) => p.slug) }, null, 2)}\n`);
 
