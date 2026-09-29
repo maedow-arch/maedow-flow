@@ -5,6 +5,10 @@
  * donc le même dessin au rendu serveur et au rendu client, sans écart
  * d'hydratation. Les pixels se densifient vers le bord, comme une matière qui
  * s'effrite vers le contenu.
+ *
+ * Chaque pixel porte `data-anime="pixel"` : Scene le fait scintiller tant que
+ * la section est à l'écran. Sans script ou en mouvement réduit, la trame est
+ * fixe, telle que dessinée ici.
  */
 
 function generateur(graine: number) {
@@ -33,6 +37,7 @@ function Bande({ graine, bas }: { graine: number; bas: boolean }) {
       {trame(graine, 46, bas).map((p, i) => (
         <span
           key={i}
+          data-anime="pixel"
           className="absolute size-[6px] bg-fd-primary"
           style={{ left: `${p.x}%`, top: `${p.y}%`, opacity: p.opacite }}
         />
