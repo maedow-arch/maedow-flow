@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { FullSearchTrigger, SearchTrigger } from "fumadocs-ui/layouts/shared/slots/search-trigger";
+import {
+  FullSearchTrigger,
+  SearchTrigger,
+} from "fumadocs-ui/layouts/shared/slots/search-trigger";
 import { BlocTexte } from "@/components/BlocTexte";
 import { DefilementDoux } from "@/components/DefilementDoux";
 import { Faq } from "@/components/Faq";
@@ -11,7 +14,11 @@ import { SceneHero } from "@/components/SceneHero";
 import { SectionBadge } from "@/components/SectionBadge";
 import { Briques } from "@/components/accueil/Briques";
 import { Conversation } from "@/components/accueil/Conversation";
-import { DeriveDecisions, DeriveMemoire, DerivePerimetre } from "@/components/accueil/Derives";
+import {
+  DeriveDecisions,
+  DeriveMemoire,
+  DerivePerimetre,
+} from "@/components/accueil/Derives";
 import { Phases } from "@/components/accueil/Phases";
 import { Pixels } from "@/components/accueil/Pixels";
 import { Verre } from "@/components/accueil/Verre";
@@ -38,38 +45,64 @@ const NAVIGATION = [
 
 /* Les chiffres viennent de src/lib/chiffres.json, dénombré dans le dépôt par scripts/sync.mjs. */
 const CHIFFRES = [
-  { valeur: chiffres.regles, libelle: "règles codées, chacune avec ce qui la fait respecter" },
-  { valeur: chiffres.phases, libelle: "phases, chacune fermée par une porte vérifiable" },
-  { valeur: chiffres.paliers, libelle: "paliers d'exigence, du prototype à la production" },
-  { valeur: chiffres.fichiers, libelle: "fichiers dans le kit, installés sans rien écraser" },
+  {
+    valeur: chiffres.regles,
+    libelle: "règles codées, chacune avec ce qui la fait respecter",
+  },
+  {
+    valeur: chiffres.phases,
+    libelle: "phases, chacune fermée par une porte vérifiable",
+  },
+  {
+    valeur: chiffres.paliers,
+    libelle: "paliers d'exigence, du prototype à la production",
+  },
+  {
+    valeur: chiffres.fichiers,
+    libelle: "fichiers dans le kit, installés sans rien écraser",
+  },
 ];
 
 /* Ce que dit le manifeste : livré à lui-même, un agent dérive de trois façons. */
 const PROBLEME = [
   {
     titre: "Décisions inventées",
-    texte: "Un agent livré à lui-même invente les décisions qu'on ne lui a pas données.",
+    texte:
+      "Un agent livré à lui-même invente les décisions qu'on ne lui a pas données.",
     visuel: <DeriveDecisions />,
   },
   {
     titre: "Périmètre qui s'élargit",
-    texte: "Il élargit le périmètre au passage, et déclare fini ce qu'il n'a pas vérifié.",
+    texte:
+      "Il élargit le périmètre au passage, et déclare fini ce qu'il n'a pas vérifié.",
     visuel: <DerivePerimetre />,
   },
   {
     titre: "Mémoire perdue",
-    texte: "Il oublie d'une session à l'autre ce qui avait été tranché, et le résultat casse en production.",
+    texte:
+      "Il oublie d'une session à l'autre ce qui avait été tranché, et le résultat casse en production.",
     visuel: <DeriveMemoire />,
   },
 ];
 
-const OUTILS = ["Claude Code", "Cursor", "Codex", "tout agent avec un terminal"];
+const OUTILS = [
+  "Claude Code",
+  "Cursor",
+  "Codex",
+  "tout agent avec un terminal",
+];
 
 const AGENTS = [
   { url: "/llms.txt", role: "L'index, au format llmstxt.org" },
   { url: "/llms-full.txt", role: "Le corpus entier, en un seul fichier texte" },
-  { url: "/md/regles.md", role: "Chaque page en Markdown brut, ici les règles" },
-  { url: "/templates/manifest.json", role: "Le kit : chaque fichier et sa destination" },
+  {
+    url: "/md/regles.md",
+    role: "Chaque page en Markdown brut, ici les règles",
+  },
+  {
+    url: "/templates/manifest.json",
+    role: "Le kit : chaque fichier et sa destination",
+  },
   { url: "/flow.mjs", role: "Le script d'installation, sans dépendance" },
 ];
 
@@ -103,13 +136,19 @@ const QUESTIONS = [
 ];
 
 /* Le bouton principal des références : l'action, précédée de la marque dans un carré sombre. */
-function BoutonPrincipal({ href, children }: { href: string; children: string }) {
+function BoutonPrincipal({
+  href,
+  children,
+}: {
+  href: string;
+  children: string;
+}) {
   return (
     <Link
       href={href}
       className="inline-flex items-center gap-2.5 rounded-[3px] bg-fd-primary py-1.5 pr-4 pl-1.5 text-sm font-semibold text-fd-primary-foreground transition-opacity hover:opacity-90"
     >
-      <span className="flex size-7 items-center justify-center rounded-[2px] bg-fd-background text-fd-primary">
+      <span className="flex size-7 items-center justify-center rounded-xs bg-fd-background text-fd-primary">
         <LogoMark className="size-3.5" />
       </span>
       {children}
@@ -117,7 +156,13 @@ function BoutonPrincipal({ href, children }: { href: string; children: string })
   );
 }
 
-function BoutonSecondaire({ href, children }: { href: string; children: string }) {
+function BoutonSecondaire({
+  href,
+  children,
+}: {
+  href: string;
+  children: string;
+}) {
   return (
     <Link
       href={href}
@@ -146,14 +191,21 @@ export default function Accueil() {
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4">
           <span data-navbar-marque className="inline-flex">
-            <Link href="/" aria-label="Maedow Flow, accueil" className="text-fd-foreground">
+            <Link
+              href="/"
+              aria-label="Maedow Flow, accueil"
+              className="text-fd-foreground"
+            >
               <Logo />
             </Link>
           </span>
           <ul className="hidden items-center gap-5 text-sm text-fd-muted-foreground md:flex">
             {NAVIGATION.map((lien) => (
               <li key={lien.url} data-navbar-action>
-                <Link href={lien.url} className="transition-colors hover:text-fd-foreground">
+                <Link
+                  href={lien.url}
+                  className="transition-colors hover:text-fd-foreground"
+                >
                   {lien.texte}
                 </Link>
               </li>
@@ -191,23 +243,42 @@ export default function Accueil() {
         {/* L'ouverture : titre centré, puis la séance en pièce maîtresse, entre deux colonnes de verre. */}
         <SceneHero>
           <section className="relative -mt-16 overflow-hidden pt-16">
-            <div data-hero="fond" aria-hidden="true" className="flow-dots flow-dots-fade pointer-events-none absolute inset-0" />
-            <div aria-hidden="true" className="flow-glow pointer-events-none absolute inset-0" />
+            <div
+              data-hero="fond"
+              aria-hidden="true"
+              className="flow-dots flow-dots-fade pointer-events-none absolute inset-0"
+            />
+            <div
+              aria-hidden="true"
+              className="flow-glow pointer-events-none absolute inset-0"
+            />
             <Verre />
             <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 pt-20 pb-20 text-center sm:pt-28">
               <h1
                 data-hero="titre"
                 className="font-heading max-w-4xl text-[clamp(2.6rem,6vw,4.75rem)] leading-[1.02] font-medium tracking-[-0.035em] text-balance"
               >
-                Un agent code vite. Maedow Flow décide de l&apos;ordre des choses.
+                Un agent code vite. Maedow Flow décide de l&apos;ordre des
+                choses.
               </h1>
-              <p data-hero="promesse" className="mt-6 max-w-xl text-base text-pretty text-fd-muted-foreground sm:text-lg">
-                Ce qui se décide avant de coder, ce qui se prouve avant de fusionner, et ce qui ne se fait jamais. Pour
-                des applications web, mobiles ou desktop qui tiennent en production.
+              <p
+                data-hero="promesse"
+                className="mt-6 max-w-xl text-base text-pretty text-fd-muted-foreground sm:text-lg"
+              >
+                Ce qui se décide avant de coder, ce qui se prouve avant de
+                fusionner, et ce qui ne se fait jamais. Pour des applications
+                web, mobiles ou desktop qui tiennent en production.
               </p>
-              <div data-hero="actions" className="mt-9 flex flex-wrap items-center justify-center gap-3">
-                <BoutonPrincipal href="/docs/demarrer">Démarrer un projet</BoutonPrincipal>
-                <BoutonSecondaire href="/docs">Lire le manifeste</BoutonSecondaire>
+              <div
+                data-hero="actions"
+                className="mt-9 flex flex-wrap items-center justify-center gap-3"
+              >
+                <BoutonPrincipal href="/docs/demarrer">
+                  Démarrer un projet
+                </BoutonPrincipal>
+                <BoutonSecondaire href="/docs">
+                  Lire le manifeste
+                </BoutonSecondaire>
               </div>
               <div className="mt-16 w-full text-left sm:mt-20">
                 <Conversation />
@@ -220,11 +291,19 @@ export default function Accueil() {
           {/* Les agents avec lesquels le kit s'installe, sans plugin propriétaire. */}
           <section className="border-y bg-fd-card/50">
             <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 py-7 text-sm sm:flex-row">
-              <span className="shrink-0 text-fd-muted-foreground sm:w-44">Le kit s&apos;installe avec</span>
-              <span aria-hidden="true" className="hidden h-6 w-px shrink-0 bg-fd-border sm:inline-flex" />
+              <span className="shrink-0 text-fd-muted-foreground sm:w-44">
+                Le kit s&apos;installe avec
+              </span>
+              <span
+                aria-hidden="true"
+                className="hidden h-6 w-px shrink-0 bg-fd-border sm:inline-flex"
+              />
               <ul className="flex flex-1 flex-wrap items-center justify-center gap-x-10 gap-y-2 sm:justify-around">
                 {OUTILS.map((outil) => (
-                  <li key={outil} className="font-heading text-lg font-medium tracking-tight">
+                  <li
+                    key={outil}
+                    className="font-heading text-lg font-medium tracking-tight"
+                  >
                     {outil}
                   </li>
                 ))}
@@ -236,20 +315,37 @@ export default function Accueil() {
           <section className="flow-releve py-24 sm:py-28">
             <div className="mx-auto max-w-6xl px-4">
               <SectionBadge>Le problème</SectionBadge>
-              <h2 data-anime="titre" className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
+              <h2
+                data-anime="titre"
+                className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl"
+              >
                 Un agent livré à lui-même dérive
               </h2>
-              <p data-anime="intro" className="mt-5 max-w-2xl text-fd-muted-foreground">
-                Un agent IA écrit du code plus vite que n&apos;importe qui. Sans garde-fou, le résultat tient en
-                démonstration et casse en production.
+              <p
+                data-anime="intro"
+                className="mt-5 max-w-2xl text-fd-muted-foreground"
+              >
+                Un agent IA écrit du code plus vite que n&apos;importe qui. Sans
+                garde-fou, le résultat tient en démonstration et casse en
+                production.
               </p>
               <ul className="mt-14 grid gap-5 md:grid-cols-3">
                 {PROBLEME.map((p) => (
-                  <li key={p.titre} data-anime="carte" className="flow-coins min-w-0 border bg-fd-card p-2">
-                    <div className="flow-sombre flex h-44 items-center justify-center rounded-[2px] p-6">{p.visuel}</div>
+                  <li
+                    key={p.titre}
+                    data-anime="carte"
+                    className="flow-coins min-w-0 border bg-fd-card p-2"
+                  >
+                    <div className="flow-sombre flex h-44 items-center justify-center rounded-xs p-6">
+                      {p.visuel}
+                    </div>
                     <div className="p-4 pt-6">
-                      <h3 className="font-heading text-xl font-medium tracking-tight">{p.titre}</h3>
-                      <p className="mt-2 text-sm text-fd-muted-foreground">{p.texte}</p>
+                      <h3 className="font-heading text-xl font-medium tracking-tight">
+                        {p.titre}
+                      </h3>
+                      <p className="mt-2 text-sm text-fd-muted-foreground">
+                        {p.texte}
+                      </p>
                     </div>
                   </li>
                 ))}
@@ -262,16 +358,23 @@ export default function Accueil() {
             {/* Le halo naît en fondu : sans ce masque, il dessinerait une arête au bord de la section. */}
             <div
               aria-hidden="true"
-              className="flow-glow pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_160px)]"
+              className="flow-glow pointer-events-none absolute inset-0 mask-[linear-gradient(to_bottom,transparent,black_160px)]"
             />
             <div className="relative mx-auto max-w-6xl px-4">
               <SectionBadge>La réponse</SectionBadge>
-              <h2 data-anime="titre" className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
+              <h2
+                data-anime="titre"
+                className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl"
+              >
                 Cinq phases, cinq portes
               </h2>
-              <p data-anime="intro" className="mt-5 max-w-2xl text-fd-muted-foreground">
-                Chaque phase se termine par une porte : une condition vérifiable, sans laquelle on ne passe pas à la
-                suite. Voici ce que chacune produit, sur un projet réel.
+              <p
+                data-anime="intro"
+                className="mt-5 max-w-2xl text-fd-muted-foreground"
+              >
+                Chaque phase se termine par une porte : une condition
+                vérifiable, sans laquelle on ne passe pas à la suite. Voici ce
+                que chacune produit, sur un projet réel.
               </p>
               <div className="mt-14">
                 <Phases />
@@ -279,13 +382,23 @@ export default function Accueil() {
 
               <dl className="mt-20 grid grid-cols-2 gap-px overflow-hidden border bg-fd-border md:grid-cols-4">
                 {CHIFFRES.map((c) => (
-                  <div key={c.libelle} data-anime="carte" className="bg-fd-background p-6">
+                  <div
+                    key={c.libelle}
+                    data-anime="carte"
+                    className="bg-fd-background p-6"
+                  >
                     <dt className="sr-only">{c.libelle}</dt>
                     <dd>
-                      <span data-anime="compte" data-valeur={c.valeur} className="font-heading block text-5xl font-medium tracking-tight">
+                      <span
+                        data-anime="compte"
+                        data-valeur={c.valeur}
+                        className="font-heading block text-5xl font-medium tracking-tight"
+                      >
                         {c.valeur}
                       </span>
-                      <span className="mt-3 block text-sm text-fd-muted-foreground">{c.libelle}</span>
+                      <span className="mt-3 block text-sm text-fd-muted-foreground">
+                        {c.libelle}
+                      </span>
                     </dd>
                   </div>
                 ))}
@@ -297,15 +410,25 @@ export default function Accueil() {
           <section className="flow-releve py-24 sm:py-28">
             <div className="mx-auto max-w-6xl px-4">
               <SectionBadge>Capacités</SectionBadge>
-              <h2 data-anime="titre" className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
+              <h2
+                data-anime="titre"
+                className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl"
+              >
                 Ce que Maedow Flow réunit
               </h2>
-              <p data-anime="intro" className="mt-5 max-w-2xl text-fd-muted-foreground">
+              <p
+                data-anime="intro"
+                className="mt-5 max-w-2xl text-fd-muted-foreground"
+              >
                 L&apos;architecture du code relève d&apos;un standard séparé,{" "}
-                <a href={ARCH_URL} className="font-medium text-fd-primary underline-offset-4 hover:underline">
+                <a
+                  href={ARCH_URL}
+                  className="font-medium text-fd-primary underline-offset-4 hover:underline"
+                >
                   Maedow Arch
                 </a>
-                . Maedow Flow dit comment on travaille ; Maedow Arch dit comment le code est rangé.
+                . Maedow Flow dit comment on travaille ; Maedow Arch dit comment
+                le code est rangé.
               </p>
               <div className="mt-14">
                 <Briques />
@@ -317,12 +440,20 @@ export default function Accueil() {
           <section className="py-24 sm:py-28">
             <div className="mx-auto max-w-6xl px-4">
               <SectionBadge>Installer</SectionBadge>
-              <h2 data-anime="titre" className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
+              <h2
+                data-anime="titre"
+                className="font-heading mt-5 max-w-3xl text-4xl font-medium tracking-[-0.03em] sm:text-5xl"
+              >
                 Une commande, dans n&apos;importe quel agent
               </h2>
               <div className="mt-14 grid gap-5 md:grid-cols-2">
-                <div data-anime="carte" className="flow-coins min-w-0 border bg-fd-card p-6 sm:p-8">
-                  <h3 className="font-heading text-xl font-medium tracking-tight">Avec Claude Code</h3>
+                <div
+                  data-anime="carte"
+                  className="flow-coins min-w-0 border bg-fd-card p-6 sm:p-8"
+                >
+                  <h3 className="font-heading text-xl font-medium tracking-tight">
+                    Avec Claude Code
+                  </h3>
                   <BlocTexte
                     className="mt-5"
                     titre="Une fois par machine"
@@ -331,12 +462,18 @@ export default function Accueil() {
 npx skills add JavaScript-Mastery-Pro/skills`}
                   />
                   <p className="mt-4 text-sm text-fd-muted-foreground">
-                    Le skill <code>/flow</code> installe le kit, <code>/flow controler</code> vérifie qu&apos;un projet
-                    le respecte encore.
+                    Le skill <code>/flow</code> installe le kit,{" "}
+                    <code>/flow controler</code> vérifie qu&apos;un projet le
+                    respecte encore.
                   </p>
                 </div>
-                <div data-anime="carte" className="flow-coins min-w-0 border bg-fd-card p-6 sm:p-8">
-                  <h3 className="font-heading text-xl font-medium tracking-tight">Avec un autre agent</h3>
+                <div
+                  data-anime="carte"
+                  className="flow-coins min-w-0 border bg-fd-card p-6 sm:p-8"
+                >
+                  <h3 className="font-heading text-xl font-medium tracking-tight">
+                    Avec un autre agent
+                  </h3>
                   <BlocTexte
                     className="mt-5"
                     titre="Dans le dossier du projet"
@@ -345,7 +482,8 @@ node flow.mjs installer
 rm flow.mjs`}
                   />
                   <p className="mt-4 text-sm text-fd-muted-foreground">
-                    Le même kit, sans plugin. Rien n&apos;est écrasé : ce qui existe reste en place.
+                    Le même kit, sans plugin. Rien n&apos;est écrasé : ce qui
+                    existe reste en place.
                   </p>
                 </div>
               </div>
@@ -353,19 +491,33 @@ rm flow.mjs`}
               <div className="mt-24 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
                 <div>
                   <SectionBadge>Pour les agents</SectionBadge>
-                  <h2 data-anime="titre" className="font-heading mt-5 text-3xl font-medium tracking-[-0.03em] sm:text-4xl">
+                  <h2
+                    data-anime="titre"
+                    className="font-heading mt-5 text-3xl font-medium tracking-[-0.03em] sm:text-4xl"
+                  >
                     Tout le site, en texte brut
                   </h2>
-                  <p data-anime="intro" className="mt-4 text-fd-muted-foreground">
-                    Dérivé du même corpus à chaque publication. Une IA le lit sans passer par le HTML.
+                  <p
+                    data-anime="intro"
+                    className="mt-4 text-fd-muted-foreground"
+                  >
+                    Dérivé du même corpus à chaque publication. Une IA le lit
+                    sans passer par le HTML.
                   </p>
                 </div>
                 <ul className="divide-y border-y">
                   {AGENTS.map((a) => (
                     <li key={a.url} data-anime="carte">
-                      <a href={a.url} className="group flex items-center gap-6 py-5">
-                        <span className="w-40 shrink-0 font-snippet text-sm break-all text-fd-primary sm:w-60">{a.url}</span>
-                        <span className="flex-1 text-sm text-fd-muted-foreground">{a.role}</span>
+                      <a
+                        href={a.url}
+                        className="group flex items-center gap-6 py-5"
+                      >
+                        <span className="w-40 shrink-0 font-snippet text-sm break-all text-fd-primary sm:w-60">
+                          {a.url}
+                        </span>
+                        <span className="flex-1 text-sm text-fd-muted-foreground">
+                          {a.role}
+                        </span>
                         <span
                           aria-hidden="true"
                           className="flex size-8 shrink-0 items-center justify-center rounded-[2px] bg-fd-foreground text-fd-background transition-colors group-hover:bg-fd-primary group-hover:text-fd-primary-foreground"
@@ -386,7 +538,10 @@ rm flow.mjs`}
               {/* La colonne de gauche reste en haut : déplier une réponse ne doit rien y déplacer. */}
               <div className="flex flex-col items-start lg:self-start">
                 <SectionBadge>FAQ</SectionBadge>
-                <h2 data-anime="titre" className="font-heading mt-5 text-4xl font-medium tracking-[-0.03em] sm:text-5xl">
+                <h2
+                  data-anime="titre"
+                  className="font-heading mt-5 text-4xl font-medium tracking-[-0.03em] sm:text-5xl"
+                >
                   Ce que Maedow Flow n&apos;est pas
                 </h2>
                 <p data-anime="intro" className="mt-5 text-fd-muted-foreground">
@@ -394,7 +549,9 @@ rm flow.mjs`}
                 </p>
                 <div className="mt-12">
                   <p className="font-medium">Une autre question ?</p>
-                  <p className="mt-1 text-sm text-fd-muted-foreground">Le corpus y répond, page par page.</p>
+                  <p className="mt-1 text-sm text-fd-muted-foreground">
+                    Le corpus y répond, page par page.
+                  </p>
                   <Link
                     href="/docs"
                     className="mt-4 inline-flex rounded-[3px] bg-fd-foreground px-4 py-2.5 text-sm font-semibold text-fd-background transition-opacity hover:opacity-90"
@@ -418,16 +575,31 @@ rm flow.mjs`}
               >
                 Prêt à cadrer ton prochain projet&nbsp;?
               </h2>
-              <p data-anime="intro" className="mt-5 max-w-xl text-fd-muted-foreground">
-                Le premier message à donner à ton agent, dans un dossier vide ou un projet existant : Claude Code,
-                Cursor, Codex ou tout agent qui dispose d&apos;un terminal.
+              <p
+                data-anime="intro"
+                className="mt-5 max-w-xl text-fd-muted-foreground"
+              >
+                Le premier message à donner à ton agent, dans un dossier vide ou
+                un projet existant : Claude Code, Cursor, Codex ou tout agent
+                qui dispose d&apos;un terminal.
               </p>
-              <div data-anime="carte" className="flow-terminal mt-10 w-full max-w-3xl text-left">
-                <BlocTexte className="my-0" titre="Prompt d'amorçage" texte={PROMPT_AMORCAGE} />
+              <div
+                data-anime="carte"
+                className="flow-terminal mt-10 w-full max-w-3xl text-left"
+              >
+                <BlocTexte
+                  className="my-0"
+                  titre="Prompt d'amorçage"
+                  texte={PROMPT_AMORCAGE}
+                />
               </div>
               <div className="mt-10 flex flex-wrap justify-center gap-3">
-                <BoutonPrincipal href="/docs/demarrer">Démarrer un projet</BoutonPrincipal>
-                <BoutonSecondaire href="/docs">Lire le manifeste</BoutonSecondaire>
+                <BoutonPrincipal href="/docs/demarrer">
+                  Démarrer un projet
+                </BoutonPrincipal>
+                <BoutonSecondaire href="/docs">
+                  Lire le manifeste
+                </BoutonSecondaire>
               </div>
             </div>
           </section>
@@ -438,40 +610,120 @@ rm flow.mjs`}
                 <div data-anime="colonne">
                   <Logo className="text-fd-foreground" />
                   <p className="mt-3 max-w-xs text-sm text-fd-muted-foreground">
-                    Un workflow de développement pour construire des applications solides avec des agents IA.
+                    Un workflow de développement pour construire des
+                    applications solides avec des agents IA.
                   </p>
                 </div>
                 <div data-anime="colonne">
                   <p className="text-sm font-semibold">Le corpus</p>
                   <ul className="mt-4 flex flex-col gap-2.5 text-sm text-fd-muted-foreground">
-                    <li><Link href="/docs" className="hover:text-fd-foreground">Manifeste</Link></li>
-                    <li><Link href="/docs/demarrer" className="hover:text-fd-foreground">Démarrer</Link></li>
-                    <li><Link href="/docs/cycle" className="hover:text-fd-foreground">Cycle</Link></li>
-                    <li><Link href="/docs/regles" className="hover:text-fd-foreground">Règles</Link></li>
+                    <li>
+                      <Link href="/docs" className="hover:text-fd-foreground">
+                        Manifeste
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/docs/demarrer"
+                        className="hover:text-fd-foreground"
+                      >
+                        Démarrer
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/docs/cycle"
+                        className="hover:text-fd-foreground"
+                      >
+                        Cycle
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/docs/regles"
+                        className="hover:text-fd-foreground"
+                      >
+                        Règles
+                      </Link>
+                    </li>
                   </ul>
                 </div>
                 <div data-anime="colonne">
                   <p className="text-sm font-semibold">Aller plus loin</p>
                   <ul className="mt-4 flex flex-col gap-2.5 text-sm text-fd-muted-foreground">
-                    <li><Link href="/docs/claude-code" className="hover:text-fd-foreground">Claude Code</Link></li>
-                    <li><Link href="/docs/plateformes" className="hover:text-fd-foreground">Plateformes</Link></li>
-                    <li><Link href="/docs/securite" className="hover:text-fd-foreground">Sécurité</Link></li>
-                    <li><Link href="/docs/echelle" className="hover:text-fd-foreground">Tenir la charge</Link></li>
+                    <li>
+                      <Link
+                        href="/docs/claude-code"
+                        className="hover:text-fd-foreground"
+                      >
+                        Claude Code
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/docs/plateformes"
+                        className="hover:text-fd-foreground"
+                      >
+                        Plateformes
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/docs/securite"
+                        className="hover:text-fd-foreground"
+                      >
+                        Sécurité
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/docs/echelle"
+                        className="hover:text-fd-foreground"
+                      >
+                        Tenir la charge
+                      </Link>
+                    </li>
                   </ul>
                 </div>
                 <div data-anime="colonne">
                   <p className="text-sm font-semibold">Ailleurs</p>
                   <ul className="mt-4 flex flex-col gap-2.5 text-sm text-fd-muted-foreground">
-                    <li><a href={REPO_URL} className="hover:text-fd-foreground">Dépôt GitHub</a></li>
-                    <li><a href={ARCH_URL} className="hover:text-fd-foreground">Maedow Arch</a></li>
-                    <li><a href={SKILLS_URL} className="hover:text-fd-foreground">Skills moteur</a></li>
-                    <li><a href="/llms-full.txt" className="hover:text-fd-foreground">llms-full.txt</a></li>
+                    <li>
+                      <a href={REPO_URL} className="hover:text-fd-foreground">
+                        Dépôt GitHub
+                      </a>
+                    </li>
+                    <li>
+                      <a href={ARCH_URL} className="hover:text-fd-foreground">
+                        Maedow Arch
+                      </a>
+                    </li>
+                    <li>
+                      <a href={SKILLS_URL} className="hover:text-fd-foreground">
+                        Skills moteur
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="/llms-full.txt"
+                        className="hover:text-fd-foreground"
+                      >
+                        llms-full.txt
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
               <div className="flex flex-col gap-3 border-t py-6 text-sm text-fd-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-                <span>© {new Date().getFullYear()} Maedow Flow. Licence MIT.</span>
-                <a href={REPO_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 hover:text-fd-foreground">
+                <span>
+                  © {new Date().getFullYear()} Maedow Flow. Licence MIT.
+                </span>
+                <a
+                  href={REPO_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 hover:text-fd-foreground"
+                >
                   <GithubIcon className="size-4" />
                   GitHub
                 </a>

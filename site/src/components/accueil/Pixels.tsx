@@ -33,12 +33,15 @@ function trame(graine: number, nombre: number, bas: boolean) {
 
 function Bande({ graine, bas }: { graine: number; bas: boolean }) {
   return (
-    <div aria-hidden="true" className={`pointer-events-none absolute inset-x-0 h-28 ${bas ? "bottom-0" : "top-0"}`}>
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none absolute inset-x-0 h-28 ${bas ? "bottom-0" : "top-0"}`}
+    >
       {trame(graine, 46, bas).map((p, i) => (
         <span
           key={i}
           data-anime="pixel"
-          className="absolute size-[6px] bg-fd-primary"
+          className="absolute size-1.5 bg-fd-primary"
           style={{ left: `${p.x}%`, top: `${p.y}%`, opacity: p.opacite }}
         />
       ))}
