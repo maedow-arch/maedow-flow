@@ -193,6 +193,7 @@ export default function Accueil() {
           <span data-navbar-marque className="inline-flex">
             <Link
               href="/"
+              data-remonter
               aria-label="Maedow Flow, accueil"
               className="text-fd-foreground"
             >
@@ -609,7 +610,9 @@ rm flow.mjs`}
             <div className="mx-auto max-w-6xl px-4">
               <div className="grid gap-10 pt-16 pb-12 sm:grid-cols-[1.3fr_1fr_1fr_1fr]">
                 <div data-anime="colonne">
-                  <Logo className="text-fd-foreground" />
+                  <Link href="/" data-remonter aria-label="Maedow Flow, accueil" className="inline-flex text-fd-foreground">
+                    <Logo />
+                  </Link>
                   <p className="mt-3 max-w-xs text-sm text-fd-muted-foreground">
                     Un workflow de développement pour construire des
                     applications solides avec des agents IA.
