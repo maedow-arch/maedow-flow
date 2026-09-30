@@ -254,7 +254,7 @@ export default function Accueil() {
               className="flow-glow pointer-events-none absolute inset-0"
             />
             <Verre />
-            <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 pt-20 pb-20 text-center sm:pt-28">
+            <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 pt-20 pb-16 text-center sm:pt-28 sm:pb-20">
               <h1
                 data-hero="titre"
                 className="font-heading max-w-4xl text-[clamp(2.6rem,6vw,4.75rem)] leading-[1.02] font-medium tracking-[-0.035em] text-balance"
@@ -281,7 +281,33 @@ export default function Accueil() {
                   Lire le manifeste
                 </BoutonSecondaire>
               </div>
-              <div className="mt-16 w-full text-left sm:mt-20">
+            </div>
+            {/*
+             * La scène de la séance : pleine largeur, de la hauteur de l'écran.
+             * Pendant la lecture, elle se fige avec son propre fond (rien ne
+             * défile derrière) et sa barre de progression ; SceneHero les
+             * révèle, sans script elles restent cachées.
+             */}
+            <div
+              data-hero="scene"
+              className="relative flex flex-col justify-center px-4 pb-8 motion-safe:min-h-svh motion-safe:pt-16"
+            >
+              <div
+                data-hero="scene-fond"
+                aria-hidden="true"
+                className="flow-dots pointer-events-none absolute inset-0 hidden bg-fd-background mask-[linear-gradient(to_bottom,transparent,black_120px)]"
+              />
+              <div
+                data-hero="progression"
+                aria-hidden="true"
+                className="absolute inset-x-0 top-16 hidden h-0.5 bg-fd-border"
+              >
+                <span
+                  data-hero="progression-barre"
+                  className="block h-full origin-left bg-fd-primary"
+                />
+              </div>
+              <div className="relative mx-auto w-full max-w-6xl text-left">
                 <Conversation />
               </div>
             </div>

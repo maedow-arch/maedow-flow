@@ -78,7 +78,9 @@ export function Conversation() {
           Maedow Flow actif
         </span>
       </figcaption>
-      <ol className="flex flex-col gap-4 px-4 py-6 sm:px-8 sm:py-8">
+      {/* La fenêtre de la séance : quand l'écran est trop court pour elle, la discussion y remonte au fil des messages. */}
+      <div data-seance="fenetre" className="overflow-hidden">
+      <ol data-seance="fil" className="flex flex-col gap-4 px-4 py-6 sm:px-8 sm:py-8">
         {MESSAGES.map((m, i) =>
           m.qui === "toi" ? (
             <li key={i} data-seance="message" data-qui="toi" className="flex justify-end">
@@ -132,6 +134,7 @@ export function Conversation() {
           ),
         )}
       </ol>
+      </div>
     </figure>
   );
 }
