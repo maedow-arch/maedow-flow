@@ -69,10 +69,3 @@ Flux : `<type>/<sujet>` vers `develop` par pull request, puis `develop` vers `ma
 ## Context files
 
 - [site/AGENTS.md](site/AGENTS.md) (le site de documentation et ses fichiers pour agents)
-
-## Base44 (développement local)
-
-- `docker compose -f docker-compose.base44.yml up -d --build` lance le site Next.js depuis la source montée dans le conteneur, sur le port 3000 ; aucun service externe ni secret n'est requis.
-- Au démarrage, `npm run dev` exécute `site/scripts/sync.mjs` avant le serveur : les pages et fichiers publics sont générés à partir du corpus et des templates montés depuis la racine du dépôt.
-- Vérifier avec `docker compose -f docker-compose.base44.yml ps`, puis `curl -f http://localhost:3000/`, `/docs` et `/llms.txt`. Le serveur Next doit annoncer `next dev` dans les logs ; `npm --prefix site run dev` est la commande équivalente hors conteneur.
-- La prévisualisation Next nécessite `BASE44_PUBLIC_HOST_SUFFIX` pour autoriser l'origine des ressources de développement ; la configuration est dans `site/next.config.mjs`.
