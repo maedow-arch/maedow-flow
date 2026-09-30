@@ -62,7 +62,8 @@ export function SceneHero({ children }: { children: ReactNode }) {
         /*
          * La séance se lit au défilement, comme une vidéo pilotée par le
          * défilement. Sa scène, pleine largeur et de la hauteur de l'écran, se
-         * fige quand elle l'occupe ; chaque cran de défilement fait sortir le
+         * fige quand elle l'occupe. Le premier temps de défilement agrandit la
+         * carte jusqu'à remplir l'écran ; ensuite, chaque cran fait sortir le
          * message suivant, remonter les fait rentrer, et la barre pleine
          * largeur dit où en est la lecture. Le dernier message lu, la page
          * reprend son cours. La scène a son propre fond : rien ne défile
@@ -77,17 +78,43 @@ export function SceneHero({ children }: { children: ReactNode }) {
           const progression = scope.querySelector('[data-hero="progression"]');
           gsap.set([scope.querySelector('[data-hero="scene-fond"]'), progression], { display: "block" });
           gsap.set(progression, { autoAlpha: 0 });
-          seance.timeline.fromTo(
+
+          /*
+           * La scène a la hauteur de l'écran ; la carte y est bornée dès le
+           * départ (sa fenêtre défile si la séance ne tient pas), puis
+           * s'agrandit jusqu'à l'occuper toute. Les marges animées sont celles
+           * du cadre intérieur : ScrollTrigger rétablit, à la fin de
+           * l'épinglage, le style de l'élément qu'il a épinglé.
+           * `to`, pas `fromTo` : la taille de départ est celle que la carte a
+           * réellement, relevée au premier rendu.
+           */
+          const cadre = scope.querySelector<HTMLElement>('[data-hero="scene-cadre"]');
+          gsap.set(figure, { maxHeight: () => window.innerHeight - BARRE - 32 });
+          const cinematique = gsap
+            .timeline({ paused: true, defaults: { ease: COURBE.franc } })
+            .to(cadre, { paddingLeft: 0, paddingRight: 0, duration: RYTHME.ouverture }, 0)
+            .to(
+              figure,
+              {
+                maxWidth: () => scene.clientWidth,
+                maxHeight: () => window.innerHeight - BARRE,
+                height: () => window.innerHeight - BARRE,
+                duration: RYTHME.ouverture,
+              },
+              0,
+            )
+            .add(seance.timeline.paused(false));
+          cinematique.fromTo(
             '[data-hero="progression-barre"]',
             { scaleX: 0 },
-            { scaleX: 1, ease: COURBE.continu, duration: seance.timeline.duration() },
+            { scaleX: 1, ease: COURBE.continu, duration: cinematique.duration() },
             0,
           );
           ScrollTrigger.create({
-            animation: seance.timeline,
+            animation: cinematique,
             trigger: scene,
             start: "top top",
-            end: () => "+=" + Math.round(seance.timeline.duration() * PIXELS_PAR_SECONDE),
+            end: () => "+=" + Math.round(cinematique.duration() * PIXELS_PAR_SECONDE),
             pin: true,
             pinSpacing: true,
             scrub: 0.6,
@@ -126,13 +153,13 @@ export function SceneHero({ children }: { children: ReactNode }) {
  * l'agent : il vérifie une règle. La dernière réponse garde un temps de lecture
  * avant que la séance ne se libère.
  */
-const RYTHME = { silence: 0.1, agent: 0.55, flow: 0.3, lecture: 0.25, fin: 0.8 } as const;
+const RYTHME = { ouverture: 1.5, silence: 0.1, agent: 0.55, flow: 0.3, lecture: 0.25, fin: 0.8 } as const;
+
+/* La hauteur de la barre de navigation : la carte agrandie s'arrête juste dessous. */
+const BARRE = 64;
 
 /* Une seconde de séance vaut ce défilement : environ 200 px par message. */
 const PIXELS_PAR_SECONDE = 110;
-
-/* La fenêtre de la séance ne dépasse jamais l'écran, sous la barre de navigation. */
-const FENETRE = "calc(100svh - 11rem)";
 
 /**
  * La séance, jouée comme une conversation.
@@ -145,10 +172,10 @@ const FENETRE = "calc(100svh - 11rem)";
  * Un refus secoue sa bulle ; la porte franchie l'éclaire.
  *
  * La timeline est pilotée par le défilement : ses durées ne sont pas des
- * secondes d'attente, mais la part de défilement que prend chaque geste. Sur
- * un écran trop court pour toute la séance, la fenêtre se limite à l'écran et
- * le fil remonte avant chaque message qui la dépasserait, comme dans une
- * messagerie.
+ * secondes d'attente, mais la part de défilement que prend chaque geste. La
+ * carte agrandie a la hauteur de l'écran : quand la séance ne tient pas dans
+ * sa fenêtre, le fil remonte avant chaque message qui la dépasserait, comme
+ * dans une messagerie.
  *
  * Tout ce qui est masqué ici l'est par le script : sans lui, ou sous mouvement
  * réduit, la séance est entière. Seul le texte tapé est réécrit à la main ;
@@ -173,7 +200,6 @@ function jouerSeance(figure: HTMLElement) {
   /* Le fil remonte dans la fenêtre juste assez pour que le message qui arrive soit entier. */
   const fenetre = role(figure, "fenetre");
   const fil = role(figure, "fil");
-  gsap.set(fenetre, { maxHeight: FENETRE });
   /*
    * Mesuré sur les boîtes à l'écran, en écart au haut du fil : cet écart ne
    * dépend pas de la translation en cours. `offsetTop` ne convient pas : dès que

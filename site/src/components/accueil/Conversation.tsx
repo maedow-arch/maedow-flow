@@ -67,7 +67,7 @@ function Saisie() {
 
 export function Conversation() {
   return (
-    <figure data-hero="seance" className="flow-coins relative mx-auto w-full max-w-4xl border bg-fd-card/85 backdrop-blur-md">
+    <figure data-hero="seance" className="flow-coins relative mx-auto flex w-full max-w-4xl flex-col border bg-fd-card/85 backdrop-blur-md">
       <figcaption className="flex items-center justify-between gap-4 border-b px-5 py-3 text-sm">
         <span className="text-fd-muted-foreground">Une séance avec ton agent</span>
         <span className="inline-flex items-center gap-2 text-xs font-medium">
@@ -79,7 +79,7 @@ export function Conversation() {
         </span>
       </figcaption>
       {/* La fenêtre de la séance : quand l'écran est trop court pour elle, la discussion y remonte au fil des messages. */}
-      <div data-seance="fenetre" className="overflow-hidden">
+      <div data-seance="fenetre" className="min-h-0 flex-1 overflow-hidden">
       <ol data-seance="fil" className="flex flex-col gap-4 px-4 py-6 sm:px-8 sm:py-8">
         {MESSAGES.map((m, i) =>
           m.qui === "toi" ? (
