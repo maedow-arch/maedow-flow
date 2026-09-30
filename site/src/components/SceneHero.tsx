@@ -51,7 +51,7 @@ export function SceneHero({ children }: { children: ReactNode }) {
         }
 
         /* Des décalages négatifs : une cascade où chacun attend la fin du précédent paraît laborieuse. */
-        const entree = gsap
+        gsap
           .timeline({ defaults: { ease: COURBE.sortie } })
           /* Les dalles de verre montent d'abord, dans le désordre : un décor qui se pose avant qu'on parle. */
           .from('[data-hero="dalle"]', { y: 32, autoAlpha: 0, duration: 0.6, stagger: { each: 0.02, from: "random" } }, 0)
@@ -60,23 +60,68 @@ export function SceneHero({ children }: { children: ReactNode }) {
           .from('[data-hero="seance"]', { y: 18, autoAlpha: 0, duration: DUREE.bloc }, "-=0.4");
 
         /*
-         * La séance commence quand on arrive dessus : quand elle occupe assez
-         * d'écran pour être suivie, et jamais avant que son cadre soit posé.
-         * Jusque-là, ta bulle attend, curseur clignotant.
+         * La séance se lit au défilement, comme une vidéo pilotée par le
+         * défilement. Sa scène, pleine largeur et de la hauteur de l'écran, se
+         * fige quand elle l'occupe. Le premier temps de défilement agrandit la
+         * carte jusqu'à remplir l'écran ; ensuite, chaque cran fait sortir le
+         * message suivant, remonter les fait rentrer, et la barre pleine
+         * largeur dit où en est la lecture. Le dernier message lu, la page
+         * reprend son cours. La scène a son propre fond : rien ne défile
+         * derrière la séance figée.
          */
         const figure = scope.querySelector<HTMLElement>('[data-hero="seance"]');
+        const scene = scope.querySelector<HTMLElement>('[data-hero="scene"]');
         let restaurer = () => {};
-        if (figure) {
+        if (figure && scene) {
           const seance = jouerSeance(figure);
           restaurer = seance.restaurer;
+          const progression = scope.querySelector('[data-hero="progression"]');
+          gsap.set([scope.querySelector('[data-hero="scene-fond"]'), progression], { display: "block" });
+          gsap.set(progression, { autoAlpha: 0 });
+
+          /*
+           * La scène a la hauteur de l'écran ; la carte y est bornée dès le
+           * départ (sa fenêtre défile si la séance ne tient pas), puis
+           * s'agrandit jusqu'à l'occuper toute. Les marges animées sont celles
+           * du cadre intérieur : ScrollTrigger rétablit, à la fin de
+           * l'épinglage, le style de l'élément qu'il a épinglé.
+           * `to`, pas `fromTo` : la taille de départ est celle que la carte a
+           * réellement, relevée au premier rendu.
+           */
+          const cadre = scope.querySelector<HTMLElement>('[data-hero="scene-cadre"]');
+          gsap.set(figure, { maxHeight: () => window.innerHeight - BARRE - 32 });
+          const cinematique = gsap
+            .timeline({ paused: true, defaults: { ease: COURBE.franc } })
+            .to(cadre, { paddingLeft: 0, paddingRight: 0, duration: RYTHME.ouverture }, 0)
+            .to(
+              figure,
+              {
+                maxWidth: () => scene.clientWidth,
+                maxHeight: () => window.innerHeight - BARRE,
+                height: () => window.innerHeight - BARRE,
+                duration: RYTHME.ouverture,
+              },
+              0,
+            )
+            .add(seance.timeline.paused(false));
+          cinematique.fromTo(
+            '[data-hero="progression-barre"]',
+            { scaleX: 0 },
+            { scaleX: 1, ease: COURBE.continu, duration: cinematique.duration() },
+            0,
+          );
           ScrollTrigger.create({
-            trigger: figure,
-            start: "top 55%",
-            once: true,
-            onEnter: () => {
-              /* `progress` et non `isActive` : une timeline qui n'a pas encore avancé d'une image n'est pas « active ». */
-              if (entree.progress() < 1) entree.eventCallback("onComplete", () => void seance.timeline.play());
-              else seance.timeline.play();
+            animation: cinematique,
+            trigger: scene,
+            start: "top top",
+            end: () => "+=" + Math.round(cinematique.duration() * PIXELS_PAR_SECONDE),
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            onToggle: (self) => {
+              seance.veiller(self.isActive);
+              gsap.to(progression, { autoAlpha: self.isActive ? 1 : 0, duration: 0.3 });
             },
           });
         }
@@ -102,8 +147,19 @@ export function SceneHero({ children }: { children: ReactNode }) {
   return <div ref={racine}>{children}</div>;
 }
 
-/* Les temps de la séance, en secondes. Maedow Flow réfléchit moins longtemps que l'agent : il vérifie une règle. */
-const RYTHME = { silence: 0.1, agent: 0.55, flow: 0.3, lecture: 0.25 } as const;
+/*
+ * Les temps de la séance, en secondes de timeline : ils règlent la part de
+ * défilement de chaque geste. Maedow Flow réfléchit moins longtemps que
+ * l'agent : il vérifie une règle. La dernière réponse garde un temps de lecture
+ * avant que la séance ne se libère.
+ */
+const RYTHME = { ouverture: 1.5, silence: 0.1, agent: 0.55, flow: 0.3, lecture: 0.25, fin: 0.8 } as const;
+
+/* La hauteur de la barre de navigation : la carte agrandie s'arrête juste dessous. */
+const BARRE = 64;
+
+/* Une seconde de séance vaut ce défilement : environ 200 px par message. */
+const PIXELS_PAR_SECONDE = 110;
 
 /**
  * La séance, jouée comme une conversation.
@@ -115,9 +171,11 @@ const RYTHME = { silence: 0.1, agent: 0.55, flow: 0.3, lecture: 0.25 } as const;
  * vite que l'agent ne réfléchit : c'est une vérification, pas une réflexion.
  * Un refus secoue sa bulle ; la porte franchie l'éclaire.
  *
- * La séance entière tient en une douzaine de secondes : assez pour suivre
- * l'échange, pas assez pour qu'on attende la fin. Elle ne rejoue pas, et tout
- * reste à l'écran pour être relu.
+ * La timeline est pilotée par le défilement : ses durées ne sont pas des
+ * secondes d'attente, mais la part de défilement que prend chaque geste. La
+ * carte agrandie a la hauteur de l'écran : quand la séance ne tient pas dans
+ * sa fenêtre, le fil remonte avant chaque message qui la dépasserait, comme
+ * dans une messagerie.
  *
  * Tout ce qui est masqué ici l'est par le script : sans lui, ou sous mouvement
  * réduit, la séance est entière. Seul le texte tapé est réécrit à la main ;
@@ -129,7 +187,7 @@ function jouerSeance(figure: HTMLElement) {
   const role = <T extends Element = HTMLElement>(parent: Element, nom: string) =>
     parent.querySelector<T>(`[data-seance="${nom}"]`);
 
-  /* Le témoin « Maedow Flow actif » bat pendant la séance, puis se tait. */
+  /* Le témoin « Maedow Flow actif » bat tant qu'on lit la séance. */
   const veille = role(figure, "veille");
   const pouls = veille
     ? gsap.fromTo(
@@ -138,7 +196,25 @@ function jouerSeance(figure: HTMLElement) {
         { scale: 3, autoAlpha: 0, duration: 1.2, ease: "power1.out", repeat: -1, paused: true },
       )
     : null;
-  if (pouls) timeline.call(() => void pouls.play(), undefined, 0);
+
+  /* Le fil remonte dans la fenêtre juste assez pour que le message qui arrive soit entier. */
+  const fenetre = role(figure, "fenetre");
+  const fil = role(figure, "fil");
+  /*
+   * Mesuré sur les boîtes à l'écran, en écart au haut du fil : cet écart ne
+   * dépend pas de la translation en cours. `offsetTop` ne convient pas : dès que
+   * le fil est transformé, Chrome mesure les messages depuis le fil et non plus
+   * depuis la carte.
+   */
+  const remontee = (message: HTMLElement) => {
+    if (!fenetre || !fil) return 0;
+    const marge = Number.parseFloat(getComputedStyle(fil).paddingBottom) || 0;
+    const bas = message.getBoundingClientRect().bottom - fil.getBoundingClientRect().top + marge;
+    return -Math.max(0, bas - fenetre.clientHeight);
+  };
+  const suivre = (message: HTMLElement) => {
+    if (fil) timeline.to(fil, { y: () => remontee(message), duration: 0.3, ease: COURBE.franc });
+  };
 
   const vert = gsap.utils.splitColor(getComputedStyle(figure).getPropertyValue("--color-fd-primary").trim() || "#00f58a");
 
@@ -155,9 +231,10 @@ function jouerSeance(figure: HTMLElement) {
       restaurations.push(() => {
         frappe.textContent = texte;
       });
+      suivre(message);
       timeline
         /* On ne clignote pas en tapant. */
-        .call(() => curseur?.classList.remove("flow-curseur"), undefined, `+=${RYTHME.silence}`)
+        .set(curseur, { animation: "none" }, `+=${RYTHME.silence}`)
         .to(etat, {
           lettres: texte.length,
           duration: texte.length * DECALAGE.lettre,
@@ -183,6 +260,7 @@ function jouerSeance(figure: HTMLElement) {
     gsap.set([avatar, bulle, verdict, code], { autoAlpha: 0 });
     gsap.set(mots, { autoAlpha: 0, filter: "blur(4px)" });
 
+    suivre(message);
     timeline
       .to(avatar, { autoAlpha: 1, duration: 0.25 }, `+=${RYTHME.silence}`)
       .to(saisie, { autoAlpha: 1, duration: 0.2 }, "<")
@@ -210,10 +288,15 @@ function jouerSeance(figure: HTMLElement) {
       .to({}, { duration: RYTHME.lecture });
   }
 
-  if (pouls) timeline.call(() => void pouls.repeat(0));
+  timeline.to({}, { duration: RYTHME.fin });
 
   return {
     timeline,
+    veiller: (actif: boolean) => {
+      if (!pouls) return;
+      if (actif) pouls.play();
+      else pouls.pause(0).progress(1);
+    },
     restaurer: () => restaurations.forEach((restaure) => restaure()),
   };
 }
