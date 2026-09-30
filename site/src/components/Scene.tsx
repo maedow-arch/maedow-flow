@@ -75,6 +75,30 @@ export function Scene({ children, className }: { children: ReactNode; className?
             .to(texte, { duration: 0.6, scrambleText: { text: "{original}", chars: "upperCase", speed: 0.6 } }, 0.1);
         }
 
+        /*
+         * La bande des outils : le libellé glisse, le trait se tire, puis chaque
+         * outil se décode l'un après l'autre, comme un badge. On voit le kit
+         * s'installer chez chacun. La largeur de chaque nom est tenue pendant le
+         * décodage, pour que la rangée ne tremble pas.
+         */
+        for (const bande of scope.querySelectorAll<HTMLElement>('[data-anime="outils"]')) {
+          const noms = Array.from(bande.querySelectorAll<HTMLElement>('[data-outil="nom"]'));
+          const ligne = gsap.timeline({
+            defaults: { ease: COURBE.sortie },
+            scrollTrigger: { trigger: bande, start: SEUIL, once: true },
+            onStart: () => noms.forEach((nom) => void gsap.set(nom, { width: nom.getBoundingClientRect().width })),
+            onComplete: () => void gsap.set(noms, { clearProps: "width" }),
+          });
+          ligne
+            .from(bande.querySelector('[data-outil="libelle"]'), { x: -14, autoAlpha: 0, duration: DUREE.fragment })
+            .from(bande.querySelector('[data-outil="trait"]'), { scaleY: 0, duration: 0.35 }, "-=0.25");
+          noms.forEach((nom, i) => {
+            ligne
+              .from(nom, { autoAlpha: 0, duration: 0.2 }, 0.3 + i * 0.16)
+              .to(nom, { duration: 0.6, scrambleText: { text: "{original}", chars: "upperCase", speed: 0.6 } }, "<");
+          });
+        }
+
         /* Les textes d'accompagnement suivent leur titre, sans le devancer. */
         for (const intro of scope.querySelectorAll<HTMLElement>('[data-anime="intro"]')) {
           gsap.from(intro, {
